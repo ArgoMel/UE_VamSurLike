@@ -1,5 +1,5 @@
 #pragma once
-#include "CoreMinimal.h"
+#include "../GameInfo.h"
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
