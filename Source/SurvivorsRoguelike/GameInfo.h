@@ -50,6 +50,11 @@
 #include "UObject/NoExportTypes.h"
 #include "GameInfo.generated.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(SurvivorsRoguelike, Log, All);
+#define	LOG_CALLINFO	(FString(__FUNCTION__) + TEXT("[") + FString::FromInt(__LINE__) + TEXT("]"))
+#define	LOG(Format, ...)	UE_LOG(SurvivorsRoguelike, Warning, TEXT("%s : %s"), *LOG_CALLINFO, *FString::Printf(Format, ##__VA_ARGS__))
+#define	LOGSTRING(str)		UE_LOG(SurvivorsRoguelike, Warning, TEXT("%s : %s"), *LOG_CALLINFO, *str)
+
 UENUM()
 enum class EPlayerJob : uint8
 {
