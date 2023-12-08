@@ -2,5 +2,15 @@
 	"FileVersion": 3,
 	"EngineAssociation": "{BAEC48F3-4B16-64DE-4067-4F82AC261199}",
 	"Category": "",
-	"Description": ""
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "SurvivorsRoguelike",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	]
 }
