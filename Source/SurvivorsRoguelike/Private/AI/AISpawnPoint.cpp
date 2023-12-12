@@ -10,6 +10,8 @@ AAISpawnPoint::AAISpawnPoint()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	bReplicates = false;
+
 	mRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
 	SetRootComponent(mRoot);
@@ -23,9 +25,6 @@ AAISpawnPoint::AAISpawnPoint()
 
 	mSpawnTime = 1.f;
 	mTime = 0.f;
-
-
-
 }
 
 void AAISpawnPoint::ClearObject()
@@ -39,11 +38,6 @@ void AAISpawnPoint::SpawnObject_Implementation()
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	// Template 변수에 특정 액터를 넣어주면 해당 액터를 복제한 액터를
-	// 생성해준다.
-	//ActorParam.Template = mSpawnClass->GetDefaultObject();
-
-	// UClass가 가지고 있는 이 타입의 기본 오브젝트를 얻어온다.
 	TObjectPtr<AAIPawn> DefaultObj = Cast<AAIPawn>(mSpawnClass->GetDefaultObject());
 
 	float	HalfHeight = 0.f;
@@ -96,7 +90,7 @@ void AAISpawnPoint::Tick(float DeltaTime)
 				SpawnObject();
 			}
 		}
-
 	}
+
 }
 
