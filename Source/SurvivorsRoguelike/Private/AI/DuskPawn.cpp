@@ -1,12 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "../../Public/AI/MinionPawn.h"
 
-AMinionPawn::AMinionPawn()
+#include "../../Public/AI/DuskPawn.h"
+
+ADuskPawn::ADuskPawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>	MeshAsset(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonMinions/Characters/Minions/Down_Minions/Meshes/Minion_Lane_Melee_Dawn.Minion_Lane_Melee_Dawn'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>	MeshAsset(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonMinions/Characters/Minions/Dusk_Minions/Meshes/Minion_Lane_Melee_Dusk.Minion_Lane_Melee_Dusk'"));
 
 	if (MeshAsset.Succeeded())
 		mMesh->SetSkeletalMesh(MeshAsset.Object);
@@ -18,22 +19,23 @@ AMinionPawn::AMinionPawn()
 	mMesh->SetRelativeRotation(FRotator(0.0, -90.0, 0.0));
 }
 
-void AMinionPawn::OnConstruction(const FTransform& Transform)
+void ADuskPawn::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 }
 
-void AMinionPawn::BeginPlay()
+void ADuskPawn::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void AMinionPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
+void ADuskPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 }
 
-void AMinionPawn::Tick(float DeltaTime)
+void ADuskPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
