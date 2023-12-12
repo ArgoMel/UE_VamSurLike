@@ -3,6 +3,8 @@
 #pragma once
 
 #include "../GameInfo.h"
+#include "AISpawnPoint.h"
+#include "PatrolPoint.h"
 #include "GameFramework/Pawn.h"
 #include "AIPawn.generated.h"
 
@@ -25,6 +27,25 @@ protected:
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UFloatingPawnMovement>	mMovement;
 
+	UPROPERTY(Category = Component, EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TArray<TObjectPtr<class APatrolPoint>>	mPatrolPointArray;
+
+	TArray<FVector>		mPatrolPoint;
+	int32				mPatrolIndex;
+	TObjectPtr<class AAISpawnPoint>	mSpawnPoint;
+
+public:
+	bool GetPatrolEnable()	const
+	{
+		return !mPatrolPointArray.IsEmpty();
+	}
+
+	const FVector& GetPatrolLocation()
+	{
+		return mPatrolPoint[mPatrolIndex];
+	}
+
+
 public:
 	float GetHalfHeight()	const
 	{
@@ -36,6 +57,11 @@ public:
 		return mBody->GetScaledCapsuleRadius();
 	}
 
+	void SetSpawnPoint(class AAISpawnPoint* SpawnPoint);
+
+	void SetPatrolPointArray(const TArray<TObjectPtr<class APatrolPoint>>& Array);
+	void NextPatrol();
+
 protected:
 	virtual void OnConstruction(const FTransform& Transform);
 	// Called when the game starts or when spawned
@@ -45,8 +71,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	void SetCollisionProfile(const FName& Name);
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
