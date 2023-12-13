@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../GameInfo.h"
+#include "../../GameInfo.h"
 #include "GameFramework/Actor.h"
 #include "PatrolPoint.generated.h"
 
