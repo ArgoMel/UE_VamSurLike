@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../GameInfo.h"
+#include "../../GameInfo.h"
 #include "AIPawn.h"
 #include "BuffRedPawn.generated.h"
 

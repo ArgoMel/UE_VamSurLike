@@ -3,6 +3,7 @@
 
 #include "../../Public/AI/AISpawnPoint.h"
 #include "../../Public/AI/AIPawn.h"
+#include "../../Public/AI/PatrolPoint.h"
 
 // Sets default values
 AAISpawnPoint::AAISpawnPoint()

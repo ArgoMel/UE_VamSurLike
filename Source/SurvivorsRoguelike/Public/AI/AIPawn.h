@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../GameInfo.h"
+#include "../../GameInfo.h"
 #include "AISpawnPoint.h"
 #include "PatrolPoint.h"
 #include "GameFramework/Pawn.h"
@@ -34,6 +34,10 @@ protected:
 	int32				mPatrolIndex;
 	TObjectPtr<class AAISpawnPoint>	mSpawnPoint;
 
+
+	bool	mAttackEnd;
+	bool	mInteractionEnd;
+
 public:
 	bool GetPatrolEnable()	const
 	{
@@ -43,6 +47,16 @@ public:
 	const FVector& GetPatrolLocation()
 	{
 		return mPatrolPoint[mPatrolIndex];
+	}
+
+	bool GetAttackEnd()	const
+	{
+		return mAttackEnd;
+	}
+
+	bool GetInteractionEnd()	const
+	{
+		return mInteractionEnd;
 	}
 
 
@@ -55,6 +69,16 @@ public:
 	float GetCapsuleRadius()	const
 	{
 		return mBody->GetScaledCapsuleRadius();
+	}
+
+	void SetAttackEnd(bool AttackEnd)
+	{
+		mAttackEnd = AttackEnd;
+	}
+
+	void SetInteractionEnd(bool InteractionEnd)
+	{
+		mInteractionEnd = InteractionEnd;
 	}
 
 	void SetSpawnPoint(class AAISpawnPoint* SpawnPoint);
