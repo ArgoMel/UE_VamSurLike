@@ -3,3 +3,40 @@
 
 #include "../../Public/AI/DefaultAIController.h"
 
+ADefaultAIController::ADefaultAIController()
+{
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree>	AITree(TEXT("/Script/AIModule.BehaviorTree'/Game/AI/BT_AI.BT_AI'"));
+
+	if (AITree.Succeeded())
+		mAITree = AITree.Object;
+
+	static ConstructorHelpers::FObjectFinder<UBlackboardData>	AIBlackboard(TEXT("/Script/AIModule.BlackboardData'/Game/AI/BB_AI.BB_AI'"));
+
+	if (AIBlackboard.Succeeded())
+		mAIBlackboard = AIBlackboard.Object;
+}
+
+void ADefaultAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	if (GetWorld()->GetNetMode() == NM_DedicatedServer)
+	{
+		if (IsValid(mAITree) && IsValid(mAIBlackboard))
+		{
+			// AIController가 가지고 있는 BlackboardComponent에 Blackboard애셋을
+			// 사용하라고 지정한다.
+			UBlackboardComponent* BlackboardRef = Blackboard;
+			if (UseBlackboard(mAIBlackboard, BlackboardRef))
+			{
+				// BehaviorTree를 동작시킨다.
+				RunBehaviorTree(mAITree);
+			}
+		}
+	}
+}
+
+void ADefaultAIController::OnUnPossess()
+{
+	Super::OnUnPossess();
+}
