@@ -12,10 +12,10 @@ ALLGoldPawn::ALLGoldPawn()
 	if (MeshAsset.Succeeded())
 		mMesh->SetSkeletalMesh(MeshAsset.Object);
 
-	mBody->SetCapsuleHalfHeight(88.f);
+	mBody->SetCapsuleHalfHeight(100.f);
 	mBody->SetCapsuleRadius(70.f);
 
-	mMesh->SetRelativeLocation(FVector(0.0, 0.0, -88.0));
+	mMesh->SetRelativeLocation(FVector(0.0, 0.0, -100.0));
 	mMesh->SetRelativeRotation(FRotator(0.0, -90.0, 0.0));
 }
 
