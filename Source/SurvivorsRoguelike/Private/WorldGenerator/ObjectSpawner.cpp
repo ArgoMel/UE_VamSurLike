@@ -54,6 +54,10 @@ FVector AObjectSpawner::GetPlayerCell()
 void AObjectSpawner::UpdateTiles()
 {
 	APlayerController* playerController = GetWorld()->GetFirstPlayerController();
+	if (!IsValid(playerController))
+	{
+		return;
+	}
 	APawn* player = playerController->GetPawn();
 	FHitResult hit;
 	FCollisionQueryParams collisionParams;
@@ -77,17 +81,15 @@ void AObjectSpawner::UpdateTiles()
 					DrawDebugBox(GetWorld(), hit.Location, FVector(mCellSize * 0.5f), FColor::Red, false, 0.5f);
 #endif
 					mSpawnedTiles.Add(FVector2D(tileCenter));
-					UpdateTile(hit.Location);
+					UpdateTile(hit.Location, player);
 				}
 			}
 		}
 	}
 }
 
-void AObjectSpawner::UpdateTile(const FVector tileCenter)
+void AObjectSpawner::UpdateTile(const FVector tileCenter,APawn* player)
 {
-	APlayerController* playerController = GetWorld()->GetFirstPlayerController();
-	APawn* player = playerController->GetPawn();
 	FHitResult hit;
 	FCollisionQueryParams collisionParams;
 	collisionParams.AddIgnoredActor(player);
