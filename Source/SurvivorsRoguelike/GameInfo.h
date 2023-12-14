@@ -2,7 +2,6 @@
 		UE_LOG(LogTemp, Warning, TEXT("OnRep_GetAnimType %d"),(int32)m_AnimType);
 		GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red,	TEXT("Standalone"));
 */
-
 #pragma once
 #include "EngineMinimal.h"
 #include "EngineGlobals.h"
@@ -38,22 +37,45 @@
 #include "LevelSequence.h"
 #include "LevelSequencePlayer.h"
 #include "AIController.h"
+
 #include "CameraRig_Rail.h"
 
 #include "Networking.h"
 #include "Sockets.h"
 #include "SocketSubsystem.h"
 #include "Net/UnrealNetwork.h"
+
 #include "HAL/Runnable.h"
 #include "HAL/RunnableThread.h"
 
 #include "UObject/NoExportTypes.h"
 #include "GameInfo.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(SurvivorsRoguelike, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(SurvivorRoguelike, Log, All);
+
 #define	LOG_CALLINFO	(FString(__FUNCTION__) + TEXT("[") + FString::FromInt(__LINE__) + TEXT("]"))
-#define	LOG(Format, ...)	UE_LOG(SurvivorsRoguelike, Warning, TEXT("%s : %s"), *LOG_CALLINFO, *FString::Printf(Format, ##__VA_ARGS__))
-#define	LOGSTRING(str)		UE_LOG(SurvivorsRoguelike, Warning, TEXT("%s : %s"), *LOG_CALLINFO, *str)
+
+// %s : 문자열을 받아와서 그 문자열로 채워준다.
+// %s는 Ftring을 바로 넣어줄 수 없다. 앞에 *을 붙여서 FString이 가지고
+// 있는 문자열의 주소를 가지고 오고 그 주소를 넣어주어야 한다.
+// %d : 정수를 받아와서 그 정수를 문자열로 만들어서 채워준다.
+// %f : 실수를 받아와서 그 정수를 문자열로 만들어서 채워준다.
+#define	LOG(Format, ...)	UE_LOG(SurvivorRoguelike, Warning, TEXT("%s : %s"), *LOG_CALLINFO, *FString::Printf(Format, ##__VA_ARGS__))
+
+#define	LOGSTRING(str)		UE_LOG(SurvivorRoguelike, Warning, TEXT("%s : %s"), *LOG_CALLINFO, *str)
+
+USTRUCT()
+struct FJoinInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	FString		ID;
+	FString		Password;
+	FString		Age;
+	FString		PhoneNumber;
+	bool		Login;
+};
 
 UENUM()
 enum class EPlayerJob : uint8
@@ -85,10 +107,13 @@ enum class EServerType : uint32
 enum class EPacketHeader
 {
 	SessionType,
+  
 	// Unreal -> Relay
 	PlayerInfo_Send,
+
 	// Relay -> Unreal
 	PlayerInfo_Receive,
+
 	// Level Transition
 	LevelTransition
 };
@@ -107,20 +132,6 @@ enum class EAIAnimType : uint8
 	Interaction1,
 	Interaction2,
 	Interaction3,
-};
-
-USTRUCT()
-struct FJoinInfo
-{
-	GENERATED_BODY()
-
-public:
-	FString		ID;
-	FString		Password;
-	FString		Age;
-	FString		PhoneNumber;
-	bool		Login;
-	bool		IsHost;
 };
 
 USTRUCT(BlueprintType)
@@ -166,7 +177,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float AtkDist = 0.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float TraceDist = 0.f; //�νĹݰ�
+	float TraceDist = 0.f; //인식반경
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Atk = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -185,4 +196,93 @@ public:
 	int32 Gold = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Exp = 0;
+};
+=======
+
+
+UENUM(BlueprintType)
+enum class EItemRank : uint8
+{
+	S,
+	A,
+	B,
+	C,
+	D
+};
+
+UENUM(BlueprintType)
+enum class EItemType : uint8
+{
+	MLWeapon,
+	LLWeapon,
+	MGWeapon,
+	Relic,
+	Element
+};
+
+USTRUCT(BlueprintType)
+struct FMLWeapon :
+	public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FString	Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EItemRank	Rank;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float	OffensePower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float	AttackSpeed;
+};
+
+USTRUCT(BlueprintType)
+struct FLLWeapon :
+	public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FString	Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EItemRank	Rank;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float	OffensePower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float	AttackSpeed;
+};
+
+USTRUCT(BlueprintType)
+struct FMGWeapon :
+	public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FString	Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EItemRank	Rank;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float	OffensePower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float	AttackSpeed;
+};
+
+UCLASS()
+class SURVIVORSROGUELIKE_API UGameInfo : public UObject
+{
+	GENERATED_BODY()
+
 };
