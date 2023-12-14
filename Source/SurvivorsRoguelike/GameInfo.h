@@ -51,7 +51,7 @@
 #include "UObject/NoExportTypes.h"
 #include "GameInfo.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(SurvivorRoguelike, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(SurvivorRoguelike, Warning, All);
 
 #define	LOG_CALLINFO	(FString(__FUNCTION__) + TEXT("[") + FString::FromInt(__LINE__) + TEXT("]"))
 
@@ -197,8 +197,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Exp = 0;
 };
-=======
-
 
 UENUM(BlueprintType)
 enum class EItemRank : uint8
@@ -278,11 +276,4 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float	AttackSpeed;
-};
-
-UCLASS()
-class SURVIVORSROGUELIKE_API UGameInfo : public UObject
-{
-	GENERATED_BODY()
-
 };
