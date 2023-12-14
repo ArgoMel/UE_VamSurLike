@@ -1,7 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+/*
+		UE_LOG(LogTemp, Warning, TEXT("OnRep_GetAnimType %d"),(int32)m_AnimType);
+		GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red,	TEXT("Standalone"));
+*/
 #pragma once
-
 #include "EngineMinimal.h"
 #include "EngineGlobals.h"
 #include "Engine.h"
@@ -50,16 +51,15 @@
 #include "UObject/NoExportTypes.h"
 #include "GameInfo.generated.h"
 
-
 DECLARE_LOG_CATEGORY_EXTERN(SurvivorRoguelike, Log, All);
 
 #define	LOG_CALLINFO	(FString(__FUNCTION__) + TEXT("[") + FString::FromInt(__LINE__) + TEXT("]"))
 
-// %s : πÆ¿⁄ø≠¿ª πﬁæ∆øÕº≠ ±◊ πÆ¿⁄ø≠∑Œ √§øˆ¡ÿ¥Ÿ.
-// %s¥¬ Ftring¿ª πŸ∑Œ ≥÷æÓ¡Ÿ ºˆ æ¯¥Ÿ. æ’ø° *¿ª ∫Ÿø©º≠ FString¿Ã ∞°¡ˆ∞Ì
-// ¿÷¥¬ πÆ¿⁄ø≠¿« ¡÷º“∏¶ ∞°¡ˆ∞Ì ø¿∞Ì ±◊ ¡÷º“∏¶ ≥÷æÓ¡÷æÓæﬂ «—¥Ÿ.
-// %d : ¡§ºˆ∏¶ πﬁæ∆øÕº≠ ±◊ ¡§ºˆ∏¶ πÆ¿⁄ø≠∑Œ ∏∏µÈæÓº≠ √§øˆ¡ÿ¥Ÿ.
-// %f : Ω«ºˆ∏¶ πﬁæ∆øÕº≠ ±◊ ¡§ºˆ∏¶ πÆ¿⁄ø≠∑Œ ∏∏µÈæÓº≠ √§øˆ¡ÿ¥Ÿ.
+// %s : Î¨∏ÏûêÏó¥ÏùÑ Î∞õÏïÑÏôÄÏÑú Í∑∏ Î¨∏ÏûêÏó¥Î°ú Ï±ÑÏõåÏ§ÄÎã§.
+// %sÎäî FtringÏùÑ Î∞îÎ°ú ÎÑ£Ïñ¥Ï§Ñ Ïàò ÏóÜÎã§. ÏïûÏóê *ÏùÑ Î∂ôÏó¨ÏÑú FStringÏù¥ Í∞ÄÏßÄÍ≥†
+// ÏûàÎäî Î¨∏ÏûêÏó¥Ïùò Ï£ºÏÜåÎ•º Í∞ÄÏßÄÍ≥† Ïò§Í≥† Í∑∏ Ï£ºÏÜåÎ•º ÎÑ£Ïñ¥Ï£ºÏñ¥Ïïº ÌïúÎã§.
+// %d : Ï†ïÏàòÎ•º Î∞õÏïÑÏôÄÏÑú Í∑∏ Ï†ïÏàòÎ•º Î¨∏ÏûêÏó¥Î°ú ÎßåÎì§Ïñ¥ÏÑú Ï±ÑÏõåÏ§ÄÎã§.
+// %f : Ïã§ÏàòÎ•º Î∞õÏïÑÏôÄÏÑú Í∑∏ Ï†ïÏàòÎ•º Î¨∏ÏûêÏó¥Î°ú ÎßåÎì§Ïñ¥ÏÑú Ï±ÑÏõåÏ§ÄÎã§.
 #define	LOG(Format, ...)	UE_LOG(SurvivorRoguelike, Warning, TEXT("%s : %s"), *LOG_CALLINFO, *FString::Printf(Format, ##__VA_ARGS__))
 
 #define	LOGSTRING(str)		UE_LOG(SurvivorRoguelike, Warning, TEXT("%s : %s"), *LOG_CALLINFO, *str)
@@ -85,9 +85,15 @@ enum class EPlayerJob : uint8
 	Archer,
 	Magicion,
 	End
-
 };
 
+UENUM(BlueprintType)
+enum class EAIKind : uint8
+{
+	None,
+	Attack,
+	Friendly,
+};
 
 UENUM()
 enum class EServerType : uint32
@@ -101,7 +107,7 @@ enum class EServerType : uint32
 enum class EPacketHeader
 {
 	SessionType,
-
+  
 	// Unreal -> Relay
 	PlayerInfo_Send,
 
@@ -112,6 +118,86 @@ enum class EPacketHeader
 	LevelTransition
 };
 
+UENUM(BlueprintType)
+enum class EAIAnimType : uint8
+{
+	Idle,
+	Walk,
+	Run,
+	Attack,
+	Death,
+	Skill1,
+	Skill2,
+	Skill3,
+	Interaction1,
+	Interaction2,
+	Interaction3,
+};
+
+USTRUCT(BlueprintType)
+struct FPlayerData : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EPlayerJob Job=EPlayerJob::None;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MoveSpeed=100.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float AtkDist = 100.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Atk=1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Def = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 HP = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 HPMax = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 MP = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 MPMax = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Level = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Gold = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Exp = 0;
+};
+
+USTRUCT(BlueprintType)
+struct FAIData : public FTableRowBase
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EAIKind AIKind = EAIKind::None;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MoveSpeed = 0.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float AtkDist = 0.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float TraceDist = 0.f; //Ïù∏ÏãùÎ∞òÍ≤Ω
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Atk = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Def = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 HP = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 HPMax = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 MP = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 MPMax = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Level = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Gold = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 Exp = 0;
+};
+=======
 
 
 UENUM(BlueprintType)
