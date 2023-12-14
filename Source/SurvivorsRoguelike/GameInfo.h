@@ -13,6 +13,8 @@
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+#include "Kismet/KismetMathLibrary.h"
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
@@ -51,7 +53,7 @@
 #include "UObject/NoExportTypes.h"
 #include "GameInfo.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(SurvivorRoguelike, Warning, All);
+//DECLARE_LOG_CATEGORY_EXTERN(SurvivorRoguelike, Log, All);
 
 #define	LOG_CALLINFO	(FString(__FUNCTION__) + TEXT("[") + FString::FromInt(__LINE__) + TEXT("]"))
 
