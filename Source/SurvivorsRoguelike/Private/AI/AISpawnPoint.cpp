@@ -47,7 +47,7 @@ void AAISpawnPoint::SpawnObject_Implementation()
 	if (IsValid(DefaultObj))
 		HalfHeight = DefaultObj->GetHalfHeight();
 
-	LOG(TEXT("HalfHeight : %.5f"), HalfHeight);
+	//LOG(TEXT("HalfHeight : %.5f"), HalfHeight);
 
 	mSpawnObject = GetWorld()->SpawnActor<AAIPawn>(mSpawnClass,
 		GetActorLocation() + FVector(0.0, 0.0, (double)HalfHeight),

@@ -9,7 +9,7 @@ public class SurvivorsRoguelikeEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-
-		ExtraModuleNames.AddRange( new string[] { "SurvivorsRoguelike" } );
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+        ExtraModuleNames.AddRange( new string[] { "SurvivorsRoguelike" } );
 	}
 }

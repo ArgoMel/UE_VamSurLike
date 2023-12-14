@@ -7,7 +7,7 @@ public class SurvivorsRoguelikeTarget : TargetRules
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-
-		ExtraModuleNames.AddRange( new string[] { "SurvivorsRoguelike" } );
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+        ExtraModuleNames.AddRange( new string[] { "SurvivorsRoguelike" } );
 	}
 }

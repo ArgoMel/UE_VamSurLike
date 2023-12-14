@@ -1,3 +1,3 @@
 #include "GameInfo.h"
 
-DEFINE_LOG_CATEGORY(SurvivorsRoguelike)
+//DEFINE_LOG_CATEGORY(SurvivorsRoguelike);
