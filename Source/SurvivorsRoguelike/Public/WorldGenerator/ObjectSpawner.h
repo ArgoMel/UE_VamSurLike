@@ -28,6 +28,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "SpawnGrid")
 	float mTraceDist;
 
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<APawn> mPlayer;
+
 private:
 	void TickStart();
 
@@ -41,5 +44,5 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateTiles();
 	UFUNCTION(BlueprintCallable)
-	void UpdateTile(const FVector tileCenter);
+	void UpdateTile(const FVector tileCenter, APawn* player);
 };
