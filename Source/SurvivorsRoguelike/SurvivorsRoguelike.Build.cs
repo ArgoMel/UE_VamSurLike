@@ -23,7 +23,10 @@ public class SurvivorsRoguelike : ModuleRules
             "LevelSequence",
             "MediaAssets",
             "Networking",
-            "Sockets"
+            "Sockets",
+            "ProceduralMeshComponent",
+            "Foliage",
+            "PhysicsCore"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] {  });

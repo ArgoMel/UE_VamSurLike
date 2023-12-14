@@ -3,4 +3,4 @@
 #include "SurvivorsRoguelike.h"
 #include "Modules/ModuleManager.h"
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, SurvivorsRoguelike, "SurvivorsRoguelike" );
+IMPLEMENT_PRIMARY_GAME_MODULE(FDefaultGameModuleImpl, SurvivorsRoguelike, "SurvivorsRoguelike");
