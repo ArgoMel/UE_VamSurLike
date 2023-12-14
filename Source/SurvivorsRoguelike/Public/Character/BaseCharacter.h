@@ -15,4 +15,14 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	FTimerHandle mPercentDamageHandle;
+
+protected:
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	float MaxHealth;
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void StartPercentDamage();
 };
