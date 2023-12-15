@@ -203,11 +203,12 @@ public:
 UENUM(BlueprintType)
 enum class EItemRank : uint8
 {
-	S,
-	A,
-	B,
+	None,
+	D,
 	C,
-	D
+	B,
+	A,
+	S
 };
 
 UENUM(BlueprintType)
@@ -220,6 +221,29 @@ enum class EItemType : uint8
 	Element
 };
 
+UENUM(BlueprintType)
+enum class EMLWeaponType : uint8
+{
+	Sword,
+	Ax,
+	Spear
+};
+
+UENUM(BlueprintType)
+enum class ELLWeaponType : uint8
+{
+	Rifle,
+	Shotgun,
+	Sniper
+};
+
+UENUM(BlueprintType)
+enum class EMGWeaponType : uint8
+{
+	Staff,
+	Wand
+};
+
 USTRUCT(BlueprintType)
 struct FMLWeapon :
 	public FTableRowBase
@@ -228,16 +252,37 @@ struct FMLWeapon :
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FString	Name;
+	int32		Num;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EItemType	ItemType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EMLWeaponType	WeaponType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EItemRank	Rank;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	OffensePower;
+	FString		Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	AttackSpeed;
+	UTexture2D*	Icon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		OffensePower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		AttackSpeed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		Weight;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FVector		CollisionScale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FVector		CollisionLoc;
 };
 
 USTRUCT(BlueprintType)
