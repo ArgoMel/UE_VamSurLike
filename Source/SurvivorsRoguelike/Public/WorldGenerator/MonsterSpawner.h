@@ -35,6 +35,8 @@ protected:
 	int32 mMaxSpawnCount;
 	UPROPERTY(BlueprintReadWrite, Category = "Monster")
 	float mSpawnFrequency;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Monster")
+	float mPossibleSpawnDistance;
 
 public:
 	void SetSpawnInterval(float interval);

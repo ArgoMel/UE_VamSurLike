@@ -33,13 +33,6 @@ AWorldGenerator::AWorldGenerator()
 	m_Terrain = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Terrain"));
 	m_Terrain->SetupAttachment(GetRootComponent());
 	m_Terrain->bUseAsyncCooking = true;
-
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> MI_Auto(TEXT(
-		"/Game/PracTerrain/Materials/MI_Auto.MI_Auto"));
-	if (MI_Auto.Succeeded())
-	{
-		TerrainMaterial= MI_Auto.Object;
-	}
 }
 
 void AWorldGenerator::BeginPlay()

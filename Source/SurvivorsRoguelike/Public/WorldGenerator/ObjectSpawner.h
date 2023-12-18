@@ -42,7 +42,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector GetPlayerCell();
 	UFUNCTION(BlueprintCallable)
-	void UpdateTiles();
+	virtual void UpdateTiles();
 	UFUNCTION(BlueprintCallable)
 	void UpdateTile(const FVector tileCenter, APawn* player);
 };
