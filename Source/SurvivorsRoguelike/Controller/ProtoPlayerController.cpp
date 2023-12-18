@@ -50,16 +50,13 @@ void AProtoPlayerController::SetupInputComponent()
 
 void AProtoPlayerController::Tick(float DeltaSeconds)
 {
-	FHitResult Hit;
-
-	if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit))
+	Super::Tick(DeltaSeconds);
+	
+	if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, MouseHit))
 	{
-		//SetControlRotation((Hit.Location - GetPawn()->GetActorLocation()).Rotation());
-		//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Cyan, FString::Printf(TEXT("%s"), *(GetPawn()->GetName())));
-
 		GetPawn()->SetActorRotation(FRotator3d(
 			GetPawn()->GetActorRotation().Pitch,
-			(Hit.Location - GetPawn()->GetActorLocation()).Rotation().Yaw,
+			(MouseHit.Location - GetPawn()->GetActorLocation()).Rotation().Yaw,
 			GetPawn()->GetActorRotation().Roll
 		));
 	}
