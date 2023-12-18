@@ -63,19 +63,19 @@ void AObjectSpawner::UpdateTiles()
 	FCollisionQueryParams collisionParams;
 	collisionParams.AddIgnoredActor(player);
 	FVector origin = GetPlayerCell();
-	int32 size= mCellCount * 0.5f;
-	for (int32 y = -size; y <= size;++y)
+	int32 size = mCellCount * 0.5f;
+	for (int32 y = -size; y <= size; ++y)
 	{
 		for (int32 x = -size; x <= size; ++x)
 		{
-			FVector tileCenter = origin+FVector(x, y,0)* mCellSize;
-			FVector startLoc= tileCenter+FVector::UpVector*mTraceDist;
+			FVector tileCenter = origin + FVector(x, y, 0) * mCellSize;
+			FVector startLoc = tileCenter + FVector::UpVector * mTraceDist;
 			FVector endLoc = tileCenter - FVector::UpVector * mTraceDist;
-			bool isHit = GetWorld()->LineTraceSingleByChannel(hit, 
-				startLoc, endLoc,ECC_Visibility,collisionParams);
-			if(isHit)
+			bool isHit = GetWorld()->LineTraceSingleByChannel(hit,
+				startLoc, endLoc, ECC_Visibility, collisionParams);
+			if (isHit)
 			{
-				if(!mSpawnedTiles.Contains(FVector2D(tileCenter)))
+				if (!mSpawnedTiles.Contains(FVector2D(tileCenter)))
 				{
 #if ENABLE_DRAW_DEBUG
 					DrawDebugBox(GetWorld(), hit.Location, FVector(mCellSize * 0.5f), FColor::Red, false, 0.5f);
