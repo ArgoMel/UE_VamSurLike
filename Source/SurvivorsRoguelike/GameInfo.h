@@ -167,38 +167,68 @@ public:
 	int32 Exp = 0;
 };
 
+UENUM(BlueprintType)
+enum class EAbnormalTable : uint8
+{
+	None,
+	stun,
+	Immobilized,
+	Burning,
+	Slow,
+	Sleep,
+	Weakened
+};
+
 USTRUCT(BlueprintType)
 struct FAIData : public FTableRowBase
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EAIKind AIKind = EAIKind::None;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float MoveSpeed = 0.f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float AtkDist = 0.f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float TraceDist = 0.f; //인식반경
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Atk = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Def = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 HP = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 HPMax = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 MP = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 MPMax = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Level = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Gold = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Exp = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EAbnormalTable Abnormal = EAbnormalTable::None;
 };
+
+
 
 UENUM(BlueprintType)
 enum class EItemRank : uint8
@@ -210,6 +240,8 @@ enum class EItemRank : uint8
 	A,
 	S
 };
+
+
 
 UENUM(BlueprintType)
 enum class EItemType : uint8
