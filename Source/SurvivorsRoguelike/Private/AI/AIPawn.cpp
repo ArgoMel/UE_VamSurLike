@@ -3,6 +3,7 @@
 
 #include "../../Public/AI/AIPawn.h"
 #include "../../Public/AI/DefaultAIController.h"
+#include "../../Public/AI/DefaultAIAnimInstance.h"
 
 // Sets default values
 AAIPawn::AAIPawn()
@@ -10,7 +11,7 @@ AAIPawn::AAIPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	bReplicates = true;
+	//bReplicates = true;
 
 	mBody = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Body"));
 	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
@@ -62,6 +63,8 @@ void AAIPawn::OnConstruction(const FTransform& Transform)
 void AAIPawn::BeginPlay()
 {
 	Super::BeginPlay();
+
+	mAnim = Cast<UDefaultAIAnimInstance>(mMesh->GetAnimInstance());
 
 	if (!mPatrolPoint.IsEmpty())
 	{
