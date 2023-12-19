@@ -39,6 +39,19 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	m_Camera->bUsePawnControlRotation = true;
 
 	GetCharacterMovement()->MaxWalkSpeed = 90.f;
+
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_Mannequin(TEXT(
+		"/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin"));
+	if (SK_Mannequin.Succeeded())
+	{
+		GetMesh()->SetSkeletalMesh(SK_Mannequin.Object);
+	}
+	static ConstructorHelpers::FClassFinder<UAnimInstance>	AB_UE4Mannequin_C(TEXT(
+		"/Game/0_KBJ/Anim/AB_UE4Mannequin.AB_UE4Mannequin_C"));
+	if (AB_UE4Mannequin_C.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(AB_UE4Mannequin_C.Class);
+	}
 }
 
 void ABaseLobbyCharacter::BeginPlay()
