@@ -20,20 +20,19 @@ void ADefaultAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	if (GetWorld()->GetNetMode() == NM_DedicatedServer)
+	
+	if (IsValid(mAITree) && IsValid(mAIBlackboard))
 	{
-		if (IsValid(mAITree) && IsValid(mAIBlackboard))
+		// AIController가 가지고 있는 BlackboardComponent에 Blackboard애셋을
+		// 사용하라고 지정한다.
+		UBlackboardComponent* BlackboardRef = Blackboard;
+		if (UseBlackboard(mAIBlackboard, BlackboardRef))
 		{
-			// AIController가 가지고 있는 BlackboardComponent에 Blackboard애셋을
-			// 사용하라고 지정한다.
-			UBlackboardComponent* BlackboardRef = Blackboard;
-			if (UseBlackboard(mAIBlackboard, BlackboardRef))
-			{
-				// BehaviorTree를 동작시킨다.
-				RunBehaviorTree(mAITree);
-			}
+			// BehaviorTree를 동작시킨다.
+			RunBehaviorTree(mAITree);
 		}
 	}
+	
 }
 
 void ADefaultAIController::OnUnPossess()

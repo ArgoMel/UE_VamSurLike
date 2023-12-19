@@ -41,9 +41,7 @@ public:
 	void ClearObject();
 
 private:
-	UFUNCTION(BlueprintCallable, Server, Reliable)
 	void SpawnObject();
-	void SpawnObject_Implementation();
 
 protected:
 	// Called when the game starts or when spawned

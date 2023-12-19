@@ -34,6 +34,8 @@ protected:
 	int32				mPatrolIndex;
 	TObjectPtr<class AAISpawnPoint>	mSpawnPoint;
 
+	TObjectPtr<class UDefaultAIAnimInstance>	mAnim;
+
 
 	bool	mAttackEnd;
 	bool	mInteractionEnd;
