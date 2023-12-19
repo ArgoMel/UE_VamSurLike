@@ -17,6 +17,11 @@ ABuffBlackPawn::ABuffBlackPawn()
 
 	mMesh->SetRelativeLocation(FVector(0.0, 0.0, -130.0));
 	mMesh->SetRelativeRotation(FRotator(0.0, -90.0, 0.0));
+
+	static ConstructorHelpers::FClassFinder<UAnimInstance> AnimAsset(TEXT("/Script/Engine.AnimBlueprint'/Game/AI/AB_BuffBlack.AB_BuffBlack_C'"));
+
+	if (AnimAsset.Succeeded())
+		mMesh->SetAnimInstanceClass(AnimAsset.Class);
 }
 
 void ABuffBlackPawn::OnConstruction(const FTransform& Transform)

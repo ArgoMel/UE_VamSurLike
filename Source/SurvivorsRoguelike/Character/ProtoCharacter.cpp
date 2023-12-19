@@ -2,10 +2,13 @@
 
 
 #include "ProtoCharacter.h"
+#include "../Other/TempProjectile.h"
+#include "../Controller/ProtoPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AProtoCharacter::AProtoCharacter()
@@ -17,7 +20,7 @@ AProtoCharacter::AProtoCharacter()
 	GetCapsuleComponent()->SetCapsuleHalfHeight(92.f);
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SKM_Quinn(
-		TEXT("/Script/Engine.SkeletalMesh'/Game/SurvivorsTemplate/Demo/Characters/Mannequins/Meshes/SKM_Quinn.SKM_Quinn'"));
+		TEXT("/Script/Engine.SkeletalMesh'/Game/Characters/Mannequins/Meshes/SKM_Quinn.SKM_Quinn'"));
 	if (SKM_Quinn.Succeeded())
 		GetMesh()->SetSkeletalMesh(SKM_Quinn.Object);
 
@@ -44,11 +47,25 @@ AProtoCharacter::AProtoCharacter()
 	mCameraBoom->bInheritRoll = false;
 	mCameraBoom->bInheritPitch = false;
 	mCameraBoom->bInheritYaw = false;
+	mCameraBoom->bDoCollisionTest = false;
 
 	// Create a follow camera
 	mFollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	mFollowCamera->SetupAttachment(mCameraBoom);
 	mFollowCamera->FieldOfView = 45.f;
+
+	LLWeapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("LLWeapon"));
+	LLWeapon->SetupAttachment(GetMesh());
+	LLWeapon->SetupAttachment(GetMesh(), "RH_Rifle");
+	LLWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_AR4(
+		TEXT("/Script/Engine.SkeletalMesh'/Game/FPS_Weapon_Bundle/Weapons/Meshes/AR4/SK_AR4.SK_AR4'"));
+	if (SK_AR4.Succeeded())
+		LLWeapon->SetSkeletalMesh(SK_AR4.Object);
+
+	RangeOfShot = 1000.f;
+	LLWeaponRPM = 1.0f;
 }
 
 // Called when the game starts or when spawned
@@ -56,6 +73,10 @@ void AProtoCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	/*FTimerHandle HitTimerHandle =
+		UKismetSystemLibrary::K2_SetTimer(this, TEXT("SpawnBulletPerSec"), LLWeaponRPM, true);*/
+
+	GetWorldTimerManager().SetTimer(mHitTimerHandle, this, &AProtoCharacter::SpawnBulletPerSec, LLWeaponRPM, true);
 }
 
 // Called every frame
@@ -63,4 +84,33 @@ void AProtoCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	/*AProtoPlayerController* PPController = Cast<AProtoPlayerController>(GetController());
+	FHitResult Hit;
+	FVector3d Start = LLWeapon->GetSocketLocation(TEXT("b_gun_muzzleflash"));
+	FVector3d End = FVector3d(
+		PPController->GetMouseHit().Location.X * RangeOfShot,
+		PPController->GetMouseHit().Location.Y * RangeOfShot,
+		Start.Z
+	);
+
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("%f %f %f"),
+		End.X, End.Y, End.Z));
+
+	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECollisionChannel::ECC_Visibility);
+
+	bool CollisionSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECollisionChannel::ECC_Visibility);
+	FColor ResultColor = CollisionSuccess ? FColor::Red : FColor::Green;
+	DrawDebugLine(GetWorld(), Start, End, ResultColor, false, 1.f);*/
+}
+
+void AProtoCharacter::SpawnBulletPerSec()
+{
+	FActorSpawnParameters ActorParam;
+	ActorParam.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	
+	GetWorld()->SpawnActor<ATempProjectile>(
+		LLWeapon->GetSocketLocation(TEXT("b_gun_muzzleflash")), 
+		GetActorRotation(),
+		ActorParam);
 }

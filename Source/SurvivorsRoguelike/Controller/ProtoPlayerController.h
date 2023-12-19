@@ -26,6 +26,9 @@ protected:
 public:
 	virtual void Tick(float DeltaSeconds) override;
 
+public:
+	FHitResult GetMouseHit() { return MouseHit; }
+
 // 향상된 입력
 protected:
 	// 이동 입력에 호출되는 바인드 함수
@@ -38,4 +41,7 @@ protected:
 	// 이동 입력
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ProtoMoveAction;
+
+protected:
+	FHitResult MouseHit;
 };

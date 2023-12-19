@@ -11,7 +11,7 @@ AAISpawnPoint::AAISpawnPoint()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	bReplicates = false;
+	//bReplicates = false;
 
 	mRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 
@@ -33,12 +33,17 @@ void AAISpawnPoint::ClearObject()
 	mSpawnObject = nullptr;
 }
 
-void AAISpawnPoint::SpawnObject_Implementation()
+void AAISpawnPoint::SpawnObject()
 {
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
+	// Template 변수에 특정 액터를 넣어주면 해당 액터를 복제한 액터를
+	// 생성해준다.
+	//ActorParam.Template = mSpawnClass->GetDefaultObject();
+
+	// UClass가 가지고 있는 이 타입의 기본 오브젝트를 얻어온다.
 	TObjectPtr<AAIPawn> DefaultObj = Cast<AAIPawn>(mSpawnClass->GetDefaultObject());
 
 	float	HalfHeight = 0.f;
@@ -47,7 +52,7 @@ void AAISpawnPoint::SpawnObject_Implementation()
 	if (IsValid(DefaultObj))
 		HalfHeight = DefaultObj->GetHalfHeight();
 
-	//LOG(TEXT("HalfHeight : %.5f"), HalfHeight);
+	UE_LOG(LogTemp, Error, TEXT("HalfHeight : %.5f"), HalfHeight);	
 
 	mSpawnObject = GetWorld()->SpawnActor<AAIPawn>(mSpawnClass,
 		GetActorLocation() + FVector(0.0, 0.0, (double)HalfHeight),
@@ -57,18 +62,17 @@ void AAISpawnPoint::SpawnObject_Implementation()
 	mSpawnObject->SetPatrolPointArray(mPatrolPointArray);
 }
 
+
 // Called when the game starts or when spawned
 void AAISpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GetWorld()->GetNetMode() == NM_DedicatedServer)
-	{
 		if (IsValid(mSpawnClass))
 		{
 			SpawnObject();
 		}
-	}
+	
 }
 
 // Called every frame
@@ -76,8 +80,7 @@ void AAISpawnPoint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (GetWorld()->GetNetMode() == NM_DedicatedServer)
-	{
+	
 		if (!IsValid(mSpawnObject) && IsValid(mSpawnClass))
 		{
 			mTime += DeltaTime;
@@ -90,8 +93,8 @@ void AAISpawnPoint::Tick(float DeltaTime)
 
 				SpawnObject();
 			}
+	
 		}
-	}
 
 }
 
