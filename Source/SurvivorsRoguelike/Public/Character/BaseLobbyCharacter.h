@@ -71,8 +71,6 @@ protected:
 	void HandleCameraShake();
 
 public:
-	void OnPlayerDeath();
-
 	bool GetIsADS()
 	{
 		return false;

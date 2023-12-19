@@ -90,6 +90,16 @@ enum class EPlayerJob : uint8
 };
 
 UENUM(BlueprintType)
+enum class ELobbyPlayerState : uint8
+{
+	Idle,
+	Fight,
+	Gun,
+	Bow,
+	Melee
+};
+
+UENUM(BlueprintType)
 enum class EAIKind : uint8
 {
 	None,

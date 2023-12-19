@@ -2,10 +2,46 @@
 #include "Controller/BasePlayerController.h"
 #include "LobbyPlayerController.generated.h"
 
+class UInputMappingContext;
+class UInputAction;
+
 UCLASS()
 class SURVIVORSROGUELIKE_API ALobbyPlayerController : public ABasePlayerController
 {
 	GENERATED_BODY()
 public:
 	ALobbyPlayerController();
+
+private:
+	TObjectPtr<UInputMappingContext> m_IMC;
+	TObjectPtr<UInputAction> m_Move;
+	TObjectPtr<UInputAction> m_Jump;
+	TObjectPtr<UInputAction> m_Sprint;
+	TObjectPtr<UInputAction> m_Crouch;
+	TObjectPtr<UInputAction> m_Interaction;
+
+public:
+	UInputAction* GetKeyMove()
+	{
+		return m_Move;
+	}
+	UInputAction* GetKeyJump()
+	{
+		return m_Jump;
+	}
+	UInputAction* GetKeySprint()
+	{
+		return m_Sprint;
+	}
+	UInputAction* GetKeyCrouch()
+	{
+		return m_Crouch;
+	}
+	UInputAction* GetKeyInteraction()
+	{
+		return m_Interaction;
+	}
+
+	void SetNewController();
+	void AddController();
 };

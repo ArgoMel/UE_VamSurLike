@@ -39,6 +39,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
 	bool m_IsADS;
 
+	UPROPERTY(BlueprintReadWrite, Category = "BasicMovement")
+	ELobbyPlayerState m_State;
 	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")
 	float m_Speed;
 	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")
