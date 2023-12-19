@@ -16,22 +16,22 @@ public:
 	AWeaponBase();
 
 protected :
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int32		mNum;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EItemType	mItemType;
-	EItemRank	mRank;
-	UTexture2D*	mIcon;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FString		mName;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float		mAttackSpeed;
 
 public :
 	int32 GetNum()
 	{
 		return mNum;
-	}
-
-	UTexture2D* GetIcon()
-	{
-		return mIcon;
 	}
 
 	void GetName(FString& name)

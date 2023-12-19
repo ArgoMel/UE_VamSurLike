@@ -12,13 +12,5 @@ public:
 	UBaseGameInstance();
 
 
-private :
-	TObjectPtr<UDataTable>	mMLWeaponDataTable;
-	TObjectPtr<UDataTable>	mLLWeaponDataTable;
-	TObjectPtr<UDataTable>	mMGWeaponDataTable;
 
-public:
-	const FMLWeapon* FindMLWeaponData(int32 num);
-	const FLLWeapon* FindLLWeaponData(int32 num);
-	const FLLWeapon* FindMGWeaponData(int32 num);
 };
