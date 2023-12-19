@@ -156,6 +156,7 @@ public:
 	float GetHeight(const FVector2D loc);
 	float PerlinNoiseExtend(const FVector2D loc, const float scale, 
 		const float amplitude,const FVector2D offset);
+	void UpadateNavMesh(USceneComponent* component);
 };
 
 class FAsyncWorldGenerator : public FNonAbandonableTask

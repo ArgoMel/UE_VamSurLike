@@ -160,6 +160,10 @@ void AWorldGenerator::DrawTile()
 		}
 		GeneratedMeshIndex = MeshSectionIndex;
 		++MeshSectionIndex;
+		if (MeshSectionIndex == 4)
+		{
+			UpadateNavMesh(m_Terrain);
+		}
 	}
 	m_SubTerrainData.Empty();
 }
@@ -490,6 +494,17 @@ float AWorldGenerator::PerlinNoiseExtend(const FVector2D loc, const float scale,
 {
 	return FMath::PerlinNoise2D(loc*scale+FVector2D(0.1)+
 		offset+ PerlinOffset)*amplitude;
+}
+
+void AWorldGenerator::UpadateNavMesh(USceneComponent* component)
+{
+	if (component->IsRegistered())
+	{
+		if (component->GetWorld() != nullptr)
+		{
+			FNavigationSystem::UpdateComponentData(*component);
+		}
+	}
 }
 
 /// <summary>
