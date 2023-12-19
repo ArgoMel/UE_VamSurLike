@@ -26,7 +26,8 @@ public class SurvivorsRoguelike : ModuleRules
             "Sockets",
             "ProceduralMeshComponent",
             "Foliage",
-            "PhysicsCore"
+            "PhysicsCore",
+            "AnimGraphRuntime"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] {  });
