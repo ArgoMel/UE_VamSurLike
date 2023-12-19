@@ -30,8 +30,8 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	GetMesh()->bReceivesDecals = false;
 
 	m_SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	m_SpringArm->SetupAttachment(GetMesh(), TEXT("head"));
-	m_SpringArm->TargetArmLength = 0.f;
+	m_SpringArm->SetupAttachment(GetMesh());
+	m_SpringArm->TargetArmLength = 1000.f;
 
 	m_Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	m_Camera->SetupAttachment(m_SpringArm);
@@ -56,17 +56,17 @@ void ABaseLobbyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	UEnhancedInputComponent* input = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	ALobbyPlayerController* controller = Cast<ALobbyPlayerController>(Controller);
-	//if (IsValid(input) && IsValid(controller))
-	//{
-	//	input->BindAction(controller->m_Space, ETriggerEvent::Started, this, &ABaseLobbyCharacter::Jump);
-	//	input->BindAction(controller->m_Space, ETriggerEvent::Completed, this, &ABaseLobbyCharacter::StopJumping);
-	//	input->BindAction(controller->m_Move, ETriggerEvent::Triggered, this, &ABaseLobbyCharacter::Move);
-	//	input->BindAction(controller->m_LShift, ETriggerEvent::Started, this, &ABaseLobbyCharacter::Sprint);
-	//	input->BindAction(controller->m_LShift, ETriggerEvent::Completed, this, &ABaseLobbyCharacter::Sprint);
-	//	input->BindAction(controller->Crouch, ETriggerEvent::Started, this, &ABaseLobbyCharacter::PlayerCrouch);
-	//	input->BindAction(controller->PickUp, ETriggerEvent::Started, this, &ABaseLobbyCharacter::CollectPickUps);
-	//	controller->SetNewController();
-	//}
+	if (IsValid(input) && IsValid(controller))
+	{
+		input->BindAction(controller->GetKeyJump(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Jump);
+		input->BindAction(controller->GetKeyJump(), ETriggerEvent::Completed, this, &ABaseLobbyCharacter::StopJumping);
+		input->BindAction(controller->GetKeyMove(), ETriggerEvent::Triggered, this, &ABaseLobbyCharacter::Move);
+		input->BindAction(controller->GetKeySprint(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Sprint);
+		input->BindAction(controller->GetKeySprint(), ETriggerEvent::Completed, this, &ABaseLobbyCharacter::Sprint);
+		input->BindAction(controller->GetKeyCrouch(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::PlayerCrouch);
+		input->BindAction(controller->GetKeyInteraction(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::CollectPickUps);
+		controller->SetNewController();
+	}
 }
 
 void ABaseLobbyCharacter::BodyHit(UPrimitiveComponent* comp, AActor* otherActor, 
@@ -79,7 +79,8 @@ void ABaseLobbyCharacter::OverlapBegin(UPrimitiveComponent* comp, AActor* otherA
 {
 }
 
-void ABaseLobbyCharacter::OverlapEnd(UPrimitiveComponent* comp, AActor* otherActor, UPrimitiveComponent* otherComp, int32 index)
+void ABaseLobbyCharacter::OverlapEnd(UPrimitiveComponent* comp, AActor* otherActor, 
+	UPrimitiveComponent* otherComp, int32 index)
 {
 }
 
@@ -162,8 +163,4 @@ void ABaseLobbyCharacter::HandleCameraShake()
 			//controller->ClientStartCameraShake();
 		}
 	}
-}
-
-void ABaseLobbyCharacter::OnPlayerDeath()
-{
 }
