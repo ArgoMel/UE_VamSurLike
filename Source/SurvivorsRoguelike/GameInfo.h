@@ -159,7 +159,7 @@ enum class EMGWeaponType : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FMLWeaponData :
+struct FMLWeapon :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
@@ -178,6 +178,9 @@ public:
 	EItemRank	Rank;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FString		Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTexture2D*	Icon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -194,48 +197,30 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FVector		CollisionLoc;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UStaticMesh>		Mesh;
 };
 
 USTRUCT(BlueprintType)
-struct FLLWeaponData :
+struct FLLWeapon :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32		Num;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EItemType	ItemType;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	ELLWeaponType	WeaponType;
+	FString	Name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EItemRank	Rank;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UTexture2D* Icon;
+	float	OffensePower;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		Penetrating;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		AttackSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		Range;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMesh>		Mesh;
+	float	AttackSpeed;
 };
 
 USTRUCT(BlueprintType)
-struct FMGWeaponData :
+struct FMGWeapon :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()

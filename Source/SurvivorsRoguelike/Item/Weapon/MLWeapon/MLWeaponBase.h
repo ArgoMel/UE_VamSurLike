@@ -18,34 +18,40 @@ class SURVIVORSROGUELIKE_API AMLWeaponBase : public AWeaponBase
 
 public :
 	AMLWeaponBase();
-	~AMLWeaponBase();
 
 protected :
-	float mTime = 0.f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UStaticMeshComponent> mMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> mCollision;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float		mOffensePower;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float		mWeight;
+	FVector		mCollisionScale;
+	FVector		mCollisionLoc;
 	EMLWeaponType	mWeaponType;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<UStaticMeshComponent>	mMesh;
-
 public :
-	void Init(int32 num, EItemType	ItemType, FString name, float AttackSpeed,
-		float OffensePower, FVector CollisionScale, FVector CollisionLoc, 
-		EMLWeaponType WeaponType, UStaticMesh* Mesh);
+	void SetWeaponInfo(int32 num, const FMLWeapon* Data)
+	{
+		mNum = num;
+		mItemType = Data->ItemType;
+		mWeaponType = Data->WeaponType;
+		mRank = Data->Rank;
+		mName = Data->Name;
+		mIcon = Data->Icon;
+		mOffensePower = Data->OffensePower;
+		mAttackSpeed = Data->AttackSpeed;
+		mWeight = Data->Weight;
+		mCollisionScale = Data->CollisionScale;
+		mCollisionLoc = Data->CollisionLoc;
+	}
 
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-
 
 public:
 	// Called every frame
