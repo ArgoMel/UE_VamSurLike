@@ -16,7 +16,6 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	m_MaxSprintSpeed = 600.f;
 	m_IsSprinting = false;
 	m_IsCrouching = false;
-	m_IsProning = false;
 	m_IsWalking = false;
 	m_CanMove = true;
 
@@ -171,7 +170,11 @@ void ABaseLobbyCharacter::Sprint()
 
 void ABaseLobbyCharacter::PlayerCrouch(const FInputActionValue& Value)
 {
-	m_IsProning = false;
+	if (!IsValid(m_Anim))
+	{
+		return;
+	}
+	m_Anim->m_IsProning = false;
 	m_IsCrouching = !m_IsCrouching;
 	if (m_IsCrouching)
 	{
@@ -207,13 +210,15 @@ void ABaseLobbyCharacter::Prone(const FInputActionValue& Value)
 		return;
 	}
 	m_IsCrouching = false;
-	m_IsProning = !m_IsProning;
-	if (m_IsProning)
-	{
-		m_Anim->Montage_Play(m_StandToProne);
-	}
-	else
+	//누워 있으면 일어날꺼니까 일어나는 몽타쥬
+	if (m_Anim->m_IsProning)
 	{
 		m_Anim->Montage_Play(m_ProneToStand);
 	}
+	else
+	{
+		m_Anim->Montage_Play(m_StandToProne);
+	}
+	m_IsWalking = m_Anim->m_IsProning;
+	Walk();
 }

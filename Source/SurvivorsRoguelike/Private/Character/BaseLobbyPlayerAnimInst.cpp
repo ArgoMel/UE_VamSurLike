@@ -87,7 +87,6 @@ void UBaseLobbyPlayerAnimInst::BaseVariableSetting()
 	m_Dir = UKismetAnimationLibrary::CalculateDirection(velocity, m_Character->GetActorRotation());
 	UCharacterMovementComponent* moveComp = m_Character->GetCharacterMovement();
 	m_IsAccerelating = moveComp->GetCurrentAcceleration().Length() > 0.f;
-	m_IsProning = m_Character->m_IsProning;
 	m_IsJumping = moveComp->IsFalling();
 	m_IsSprinting = m_Character->m_IsSprinting;
 	m_IsADS = m_Character->GetIsADS();

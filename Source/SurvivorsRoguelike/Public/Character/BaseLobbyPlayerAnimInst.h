@@ -50,7 +50,7 @@ protected:
 	bool m_IsJumping;
 	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")
 	bool m_IsCrouching;
-	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")
+	UPROPERTY(BlueprintReadWrite, Category = "BasicMovement")
 	bool m_IsProning;
 	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")
 	bool m_IsAccerelating;
