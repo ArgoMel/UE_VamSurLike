@@ -90,6 +90,16 @@ enum class EPlayerJob : uint8
 };
 
 UENUM(BlueprintType)
+enum class ELobbyPlayerState : uint8
+{
+	Idle,
+	Fight,
+	Gun,
+	Bow,
+	Melee
+};
+
+UENUM(BlueprintType)
 enum class EAIKind : uint8
 {
 	None,
@@ -167,38 +177,68 @@ public:
 	int32 Exp = 0;
 };
 
+UENUM(BlueprintType)
+enum class EAbnormalTable : uint8
+{
+	None,
+	stun,
+	Immobilized,
+	Burning,
+	Slow,
+	Sleep,
+	Weakened
+};
+
 USTRUCT(BlueprintType)
 struct FAIData : public FTableRowBase
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EAIKind AIKind = EAIKind::None;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float MoveSpeed = 0.f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float AtkDist = 0.f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float TraceDist = 0.f; //인식반경
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Atk = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Def = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 HP = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 HPMax = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 MP = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 MPMax = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Level = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Gold = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 Exp = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EAbnormalTable Abnormal = EAbnormalTable::None;
 };
+
+
 
 UENUM(BlueprintType)
 enum class EItemRank : uint8
@@ -210,6 +250,8 @@ enum class EItemRank : uint8
 	A,
 	S
 };
+
+
 
 UENUM(BlueprintType)
 enum class EItemType : uint8
@@ -245,7 +287,7 @@ enum class EMGWeaponType : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FMLWeapon :
+struct FMLWeaponData :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
@@ -264,9 +306,6 @@ public:
 	EItemRank	Rank;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FString		Name;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTexture2D*	Icon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -283,10 +322,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FVector		CollisionLoc;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UStaticMesh>		Mesh;
 };
 
 USTRUCT(BlueprintType)
-struct FLLWeapon :
+struct FLLWeaponData :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
@@ -306,7 +348,7 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct FMGWeapon :
+struct FMGWeaponData :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
