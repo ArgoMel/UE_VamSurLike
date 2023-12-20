@@ -18,6 +18,7 @@ private:
 	TObjectPtr<UInputAction> m_Jump;
 	TObjectPtr<UInputAction> m_Sprint;
 	TObjectPtr<UInputAction> m_Crouch;
+	TObjectPtr<UInputAction> m_Walk;
 	TObjectPtr<UInputAction> m_Interaction;
 
 public:
@@ -36,6 +37,10 @@ public:
 	UInputAction* GetKeyCrouch()
 	{
 		return m_Crouch;
+	}
+	UInputAction* GetKeyWalk()
+	{
+		return m_Walk;
 	}
 	UInputAction* GetKeyInteraction()
 	{
