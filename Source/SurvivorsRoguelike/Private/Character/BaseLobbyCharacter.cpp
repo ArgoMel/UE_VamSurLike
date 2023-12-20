@@ -11,10 +11,12 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 
 	m_MoveForwardValue = 0.f;
 	m_MoveRightValue = 0.f;
-	m_MaxWalkSpeed = 150.f;
+	m_MaxWalkSpeed = 90.f;
+	m_MaxJogSpeed = 150.f;
 	m_MaxSprintSpeed = 600.f;
 	m_IsSprinting = false;
 	m_IsCrouching = false;
+	m_IsWalking = false;
 	m_CanMove = true;
 
 	m_StartCamRelativeLoc = FVector(0., 10., 0.);
@@ -44,7 +46,7 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	m_Camera->SetRelativeLocation(m_StartCamRelativeLoc);
 	m_Camera->bUsePawnControlRotation = false;
 
-	GetCharacterMovement()->MaxWalkSpeed = 90.f;
+	GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 
@@ -85,7 +87,9 @@ void ABaseLobbyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		input->BindAction(controller->GetKeySprint(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Sprint);
 		input->BindAction(controller->GetKeySprint(), ETriggerEvent::Completed, this, &ABaseLobbyCharacter::Sprint);
 		input->BindAction(controller->GetKeyCrouch(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::PlayerCrouch);
-		input->BindAction(controller->GetKeyInteraction(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::CollectPickUps);
+		input->BindAction(controller->GetKeyInteraction(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Interaction);
+		input->BindAction(controller->GetKeyWalk(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Walk);
+		input->BindAction(controller->GetKeyWalk(), ETriggerEvent::Completed, this, &ABaseLobbyCharacter::Walk);
 		controller->SetNewController();
 	}
 }
@@ -116,8 +120,8 @@ void ABaseLobbyCharacter::Move(const FInputActionValue& Value)
 	}
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
-	const FVector forwardDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X)*-1.;
-	const FVector rightDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y) * -1.;
+	const FVector forwardDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
+	const FVector rightDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
 	AddMovementInput(forwardDir, m_MoveForwardValue);
 	AddMovementInput(rightDir, m_MoveRightValue);
 }
@@ -134,6 +138,11 @@ void ABaseLobbyCharacter::StopJumping()
 
 void ABaseLobbyCharacter::Sprint()
 {
+	if (m_IsWalking)
+	{
+		m_IsSprinting = false;
+		return;
+	}
 	m_IsSprinting = !m_IsSprinting;
 	if (m_IsSprinting)
 	{
@@ -141,7 +150,7 @@ void ABaseLobbyCharacter::Sprint()
 	}
 	else
 	{
-		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
 	}
 }
 
@@ -158,30 +167,19 @@ void ABaseLobbyCharacter::PlayerCrouch(const FInputActionValue& Value)
 	}
 }
 
-void ABaseLobbyCharacter::CollectPickUps()
+void ABaseLobbyCharacter::Interaction()
 {
 }
 
-void ABaseLobbyCharacter::HandleCameraShake()
+void ABaseLobbyCharacter::Walk()
 {
-	ALobbyPlayerController* controller = Cast<ALobbyPlayerController>(Controller);
-	if (!IsValid(controller))
+	m_IsWalking = !m_IsWalking;
+	if (m_IsWalking)
 	{
-		return;
-	}
-	if (m_IsSprinting)
-	{
-		//controller->ClientStartCameraShake();
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
 	}
 	else
 	{
-		if (GetIsADS())
-		{
-			//controller->ClientStartCameraShake();
-		}
-		else
-		{
-			//controller->ClientStartCameraShake();
-		}
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
 	}
 }

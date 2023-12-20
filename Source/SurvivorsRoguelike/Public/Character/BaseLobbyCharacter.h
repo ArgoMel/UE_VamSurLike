@@ -31,11 +31,15 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	float m_MaxWalkSpeed;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
+	float m_MaxJogSpeed;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	float m_MaxSprintSpeed;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	bool m_IsSprinting;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	bool m_IsCrouching;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
+	bool m_IsWalking;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	bool m_CanMove;
 
@@ -66,9 +70,8 @@ protected:
 	void StopJumping();
 	void Sprint();
 	void PlayerCrouch(const FInputActionValue& Value);
-	void CollectPickUps();
-
-	void HandleCameraShake();
+	void Interaction();
+	void Walk();
 
 public:
 	bool GetIsADS()
