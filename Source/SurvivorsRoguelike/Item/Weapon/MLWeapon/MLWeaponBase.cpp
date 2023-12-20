@@ -3,7 +3,7 @@
 
 #include "MLWeaponBase.h"
 
-inline float ROTATIONTIME = 1.f;
+inline float ROTATIONTIME = 0.3f;
 
 AMLWeaponBase::AMLWeaponBase()
 {
@@ -17,6 +17,7 @@ AMLWeaponBase::AMLWeaponBase()
 
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	mMesh->SetAbsolute(false, true, false); //부모회전 영향x
 
 	SetRootComponent(mMesh);
 	mCollision->SetupAttachment(mMesh);
@@ -26,13 +27,13 @@ AMLWeaponBase::AMLWeaponBase()
 
 AMLWeaponBase::~AMLWeaponBase()
 {
-
+	
 }
 
 
 void AMLWeaponBase::Init(int32 num, EItemType ItemType, FString name,
 	float AttackSpeed, float OffensePower, FVector CollisionScale, FVector CollisionLoc, 
-	EMLWeaponType WeaponType, UStaticMesh* Mesh)
+	EMLWeaponType WeaponType, UStaticMesh* Mesh, AActor* Player)
 {
 	mNum = num;
 	mItemType = ItemType;
@@ -40,10 +41,15 @@ void AMLWeaponBase::Init(int32 num, EItemType ItemType, FString name,
 	mAttackSpeed = AttackSpeed;
 	mOffensePower = OffensePower;
 	mWeaponType = WeaponType;
+	mPlayer = Player;
+
+	if (!Mesh)
+		return;
 
 	mMesh->SetStaticMesh(Mesh);
 	mCollision->SetRelativeLocation(CollisionLoc);
 	mCollision->SetRelativeScale3D(CollisionScale);
+
 	
 }
 
