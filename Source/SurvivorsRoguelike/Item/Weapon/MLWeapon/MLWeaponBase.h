@@ -7,47 +7,48 @@
 #include "MLWeaponBase.generated.h"
 
 /**
- * 
+ *
  */
 
 
-UCLASS()
-class SURVIVORSROGUELIKE_API AMLWeaponBase : public AWeaponBase
+	UCLASS()
+	class SURVIVORSROGUELIKE_API AMLWeaponBase : public AWeaponBase
 {
 	GENERATED_BODY()
 
-public :
+public:
 	AMLWeaponBase();
+	~AMLWeaponBase();
 
-protected :
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<UStaticMeshComponent> mMesh;
+protected:
+	float mTime = 0.f;
+	FVector	mPlayerLoc;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> mCollision;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float		mOffensePower;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float		mWeight;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector		mCollisionScale;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector		mCollisionLoc;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EMLWeaponType	mWeaponType;
 
-public :
-	void SetWeaponInfo(int32 num, const FMLWeapon* Data)
-	{
-		mNum = num;
-		mItemType = Data->ItemType;
-		mWeaponType = Data->WeaponType;
-		mRank = Data->Rank;
-		mName = Data->Name;
-		mIcon = Data->Icon;
-		mOffensePower = Data->OffensePower;
-		mAttackSpeed = Data->AttackSpeed;
-		mWeight = Data->Weight;
-		mCollisionScale = Data->CollisionScale;
-		mCollisionLoc = Data->CollisionLoc;
-	}
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UStaticMeshComponent>	mMesh;
 
+public :
+	void Init(int32 num, EItemType ItemType, FString name, float AttackSpeed, 
+		float OffensePower, FVector CollisionScale, FVector CollisionLoc, 
+		EMLWeaponType WeaponType, UStaticMesh* Mesh);
 
 protected:
 	// Called when the game starts or when spawned
