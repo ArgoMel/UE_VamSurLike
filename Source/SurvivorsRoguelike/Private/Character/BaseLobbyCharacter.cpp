@@ -5,6 +5,9 @@
 ABaseLobbyCharacter::ABaseLobbyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 
 	m_MoveForwardValue = 0.f;
 	m_MoveRightValue = 0.f;
@@ -28,17 +31,22 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->bReceivesDecals = false;
+	GetMesh()->bRenderCustomDepth = true;
+	GetMesh()->SetCustomDepthStencilValue(0);
 
 	m_SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	m_SpringArm->SetupAttachment(GetMesh());
-	m_SpringArm->TargetArmLength = 1000.f;
+	m_SpringArm->TargetArmLength = 500.f;
+	m_SpringArm->bUsePawnControlRotation = true;
 
 	m_Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	m_Camera->SetupAttachment(m_SpringArm);
 	m_Camera->SetRelativeLocation(m_StartCamRelativeLoc);
-	m_Camera->bUsePawnControlRotation = true;
+	m_Camera->bUsePawnControlRotation = false;
 
 	GetCharacterMovement()->MaxWalkSpeed = 90.f;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_Mannequin(TEXT(
 		"/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin"));
@@ -108,8 +116,8 @@ void ABaseLobbyCharacter::Move(const FInputActionValue& Value)
 	}
 	const FRotator rotation = Controller->GetControlRotation();
 	const FRotator yawRotation(0, rotation.Yaw, 0);
-	const FVector forwardDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
-	const FVector rightDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
+	const FVector forwardDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X)*-1.;
+	const FVector rightDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y) * -1.;
 	AddMovementInput(forwardDir, m_MoveForwardValue);
 	AddMovementInput(rightDir, m_MoveRightValue);
 }

@@ -10,6 +10,7 @@ UBaseLobbyPlayerAnimInst::UBaseLobbyPlayerAnimInst()
 	m_LHandIK = 1.f;
 	m_IsADS = false;
 
+	m_State = ELobbyPlayerState::Idle;
 	m_Speed = 0.f;
 	m_Dir = 0.f;
 	m_IsJumping = false;
