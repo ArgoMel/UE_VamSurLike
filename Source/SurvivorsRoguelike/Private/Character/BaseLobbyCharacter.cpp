@@ -5,13 +5,18 @@
 ABaseLobbyCharacter::ABaseLobbyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 
 	m_MoveForwardValue = 0.f;
 	m_MoveRightValue = 0.f;
-	m_MaxWalkSpeed = 150.f;
+	m_MaxWalkSpeed = 90.f;
+	m_MaxJogSpeed = 150.f;
 	m_MaxSprintSpeed = 600.f;
 	m_IsSprinting = false;
 	m_IsCrouching = false;
+	m_IsWalking = false;
 	m_CanMove = true;
 
 	m_StartCamRelativeLoc = FVector(0., 10., 0.);
@@ -28,17 +33,22 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->bReceivesDecals = false;
+	GetMesh()->bRenderCustomDepth = true;
+	GetMesh()->SetCustomDepthStencilValue(0);
 
 	m_SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	m_SpringArm->SetupAttachment(GetMesh());
-	m_SpringArm->TargetArmLength = 1000.f;
+	m_SpringArm->TargetArmLength = 500.f;
+	m_SpringArm->bUsePawnControlRotation = true;
 
 	m_Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	m_Camera->SetupAttachment(m_SpringArm);
 	m_Camera->SetRelativeLocation(m_StartCamRelativeLoc);
-	m_Camera->bUsePawnControlRotation = true;
+	m_Camera->bUsePawnControlRotation = false;
 
-	GetCharacterMovement()->MaxWalkSpeed = 90.f;
+	GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_Mannequin(TEXT(
 		"/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin"));
@@ -77,7 +87,9 @@ void ABaseLobbyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		input->BindAction(controller->GetKeySprint(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Sprint);
 		input->BindAction(controller->GetKeySprint(), ETriggerEvent::Completed, this, &ABaseLobbyCharacter::Sprint);
 		input->BindAction(controller->GetKeyCrouch(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::PlayerCrouch);
-		input->BindAction(controller->GetKeyInteraction(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::CollectPickUps);
+		input->BindAction(controller->GetKeyInteraction(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Interaction);
+		input->BindAction(controller->GetKeyWalk(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Walk);
+		input->BindAction(controller->GetKeyWalk(), ETriggerEvent::Completed, this, &ABaseLobbyCharacter::Walk);
 		controller->SetNewController();
 	}
 }
@@ -126,6 +138,11 @@ void ABaseLobbyCharacter::StopJumping()
 
 void ABaseLobbyCharacter::Sprint()
 {
+	if (m_IsWalking)
+	{
+		m_IsSprinting = false;
+		return;
+	}
 	m_IsSprinting = !m_IsSprinting;
 	if (m_IsSprinting)
 	{
@@ -133,7 +150,7 @@ void ABaseLobbyCharacter::Sprint()
 	}
 	else
 	{
-		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
 	}
 }
 
@@ -150,30 +167,19 @@ void ABaseLobbyCharacter::PlayerCrouch(const FInputActionValue& Value)
 	}
 }
 
-void ABaseLobbyCharacter::CollectPickUps()
+void ABaseLobbyCharacter::Interaction()
 {
 }
 
-void ABaseLobbyCharacter::HandleCameraShake()
+void ABaseLobbyCharacter::Walk()
 {
-	ALobbyPlayerController* controller = Cast<ALobbyPlayerController>(Controller);
-	if (!IsValid(controller))
+	m_IsWalking = !m_IsWalking;
+	if (m_IsWalking)
 	{
-		return;
-	}
-	if (m_IsSprinting)
-	{
-		//controller->ClientStartCameraShake();
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
 	}
 	else
 	{
-		if (GetIsADS())
-		{
-			//controller->ClientStartCameraShake();
-		}
-		else
-		{
-			//controller->ClientStartCameraShake();
-		}
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
 	}
 }

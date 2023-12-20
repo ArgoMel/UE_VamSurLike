@@ -38,6 +38,12 @@ ALobbyPlayerController::ALobbyPlayerController()
 	{
 		m_Crouch = IA_Crouch.Object;
 	}
+	static ConstructorHelpers::FObjectFinder<UInputAction>	IA_Walk(TEXT(
+		"/Game/0_KBJ/Input/IA_Walk.IA_Walk"));
+	if (IA_Walk.Succeeded())
+	{
+		m_Walk = IA_Walk.Object;
+	}
 }
 
 void ALobbyPlayerController::SetNewController()
