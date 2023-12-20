@@ -3,33 +3,32 @@
 
 #include "LLWeaponBase.h"
 
-TObjectPtr<UDataTable>	ALLWeaponBase::mWeaponDataTable;
-
 ALLWeaponBase::ALLWeaponBase()
 {
+	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	SetRootComponent(mMesh);
 }
 
-void ALLWeaponBase::LoadWeaponData()
+void ALLWeaponBase::Init(int32 num, EItemType ItemType, FString name, float AttackSpeed, 
+	float Penetrating, float Range, ELLWeaponType WeaponType, USkeletalMesh* Mesh)
 {
-}
+	mNum = num;
+	mItemType = ItemType;
+	mName = name;
+	mAttackSpeed = AttackSpeed;
+	mPenetrating = Penetrating;
+	mWeaponType = WeaponType;
 
-const FLLWeaponData* ALLWeaponBase::FindWeaponData(const FName& Name)
-{
-	return mWeaponDataTable->FindRow<FLLWeaponData>(Name, TEXT(""));
+	if(Mesh)
+		mMesh->SetSkeletalMesh(Mesh);
 }
 
 void ALLWeaponBase::BeginPlay()
 {
 }
 
-void ALLWeaponBase::OnConstruction(const FTransform& Transform)
-{
-}
-
 void ALLWeaponBase::Tick(float DeltaTime)
-{
-}
-
-void ALLWeaponBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 }

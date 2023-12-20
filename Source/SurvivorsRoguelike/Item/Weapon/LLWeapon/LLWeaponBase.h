@@ -30,34 +30,17 @@ protected:
 	ELLWeaponType	mWeaponType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<USkeletalMesh> mMeshPtr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> mMesh;
 
 public:
-	static void LoadWeaponData();
-
-	void SetWeaponInfo(const FName& name, const FLLWeaponData* Data)
-	{
-	}
-
-protected:
-	static const FLLWeaponData* FindWeaponData(const FName& Name);
+	void Init(int32 num, EItemType ItemType, FString name, float AttackSpeed,
+		float Penetrating, float Range, ELLWeaponType WeaponType, USkeletalMesh* Mesh);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	virtual void OnConstruction(const FTransform& Transform);
-
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UFUNCTION()
-	void OverlapBegin(UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex, bool bFromSweep,
-		const FHitResult& SweepResult);
 };
