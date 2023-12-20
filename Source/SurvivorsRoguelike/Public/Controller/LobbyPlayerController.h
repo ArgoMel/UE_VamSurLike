@@ -20,6 +20,7 @@ private:
 	TObjectPtr<UInputAction> m_Crouch;
 	TObjectPtr<UInputAction> m_Walk;
 	TObjectPtr<UInputAction> m_Interaction;
+	TObjectPtr<UInputAction> m_Prone;
 
 public:
 	UInputAction* GetKeyMove()
@@ -45,6 +46,10 @@ public:
 	UInputAction* GetKeyInteraction()
 	{
 		return m_Interaction;
+	}
+	UInputAction* GetKeyProne()
+	{
+		return m_Prone;
 	}
 
 	void SetNewController();
