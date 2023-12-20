@@ -2,8 +2,8 @@
 
 
 #include "ProtoGameMode.h"
-#include "../Character/ProtoCharacter.h"
-#include "../Controller/ProtoPlayerController.h"
+#include "ProtoCharacter.h"
+#include "ProtoPlayerController.h"
 
 AProtoGameMode::AProtoGameMode()
 {

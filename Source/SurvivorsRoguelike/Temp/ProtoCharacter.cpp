@@ -2,8 +2,8 @@
 
 
 #include "ProtoCharacter.h"
-#include "../Controller/ProtoPlayerController.h"
-#include "../Other/TempProjectile.h"
+#include "ProtoPlayerController.h"
+#include "TempProjectile.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
