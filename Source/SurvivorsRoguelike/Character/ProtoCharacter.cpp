@@ -2,8 +2,8 @@
 
 
 #include "ProtoCharacter.h"
-#include "../Other/TempProjectile.h"
 #include "../Controller/ProtoPlayerController.h"
+#include "../Other/TempProjectile.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -64,8 +64,8 @@ AProtoCharacter::AProtoCharacter()
 	if (SK_AR4.Succeeded())
 		LLWeapon->SetSkeletalMesh(SK_AR4.Object);
 
-	RangeOfShot = 1000.f;
-	LLWeaponRPM = 1.0f;
+	LLWeaponRange = 1000.f;
+	LLWeaponRate = 1.0f;
 }
 
 // Called when the game starts or when spawned
@@ -76,7 +76,7 @@ void AProtoCharacter::BeginPlay()
 	/*FTimerHandle HitTimerHandle =
 		UKismetSystemLibrary::K2_SetTimer(this, TEXT("SpawnBulletPerSec"), LLWeaponRPM, true);*/
 
-	GetWorldTimerManager().SetTimer(mHitTimerHandle, this, &AProtoCharacter::SpawnBulletPerSec, LLWeaponRPM, true);
+	GetWorldTimerManager().SetTimer(mHitTimerHandle, this, &AProtoCharacter::SpawnBulletPerSec, LLWeaponRate, true);
 }
 
 // Called every frame
@@ -84,23 +84,7 @@ void AProtoCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	/*AProtoPlayerController* PPController = Cast<AProtoPlayerController>(GetController());
-	FHitResult Hit;
-	FVector3d Start = LLWeapon->GetSocketLocation(TEXT("b_gun_muzzleflash"));
-	FVector3d End = FVector3d(
-		PPController->GetMouseHit().Location.X * RangeOfShot,
-		PPController->GetMouseHit().Location.Y * RangeOfShot,
-		Start.Z
-	);
 
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("%f %f %f"),
-		End.X, End.Y, End.Z));
-
-	GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECollisionChannel::ECC_Visibility);
-
-	bool CollisionSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECollisionChannel::ECC_Visibility);
-	FColor ResultColor = CollisionSuccess ? FColor::Red : FColor::Green;
-	DrawDebugLine(GetWorld(), Start, End, ResultColor, false, 1.f);*/
 }
 
 void AProtoCharacter::SpawnBulletPerSec()
@@ -108,9 +92,23 @@ void AProtoCharacter::SpawnBulletPerSec()
 	FActorSpawnParameters ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	
+
+	AProtoPlayerController* PPController = Cast<AProtoPlayerController>(GetController());
+
+	FVector3d LLWeaponMuzzleLocation = LLWeapon->GetSocketLocation(TEXT("b_gun_muzzleflash"));
+	FVector3d LLWeaponMuzzleRelativeLocation = LLWeapon->GetSocketTransform(
+		TEXT("b_gun_muzzleflash"), ERelativeTransformSpace::RTS_Actor).GetLocation();
+
+	FVector3d CursorHit = PPController->GetCursorHit();
+	CursorHit = FVector3d(
+		CursorHit.X,
+		CursorHit.Y,
+		CursorHit.Z + LLWeaponMuzzleRelativeLocation.Z
+	);
+
 	GetWorld()->SpawnActor<ATempProjectile>(
-		LLWeapon->GetSocketLocation(TEXT("b_gun_muzzleflash")), 
-		GetActorRotation(),
-		ActorParam);
+		LLWeaponMuzzleLocation,
+		(CursorHit - LLWeaponMuzzleLocation).Rotation(),
+		ActorParam
+	);
 }

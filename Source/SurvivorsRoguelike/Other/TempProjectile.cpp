@@ -7,7 +7,7 @@
 // Sets default values
 ATempProjectile::ATempProjectile()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	
 	InitialLifeSpan = 5.0f;
 
@@ -29,18 +29,4 @@ ATempProjectile::ATempProjectile()
 	mProjectilemovementComp->InitialSpeed = 500.f;
 	mProjectilemovementComp->MaxSpeed = 500.f;
 	mProjectilemovementComp->ProjectileGravityScale = 0.0f;
-}
-
-void ATempProjectile::BeginPlay()
-{
-	Super::BeginPlay();
-
-
-}
-
-void ATempProjectile::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-
 }

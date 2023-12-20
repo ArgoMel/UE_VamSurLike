@@ -18,12 +18,6 @@ public:
 	ATempProjectile();
 
 protected:
-	virtual void BeginPlay() override;
-
-public:
-	virtual void Tick(float DeltaSeconds) override;
-
-protected:
 	UPROPERTY(Category = Components, EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USceneComponent> mRoot;
 

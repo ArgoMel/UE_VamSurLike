@@ -43,8 +43,8 @@ protected:
 	FTimerHandle mHitTimerHandle;
 
 private:
-	float RangeOfShot;
-	float LLWeaponRPM;
+	float LLWeaponRange;
+	float LLWeaponRate;
 
 	void SpawnBulletPerSec();
 };

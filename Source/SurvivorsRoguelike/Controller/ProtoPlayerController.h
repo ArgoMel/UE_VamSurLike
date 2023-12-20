@@ -27,7 +27,7 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 public:
-	FHitResult GetMouseHit() { return MouseHit; }
+	FVector3d GetCursorHit() { return CursorHit; }
 
 // 향상된 입력
 protected:
@@ -42,6 +42,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ProtoMoveAction;
 
+private:
+	FVector3d CursorLoc, CursorDir, CursorHit;
+
+// --- 디버그 ---
 protected:
-	FHitResult MouseHit;
+	void DebugInput(const FInputActionValue& Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputAction> DebugInputAction;
 };
