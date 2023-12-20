@@ -44,6 +44,12 @@ ALobbyPlayerController::ALobbyPlayerController()
 	{
 		m_Walk = IA_Walk.Object;
 	}
+	static ConstructorHelpers::FObjectFinder<UInputAction>	IA_Prone(TEXT(
+		"/Game/0_KBJ/Input/IA_Prone.IA_Prone"));
+	if (IA_Prone.Succeeded())
+	{
+		m_Prone = IA_Prone.Object;
+	}
 }
 
 void ALobbyPlayerController::SetNewController()
