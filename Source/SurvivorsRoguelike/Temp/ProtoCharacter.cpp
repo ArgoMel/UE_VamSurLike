@@ -56,7 +56,7 @@ AProtoCharacter::AProtoCharacter()
 
 	LLWeapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("LLWeapon"));
 	LLWeapon->SetupAttachment(GetMesh());
-	LLWeapon->SetupAttachment(GetMesh(), "RH_Rifle");
+	LLWeapon->SetupAttachment(GetMesh(), "LLWeaponSocket");
 	LLWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_AR4(
