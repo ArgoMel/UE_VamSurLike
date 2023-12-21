@@ -208,7 +208,7 @@ void ABaseLobbyCharacter::Walk()
 
 void ABaseLobbyCharacter::Prone(const FInputActionValue& Value)
 {
-	if (!IsValid(m_Anim) || m_Anim->IsAnyMontagePlaying())
+	if (!IsValid(m_Anim)|| m_Anim->IsAnyMontagePlaying())
 	{
 		return;
 	}
