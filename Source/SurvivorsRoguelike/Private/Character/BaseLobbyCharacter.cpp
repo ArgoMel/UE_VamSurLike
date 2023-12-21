@@ -213,25 +213,20 @@ void ABaseLobbyCharacter::Prone(const FInputActionValue& Value)
 		return;
 	}
 	m_IsCrouching = false;
+	m_IsWalking = !m_Anim->m_IsProning;
 	//누워 있으면 일어날꺼니까 일어나는 몽타쥬
 	if (m_Anim->m_IsProning)
 	{
 		m_Anim->Montage_Play(m_ProneToStand);
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
+		GetCapsuleComponent()->SetCapsuleHalfHeight(OriginHalfHeight);
+		GetMesh()->SetRelativeLocation(FVector(0., 0., -OriginHalfHeight));
 	}
 	else
 	{
 		m_Anim->Montage_Play(m_StandToProne);
-	}
-	m_IsWalking = !m_Anim->m_IsProning;
-	if (m_IsWalking)
-	{
 		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
+		GetCapsuleComponent()->SetCapsuleHalfHeight(ProneHalfHeight);
+		GetMesh()->SetRelativeLocation(FVector(0., 0., -(ProneHalfHeight + 5.)));
 	}
-	else
-	{
-		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
-	}
-	
-	GetCapsuleComponent()->SetCapsuleHalfHeight(ProneHalfHeight);
-	GetMesh()->SetRelativeLocation(FVector(0.,0., -(ProneHalfHeight+5.)));
 }
