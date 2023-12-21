@@ -24,12 +24,11 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	m_IsInvertX = false;
 	m_IsInvertY = true;
 
-	GetCapsuleComponent()->InitCapsuleSize(20.f, 91.5f);
+	GetCapsuleComponent()->InitCapsuleSize(20.f, OriginHalfHeight);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 	SetRootComponent(GetCapsuleComponent());
 
-	GetMesh()->SetRelativeLocation(FVector(0.f, 0.f,
-		-GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
+	GetMesh()->SetRelativeLocation(FVector(0.f, 0.f,-OriginHalfHeight));
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->bReceivesDecals = false;
@@ -192,6 +191,10 @@ void ABaseLobbyCharacter::Interaction()
 
 void ABaseLobbyCharacter::Walk()
 {
+	if (!IsValid(m_Anim)|| m_Anim->IsAnyMontagePlaying()|| m_Anim->m_IsProning)
+	{
+		return;
+	}
 	m_IsWalking = !m_IsWalking;
 	if (m_IsWalking)
 	{
@@ -205,7 +208,7 @@ void ABaseLobbyCharacter::Walk()
 
 void ABaseLobbyCharacter::Prone(const FInputActionValue& Value)
 {
-	if(!IsValid(m_Anim))
+	if (!IsValid(m_Anim) || m_Anim->IsAnyMontagePlaying())
 	{
 		return;
 	}
@@ -219,6 +222,16 @@ void ABaseLobbyCharacter::Prone(const FInputActionValue& Value)
 	{
 		m_Anim->Montage_Play(m_StandToProne);
 	}
-	m_IsWalking = m_Anim->m_IsProning;
-	Walk();
+	m_IsWalking = !m_Anim->m_IsProning;
+	if (m_IsWalking)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
+	}
+	
+	GetCapsuleComponent()->SetCapsuleHalfHeight(ProneHalfHeight);
+	GetMesh()->SetRelativeLocation(FVector(0.,0., -(ProneHalfHeight+5.)));
 }

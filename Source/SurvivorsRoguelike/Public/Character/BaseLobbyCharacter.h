@@ -5,6 +5,9 @@
 
 class UBaseLobbyPlayerAnimInst;
 
+constexpr float ProneHalfHeight=30.f;
+constexpr float OriginHalfHeight=91.5f;
+
 UCLASS()
 class SURVIVORSROGUELIKE_API ABaseLobbyCharacter : public ACharacter
 {
