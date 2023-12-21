@@ -23,7 +23,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Montage")
 	TObjectPtr<UAnimMontage>	m_GrabItem;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(BlueprintReadWrite, Category = "Weapon")
 	TObjectPtr<ABaseLobbyCharacter> m_Character;
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
 	FTransform m_LHandTransform;

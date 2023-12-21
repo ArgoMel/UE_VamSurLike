@@ -16,6 +16,7 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	m_MaxSprintSpeed = 600.f;
 	m_IsSprinting = false;
 	m_IsCrouching = false;
+	m_IsProning = false;
 	m_IsWalking = false;
 	m_CanMove = true;
 
@@ -47,7 +48,7 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 
 	GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
+	GetCharacterMovement()->RotationRate = FRotator(0., 540., 0.);
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_Mannequin(TEXT(
 		"/Game/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.SK_Mannequin"));
@@ -107,7 +108,26 @@ void ABaseLobbyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	}
 }
 
-void ABaseLobbyCharacter::BodyHit(UPrimitiveComponent* comp, AActor* otherActor, 
+bool ABaseLobbyCharacter::CanMove(FVector vec)
+{
+	if(!m_IsProning)
+	{
+		return true;
+	}
+	FHitResult hitResult;
+	FCollisionQueryParams collisionParams;
+	FVector startLoc = GetActorLocation();
+	FVector endLoc = startLoc + vec * OriginHalfHeight;
+	bool isCol = GetWorld()->LineTraceSingleByChannel(hitResult,
+		startLoc, endLoc, ECC_Visibility, collisionParams);
+#if ENABLE_DRAW_DEBUG
+	FColor drawColor = isCol ? FColor::Red : FColor::Green;
+	DrawDebugLine(GetWorld(), startLoc, endLoc, drawColor, false, 0.5f);
+#endif
+	return !isCol;
+}
+
+void ABaseLobbyCharacter::BodyHit(UPrimitiveComponent* comp, AActor* otherActor,
 	UPrimitiveComponent* otherComp, FVector normalImpulse, const FHitResult& result)
 {
 }
@@ -135,8 +155,14 @@ void ABaseLobbyCharacter::Move(const FInputActionValue& Value)
 	const FRotator yawRotation(0, rotation.Yaw, 0);
 	const FVector forwardDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
 	const FVector rightDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
-	AddMovementInput(forwardDir, m_MoveForwardValue);
-	AddMovementInput(rightDir, m_MoveRightValue);
+	if(m_MoveForwardValue!=0.f&& CanMove(forwardDir))
+	{
+		AddMovementInput(forwardDir, m_MoveForwardValue);
+	}
+	if (m_MoveRightValue != 0.f && CanMove(rightDir))
+	{
+		AddMovementInput(rightDir, m_MoveRightValue);
+	}
 }
 
 void ABaseLobbyCharacter::Jump()
@@ -191,7 +217,7 @@ void ABaseLobbyCharacter::Interaction()
 
 void ABaseLobbyCharacter::Walk()
 {
-	if (!IsValid(m_Anim)|| m_Anim->IsAnyMontagePlaying()|| m_Anim->m_IsProning)
+	if (!IsValid(m_Anim)|| m_Anim->IsAnyMontagePlaying()|| m_IsProning)
 	{
 		return;
 	}
@@ -213,19 +239,25 @@ void ABaseLobbyCharacter::Prone(const FInputActionValue& Value)
 		return;
 	}
 	m_IsCrouching = false;
-	m_IsWalking = !m_Anim->m_IsProning;
+	m_IsWalking = !m_IsProning;
 	//누워 있으면 일어날꺼니까 일어나는 몽타쥬
-	if (m_Anim->m_IsProning)
+	if (m_IsProning)
 	{
 		m_Anim->Montage_Play(m_ProneToStand);
+		GetCharacterMovement()->RotationRate = FRotator(0.,540.,0.);
 		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
+		GetCharacterMovement()->MaxAcceleration = 1500.f;
+		GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 		GetCapsuleComponent()->SetCapsuleHalfHeight(OriginHalfHeight);
 		GetMesh()->SetRelativeLocation(FVector(0., 0., -OriginHalfHeight));
 	}
 	else
 	{
 		m_Anim->Montage_Play(m_StandToProne);
+		GetCharacterMovement()->RotationRate = FRotator(0., 50., 0.);
 		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
+		GetCharacterMovement()->MaxAcceleration =200.f;
+		GetCharacterMovement()->BrakingDecelerationWalking = 200.f;
 		GetCapsuleComponent()->SetCapsuleHalfHeight(ProneHalfHeight);
 		GetMesh()->SetRelativeLocation(FVector(0., 0., -(ProneHalfHeight + 5.)));
 	}
