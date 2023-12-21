@@ -17,7 +17,6 @@ UBaseLobbyPlayerAnimInst::UBaseLobbyPlayerAnimInst()
 	m_IsCrouching = false;
 	m_IsAccerelating = false;
 	m_IsSprinting = false;
-	m_IsProning = false;
 
 	m_PitchInput = 0.f;
 	m_YawInput = 0.f;
