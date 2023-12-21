@@ -5,6 +5,9 @@
 
 class UBaseLobbyPlayerAnimInst;
 
+constexpr float ProneHalfHeight=30.f;
+constexpr float OriginHalfHeight=91.5f;
+
 UCLASS()
 class SURVIVORSROGUELIKE_API ABaseLobbyCharacter : public ACharacter
 {
@@ -23,6 +26,13 @@ protected:
 	TObjectPtr<USpringArmComponent> m_SpringArm;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Component")
 	TObjectPtr<UCameraComponent> m_Camera;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Animation")
+	TObjectPtr<UBaseLobbyPlayerAnimInst> m_Anim;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
+	TObjectPtr<UAnimMontage> m_ProneToStand;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
+	TObjectPtr<UAnimMontage> m_StandToProne;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	float m_MoveForwardValue;
@@ -72,6 +82,7 @@ protected:
 	void PlayerCrouch(const FInputActionValue& Value);
 	void Interaction();
 	void Walk();
+	void Prone(const FInputActionValue& Value);
 
 public:
 	bool GetIsADS()

@@ -9,6 +9,7 @@ UCLASS()
 class SURVIVORSROGUELIKE_API UBaseLobbyPlayerAnimInst : public UAnimInstance
 {
 	GENERATED_BODY()
+	friend ABaseLobbyCharacter;
 public:
 	UBaseLobbyPlayerAnimInst();
 	virtual void NativeInitializeAnimation();
@@ -53,6 +54,8 @@ protected:
 	bool m_IsAccerelating;
 	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")
 	bool m_IsSprinting;
+	UPROPERTY(BlueprintReadWrite, Category = "BasicMovement")
+	bool m_IsProning;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Offset")
 	float m_PitchInput;
