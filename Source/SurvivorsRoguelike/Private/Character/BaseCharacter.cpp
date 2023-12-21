@@ -1,5 +1,5 @@
 #include "Character/BaseCharacter.h"
-#include "Controller/BasePlayerController.h"
+#include "Controller/InGamePlayerController.h"
 #include "../../Temp/TempProjectile.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -60,13 +60,13 @@ void ABaseCharacter::SpawnBulletPerSec()
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	ABasePlayerController* BaseController = Cast<ABasePlayerController>(GetController());
+	AInGamePlayerController* IGController = Cast<AInGamePlayerController>(GetController());
 
 	FVector3d LLWeaponMuzzleLocation = LLWeapon->GetSocketLocation(TEXT("b_gun_muzzleflash"));
 	FVector3d LLWeaponMuzzleRelativeLocation = LLWeapon->GetSocketTransform(
 		TEXT("b_gun_muzzleflash"), ERelativeTransformSpace::RTS_Actor).GetLocation();
 
-	FVector3d CursorHit = BaseController->GetCursorHit();
+	FVector3d CursorHit = IGController->GetCursorHit();
 	CursorHit = FVector3d(
 		CursorHit.X,
 		CursorHit.Y,
