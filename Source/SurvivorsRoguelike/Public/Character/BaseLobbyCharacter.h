@@ -27,7 +27,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Component")
 	TObjectPtr<UCameraComponent> m_Camera;
 
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
+	UPROPERTY(BlueprintReadOnly, Category = "Animation")
 	TObjectPtr<UBaseLobbyPlayerAnimInst> m_Anim;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
 	TObjectPtr<UAnimMontage> m_ProneToStand;
