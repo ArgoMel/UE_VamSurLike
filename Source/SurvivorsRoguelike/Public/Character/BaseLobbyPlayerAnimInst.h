@@ -54,8 +54,6 @@ protected:
 	bool m_IsAccerelating;
 	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")
 	bool m_IsSprinting;
-	UPROPERTY(BlueprintReadWrite, Category = "BasicMovement")
-	bool m_IsProning;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Offset")
 	float m_PitchInput;

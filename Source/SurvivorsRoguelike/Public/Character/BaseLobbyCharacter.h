@@ -68,6 +68,7 @@ protected:
 
 private:
 	bool CanMove(FVector vec);
+	bool CanProne(FVector& adjustedLoc);
 
 protected:
 	UFUNCTION()
@@ -88,6 +89,13 @@ protected:
 	void Interaction();
 	void Walk();
 	void Prone(const FInputActionValue& Value);
+
+	UFUNCTION(Server, Reliable)
+	void ToggleProne_Server();
+	void ToggleProne_Server_Implementation();
+	UFUNCTION(NetMulticast, Reliable)
+	void ToggleProne_Multicast();
+	void ToggleProne_Multicast_Implementation();
 
 public:
 	bool GetIsADS()

@@ -63,13 +63,13 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 		GetMesh()->SetAnimInstanceClass(AB_UE4Mannequin_C.Class);
 	}
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>	Prone_To_Stand_Montage(TEXT(
-		"/Game/AnimStarterPack/Prone_To_Stand_Montage.Prone_To_Stand_Montage"));
+		"/Game/0_KBJ/Anim/UE4Countess/Prone_To_Stand_Montage.Prone_To_Stand_Montage"));
 	if (Prone_To_Stand_Montage.Succeeded())
 	{
 		m_ProneToStand=Prone_To_Stand_Montage.Object;
 	}
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>	Stand_To_Prone_Montage(TEXT(
-		"/Game/AnimStarterPack/Stand_To_Prone_Montage.Stand_To_Prone_Montage"));
+		"/Game/0_KBJ/Anim/UE4Countess/Stand_To_Prone_Montage.Stand_To_Prone_Montage"));
 	if (Stand_To_Prone_Montage.Succeeded())
 	{
 		m_StandToProne = Stand_To_Prone_Montage.Object;
@@ -115,9 +115,9 @@ bool ABaseLobbyCharacter::CanMove(FVector vec)
 		return true;
 	}
 	FHitResult hitResult;
-	FCollisionQueryParams collisionParams;
+	FCollisionQueryParams collisionParams(NAME_None, false, this);
 	FVector startLoc = GetActorLocation();
-	FVector endLoc = startLoc + vec * OriginHalfHeight;
+	FVector endLoc = startLoc + vec * 60.f;
 	bool isCol = GetWorld()->LineTraceSingleByChannel(hitResult,
 		startLoc, endLoc, ECC_Visibility, collisionParams);
 #if ENABLE_DRAW_DEBUG
@@ -125,6 +125,47 @@ bool ABaseLobbyCharacter::CanMove(FVector vec)
 	DrawDebugLine(GetWorld(), startLoc, endLoc, drawColor, false, 0.5f);
 #endif
 	return !isCol;
+}
+
+bool ABaseLobbyCharacter::CanProne(FVector& adjustedLoc)
+{
+	TArray<FHitResult> hitResultsFront;
+	FCollisionQueryParams collisionParams(NAME_None, false, this);
+	FVector startLoc = GetActorLocation() + FVector(0., 0., -50.);
+	FVector endLoc = startLoc+GetActorForwardVector()*80.f;
+	float radius = GetCapsuleComponent()->GetScaledCapsuleRadius();
+	bool isColFront = GetWorld()->SweepMultiByChannel(hitResultsFront,
+		startLoc, endLoc, FQuat::Identity,ECC_Visibility, 
+		FCollisionShape::MakeSphere(radius), collisionParams);
+#if ENABLE_DRAW_DEBUG
+	FColor drawColor = isColFront ? FColor::Red : FColor::Green;
+	DrawDebugSphere(GetWorld(), (startLoc + endLoc) * 0.5, radius,0, drawColor, false, 0.5f);
+#endif
+	TArray<FHitResult> hitResultsBack;
+	endLoc = startLoc + GetActorForwardVector() * -80.f;
+	bool isColBack = GetWorld()->SweepMultiByChannel(hitResultsBack,
+		startLoc, endLoc, FQuat::Identity, ECC_Visibility,
+		FCollisionShape::MakeSphere(radius), collisionParams);
+#if ENABLE_DRAW_DEBUG
+	DrawDebugSphere(GetWorld(), (startLoc + endLoc) * 0.5, radius, 0, drawColor, false, 0.5f);
+#endif
+	if (isColFront && isColBack)
+	{
+		return false;
+	}
+	else if(isColFront)
+	{
+		adjustedLoc= GetActorLocation()-GetActorForwardVector()*(80.f-hitResultsFront[0].Distance);
+	}
+	else if (isColBack)
+	{
+		adjustedLoc = GetActorLocation() + GetActorForwardVector() * (80.f - hitResultsBack[0].Distance);
+	}
+	else
+	{
+		adjustedLoc = GetActorLocation();
+	}
+	return true;
 }
 
 void ABaseLobbyCharacter::BodyHit(UPrimitiveComponent* comp, AActor* otherActor,
@@ -155,11 +196,11 @@ void ABaseLobbyCharacter::Move(const FInputActionValue& Value)
 	const FRotator yawRotation(0, rotation.Yaw, 0);
 	const FVector forwardDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
 	const FVector rightDir = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
-	if(m_MoveForwardValue!=0.f&& CanMove(forwardDir))
+	if(m_MoveForwardValue!=0.f&& CanMove(forwardDir* m_MoveForwardValue))
 	{
 		AddMovementInput(forwardDir, m_MoveForwardValue);
 	}
-	if (m_MoveRightValue != 0.f && CanMove(rightDir))
+	if (m_MoveRightValue != 0.f && CanMove(rightDir* m_MoveRightValue))
 	{
 		AddMovementInput(rightDir, m_MoveRightValue);
 	}
@@ -199,7 +240,7 @@ void ABaseLobbyCharacter::PlayerCrouch(const FInputActionValue& Value)
 	{
 		return;
 	}
-	m_Anim->m_IsProning = false;
+	m_IsProning = false;
 	m_IsCrouching = !m_IsCrouching;
 	if (m_IsCrouching)
 	{
@@ -234,31 +275,60 @@ void ABaseLobbyCharacter::Walk()
 
 void ABaseLobbyCharacter::Prone(const FInputActionValue& Value)
 {
-	if (!IsValid(m_Anim)|| m_Anim->IsAnyMontagePlaying())
+	if (HasAuthority())
+	{
+		ToggleProne_Multicast();
+	}
+	else
+	{
+		ToggleProne_Server();
+	}
+}
+
+void ABaseLobbyCharacter::ToggleProne_Server_Implementation()
+{
+	ToggleProne_Multicast();
+}
+
+void ABaseLobbyCharacter::ToggleProne_Multicast_Implementation()
+{
+	if (!IsValid(m_Anim) || m_Anim->IsAnyMontagePlaying())
 	{
 		return;
 	}
-	m_IsCrouching = false;
-	m_IsWalking = !m_IsProning;
+	FVector meshLoc;
+	if (!m_IsProning)
+	{
+		FVector adjustedLoc;
+		if (!CanProne(adjustedLoc))
+		{
+			return;
+		}
+		m_Anim->Montage_Play(m_StandToProne);
+		FLatentActionInfo info;
+		info.CallbackTarget = this;
+		UKismetSystemLibrary::MoveComponentTo(GetRootComponent(), adjustedLoc,
+			GetActorRotation(), true, true, 0.6f, false, EMoveComponentAction::Move, info);
+		GetCharacterMovement()->RotationRate = FRotator(0., 50., 0.);
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
+		GetCharacterMovement()->MaxAcceleration = 200.f;
+		GetCharacterMovement()->BrakingDecelerationWalking = 200.f;
+		GetCapsuleComponent()->SetCapsuleHalfHeight(ProneHalfHeight);
+		meshLoc=FVector(0., 0., -(ProneHalfHeight + 5.));
+	}
 	//누워 있으면 일어날꺼니까 일어나는 몽타쥬
-	if (m_IsProning)
+	else
 	{
 		m_Anim->Montage_Play(m_ProneToStand);
-		GetCharacterMovement()->RotationRate = FRotator(0.,540.,0.);
+		GetCharacterMovement()->RotationRate = FRotator(0., 540., 0.);
 		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
 		GetCharacterMovement()->MaxAcceleration = 1500.f;
 		GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 		GetCapsuleComponent()->SetCapsuleHalfHeight(OriginHalfHeight);
-		GetMesh()->SetRelativeLocation(FVector(0., 0., -OriginHalfHeight));
+		meshLoc=FVector(0., 0., -OriginHalfHeight);
 	}
-	else
-	{
-		m_Anim->Montage_Play(m_StandToProne);
-		GetCharacterMovement()->RotationRate = FRotator(0., 50., 0.);
-		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
-		GetCharacterMovement()->MaxAcceleration =200.f;
-		GetCharacterMovement()->BrakingDecelerationWalking = 200.f;
-		GetCapsuleComponent()->SetCapsuleHalfHeight(ProneHalfHeight);
-		GetMesh()->SetRelativeLocation(FVector(0., 0., -(ProneHalfHeight + 5.)));
-	}
+	CacheInitialMeshOffset(meshLoc, FRotator(0., -90., 0.));
+	GetMesh()->SetRelativeLocation(meshLoc);
+	m_IsCrouching = false;
+	m_IsWalking = !m_IsProning;
 }
