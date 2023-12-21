@@ -13,7 +13,18 @@ protected:
 	virtual void BeginPlay() override;
 public:	
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+protected:
+	UPROPERTY(Category = Components, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USkeletalMeshComponent> LLWeapon;
+
+	FTimerHandle mHitTimerHandle;
+
+private:
+	float LLWeaponRange;
+	float LLWeaponRate;
+
+	void SpawnBulletPerSec();
 
 private:
 	FTimerHandle mPercentDamageHandle;

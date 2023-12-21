@@ -27,13 +27,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Component")
 	TObjectPtr<UCameraComponent> m_Camera;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Animation")
-	TObjectPtr<UBaseLobbyPlayerAnimInst> m_Anim;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere,Category = "Animation")
-	TObjectPtr<UAnimMontage> m_ProneToStand;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
-	TObjectPtr<UAnimMontage> m_StandToProne;
-
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	float m_MoveForwardValue;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
@@ -82,7 +75,6 @@ protected:
 	void PlayerCrouch(const FInputActionValue& Value);
 	void Interaction();
 	void Walk();
-	void Prone(const FInputActionValue& Value);
 
 public:
 	bool GetIsADS()
