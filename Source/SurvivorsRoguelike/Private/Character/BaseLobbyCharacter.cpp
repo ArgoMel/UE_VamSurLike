@@ -24,12 +24,11 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	m_IsInvertX = false;
 	m_IsInvertY = true;
 
-	GetCapsuleComponent()->InitCapsuleSize(20.f, 91.5f);
+	GetCapsuleComponent()->InitCapsuleSize(20.f, OriginHalfHeight);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 	SetRootComponent(GetCapsuleComponent());
 
-	GetMesh()->SetRelativeLocation(FVector(0.f, 0.f,
-		-GetCapsuleComponent()->GetScaledCapsuleHalfHeight()));
+	GetMesh()->SetRelativeLocation(FVector(0.f, 0.f,-OriginHalfHeight));
 	GetMesh()->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->bReceivesDecals = false;
@@ -62,11 +61,24 @@ ABaseLobbyCharacter::ABaseLobbyCharacter()
 	{
 		GetMesh()->SetAnimInstanceClass(AB_UE4Mannequin_C.Class);
 	}
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>	Prone_To_Stand_Montage(TEXT(
+		"/Game/AnimStarterPack/Prone_To_Stand_Montage.Prone_To_Stand_Montage"));
+	if (Prone_To_Stand_Montage.Succeeded())
+	{
+		m_ProneToStand=Prone_To_Stand_Montage.Object;
+	}
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>	Stand_To_Prone_Montage(TEXT(
+		"/Game/AnimStarterPack/Stand_To_Prone_Montage.Stand_To_Prone_Montage"));
+	if (Stand_To_Prone_Montage.Succeeded())
+	{
+		m_StandToProne = Stand_To_Prone_Montage.Object;
+	}
 }
 
 void ABaseLobbyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	m_Anim = Cast<UBaseLobbyPlayerAnimInst>(GetMesh()->GetAnimInstance());
 }
 
 void ABaseLobbyCharacter::Tick(float DeltaTime)
@@ -87,6 +99,7 @@ void ABaseLobbyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 		input->BindAction(controller->GetKeySprint(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Sprint);
 		input->BindAction(controller->GetKeySprint(), ETriggerEvent::Completed, this, &ABaseLobbyCharacter::Sprint);
 		input->BindAction(controller->GetKeyCrouch(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::PlayerCrouch);
+		input->BindAction(controller->GetKeyProne(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Prone);
 		input->BindAction(controller->GetKeyInteraction(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Interaction);
 		input->BindAction(controller->GetKeyWalk(), ETriggerEvent::Started, this, &ABaseLobbyCharacter::Walk);
 		input->BindAction(controller->GetKeyWalk(), ETriggerEvent::Completed, this, &ABaseLobbyCharacter::Walk);
@@ -156,6 +169,11 @@ void ABaseLobbyCharacter::Sprint()
 
 void ABaseLobbyCharacter::PlayerCrouch(const FInputActionValue& Value)
 {
+	if (!IsValid(m_Anim))
+	{
+		return;
+	}
+	m_Anim->m_IsProning = false;
 	m_IsCrouching = !m_IsCrouching;
 	if (m_IsCrouching)
 	{
@@ -173,6 +191,10 @@ void ABaseLobbyCharacter::Interaction()
 
 void ABaseLobbyCharacter::Walk()
 {
+	if (!IsValid(m_Anim)|| m_Anim->IsAnyMontagePlaying()|| m_Anim->m_IsProning)
+	{
+		return;
+	}
 	m_IsWalking = !m_IsWalking;
 	if (m_IsWalking)
 	{
@@ -182,4 +204,34 @@ void ABaseLobbyCharacter::Walk()
 	{
 		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
 	}
+}
+
+void ABaseLobbyCharacter::Prone(const FInputActionValue& Value)
+{
+	if (!IsValid(m_Anim) || m_Anim->IsAnyMontagePlaying())
+	{
+		return;
+	}
+	m_IsCrouching = false;
+	//누워 있으면 일어날꺼니까 일어나는 몽타쥬
+	if (m_Anim->m_IsProning)
+	{
+		m_Anim->Montage_Play(m_ProneToStand);
+	}
+	else
+	{
+		m_Anim->Montage_Play(m_StandToProne);
+	}
+	m_IsWalking = !m_Anim->m_IsProning;
+	if (m_IsWalking)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxWalkSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = m_MaxJogSpeed;
+	}
+	
+	GetCapsuleComponent()->SetCapsuleHalfHeight(ProneHalfHeight);
+	GetMesh()->SetRelativeLocation(FVector(0.,0., -(ProneHalfHeight+5.)));
 }
