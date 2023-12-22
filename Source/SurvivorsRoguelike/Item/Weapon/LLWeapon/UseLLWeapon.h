@@ -37,6 +37,9 @@ private:
 	ELLWeaponType	mWeaponType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float		mOffensePower;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float		mAttackSpeed;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -62,6 +65,7 @@ public:
 		mNum = Data->Num;
 		mItemType = Data->ItemType;
 		mWeaponType = Data->WeaponType;
+		mOffensePower = Data->OffensePower;
 		mPenetrating = Data->Penetrating;
 		mAttackSpeed = Data->AttackSpeed;
 		mRange = Data->Range;
@@ -70,6 +74,10 @@ public:
 
 	void Attack();
 	void ClearWeapon();
+	FVector GetCharacterFwdLoc()
+	{
+		return GetOwner()->GetActorForwardVector();
+	}
 
 protected:
 	static const FLLWeaponData* FindWeaponData(const FName& Name);

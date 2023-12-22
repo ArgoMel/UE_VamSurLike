@@ -35,4 +35,5 @@ void AMGWeaponBase::BeginPlay()
 
 void AMGWeaponBase::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
 }

@@ -4,11 +4,12 @@
 
 #include "../../../GameInfo.h"
 #include "../WeaponBase.h"
+#include "BulletBase.h"
 #include "LLWeaponBase.generated.h"
 
-/**
- * 
- */
+
+
+
 UCLASS()
 class SURVIVORSROGUELIKE_API ALLWeaponBase : public AWeaponBase
 {
@@ -19,28 +20,42 @@ public:
 
 protected:
 	static TObjectPtr<UDataTable>	mWeaponDataTable;
+	TSubclassOf<class ABulletBase>	mBulletClass;
+	TObjectPtr<class ABulletBase>	mBullet;
+	FVector	mCharacterFwdLoc;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float		mPenetrating;
+	float mTime;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float		mRange;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
 	ELLWeaponType	mWeaponType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> mMesh;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float mOffensePower;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float mPenetrating;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float mRange;
+
 public:
-	void Init(int32 num, EItemType ItemType, FString name, float AttackSpeed,
+	void Init(int32 num, EItemType ItemType, FString name, float OffensePower, float AttackSpeed,
 		float Penetrating, float Range, ELLWeaponType WeaponType, USkeletalMesh* Mesh);
+
+	void Fire();
+	void SetBullet();
+	void SetCharacterFwdLoc(const FVector& Vector)
+	{
+		mCharacterFwdLoc = Vector;
+	}
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
-	// Called every frame
+public :
 	virtual void Tick(float DeltaTime) override;
 };

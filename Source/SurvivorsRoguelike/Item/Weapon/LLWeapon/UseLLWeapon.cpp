@@ -26,6 +26,8 @@ void UUseLLWeapon::LoadWeaponData()
 
 void UUseLLWeapon::Attack()
 {
+	mWeapon->SetCharacterFwdLoc(GetOwner()->GetActorForwardVector());
+	mWeapon->Fire();
 }
 
 void UUseLLWeapon::ClearWeapon()
@@ -65,8 +67,8 @@ void UUseLLWeapon::BeginPlay()
 
 	mWeapon = GetWorld()->SpawnActor<ALLWeaponBase>(mWeaponClass, ActorParam);
 
-	mWeapon->Init(mNum, mItemType, mName.ToString(), mAttackSpeed, mPenetrating, mRange,
-		mWeaponType, mMeshPtr);
+	mWeapon->Init(mNum, mItemType, mName.ToString(), mOffensePower,
+		mAttackSpeed, mPenetrating, mRange, mWeaponType, mMeshPtr);
 
 	FName PlayerSocket = FName(TEXT("LLWeaponSocket"));
 
@@ -74,8 +76,6 @@ void UUseLLWeapon::BeginPlay()
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
 }
 
-
-// Called every frame
 void UUseLLWeapon::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
