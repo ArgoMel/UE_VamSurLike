@@ -80,3 +80,17 @@ void ALobbyPlayerController::AddController()
 		}
 	}
 }
+
+void ALobbyPlayerController::RefreshKeyMapping()
+{
+	ULocalPlayer* localPlayer = GetLocalPlayer();
+	if (IsValid(localPlayer))
+	{
+		UEnhancedInputLocalPlayerSubsystem* subSystem =
+			localPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+		if (IsValid(subSystem))
+		{
+			subSystem->RequestRebuildControlMappings();
+		}
+	}
+}
