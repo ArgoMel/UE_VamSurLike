@@ -90,16 +90,6 @@ enum class EPlayerJob : uint8
 };
 
 UENUM(BlueprintType)
-enum class ELobbyPlayerState : uint8
-{
-	Idle,
-	Fight,
-	Gun,
-	Bow,
-	Melee
-};
-
-UENUM(BlueprintType)
 enum class EAIKind : uint8
 {
 	None,
@@ -251,8 +241,6 @@ enum class EItemRank : uint8
 	S
 };
 
-
-
 UENUM(BlueprintType)
 enum class EItemType : uint8
 {
@@ -261,6 +249,17 @@ enum class EItemType : uint8
 	MGWeapon,
 	Relic,
 	Element
+};
+
+UENUM(BlueprintType)
+enum class EElement : uint8
+{
+	None,
+	Fire,
+	Water,
+	Eletric,
+	Glass,
+	Ground
 };
 
 UENUM(BlueprintType)
@@ -282,9 +281,30 @@ enum class ELLWeaponType : uint8
 UENUM(BlueprintType)
 enum class EMGWeaponType : uint8
 {
-	Staff,
-	Wand
+	MagicBook,
+	Objet
 };
+
+USTRUCT(BlueprintType)
+struct FBulletStat :
+	public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public :
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		OffensePower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		Penetrating;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		Range;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EElement	Element;
+};
+
 
 USTRUCT(BlueprintType)
 struct FMLWeaponData :
@@ -327,6 +347,7 @@ public:
 	TObjectPtr<UStaticMesh>		Mesh;
 };
 
+
 USTRUCT(BlueprintType)
 struct FLLWeaponData :
 	public FTableRowBase
@@ -335,16 +356,34 @@ struct FLLWeaponData :
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FString	Name;
+	int32		Num;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EItemType	ItemType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	ELLWeaponType	WeaponType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EItemRank	Rank;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	OffensePower;
+	UTexture2D* Icon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	AttackSpeed;
+	float		OffensePower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		Penetrating;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		AttackSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		Range;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USkeletalMesh>		Mesh;
 };
 
 USTRUCT(BlueprintType)
@@ -355,29 +394,26 @@ struct FMGWeaponData :
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FString	Name;
+	int32		Num;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EItemType	ItemType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EMGWeaponType	WeaponType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EItemRank	Rank;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	OffensePower;
+	UTexture2D* Icon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	AttackSpeed;
-};
+	float		SpellPower;
 
-USTRUCT(BlueprintType)
-struct FControlConfig
-{
-	GENERATED_BODY()
-public:
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FName ControlName;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FText ControlLabel;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	float Scale;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FKey DefualtKey;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		AttackSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UStaticMesh>		Mesh;
 };

@@ -2,34 +2,61 @@
 
 
 #include "LLWeaponBase.h"
-
-TObjectPtr<UDataTable>	ALLWeaponBase::mWeaponDataTable;
-
 ALLWeaponBase::ALLWeaponBase()
 {
+
+	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	SetRootComponent(mMesh);
+	mBulletClass = ABulletBase::StaticClass();
 }
 
-void ALLWeaponBase::LoadWeaponData()
+void ALLWeaponBase::Init(int32 num, EItemType ItemType, FString name, float OffensePower,
+	float AttackSpeed, float Penetrating, float Range, ELLWeaponType WeaponType, USkeletalMesh* Mesh)
 {
+	mNum = num;
+	mItemType = ItemType;
+	mName = name;
+	mAttackSpeed = AttackSpeed;
+	mWeaponType = WeaponType;
+	mPenetrating = Penetrating;
+	mOffensePower = OffensePower;
+	mRange = Range;
+
+	if(Mesh)
+		mMesh->SetSkeletalMesh(Mesh);
 }
 
-const FLLWeaponData* ALLWeaponBase::FindWeaponData(const FName& Name)
+void ALLWeaponBase::Fire()
 {
-	return mWeaponDataTable->FindRow<FLLWeaponData>(Name, TEXT(""));
+	SetBullet();
+
+	FActorSpawnParameters	ActorParam;
+	ActorParam.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	mBullet = GetWorld()->SpawnActor<ABulletBase>(mBulletClass,
+		mMesh->GetSocketLocation(TEXT("MuzzleFlash")),
+		FRotator::ZeroRotator,
+		ActorParam);
+
+	mBullet->SetProjectileRot(mCharacterFwdLoc);
+}
+
+void ALLWeaponBase::SetBullet()
+{
+	//Bullet.Element = EElement::None;
+	//Bullet.OffensePower = mOffensePower;
+	//Bullet.Penetrating = mPenetrating;
+	//Bullet.Range = mRange;
 }
 
 void ALLWeaponBase::BeginPlay()
 {
 }
 
-void ALLWeaponBase::OnConstruction(const FTransform& Transform)
-{
-}
-
 void ALLWeaponBase::Tick(float DeltaTime)
 {
-}
-
-void ALLWeaponBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
+	Super::Tick(DeltaTime);
 }
