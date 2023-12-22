@@ -10,6 +10,7 @@ UBaseLobbyPlayerAnimInst::UBaseLobbyPlayerAnimInst()
 	m_LHandIK = 1.f;
 	m_IsADS = false;
 
+	m_State = ELobbyPlayerState::Idle;
 	m_Speed = 0.f;
 	m_Dir = 0.f;
 	m_IsJumping = false;
@@ -76,11 +77,15 @@ void UBaseLobbyPlayerAnimInst::BaseVariableSetting()
 {
 	FVector velocity = m_Character->GetVelocity();
 	m_Speed = velocity.Length();
-	m_ControlAlpha = FMath::Lerp(m_ControlAlpha, FMath::Clamp(m_Speed / 50.f, 0.f, 1.f) - 1.f, 0.05f);
+	m_IsCrouching = m_Character->m_IsCrouching;
+	m_ControlAlpha = FMath::Lerp(m_ControlAlpha, 1.f-FMath::Clamp(m_Speed / 50.f, 0.f, 1.f) , 0.05f);
+	if(m_IsCrouching)
+	{
+		m_ControlAlpha *= 0.75f;
+	}
 	m_Dir = UKismetAnimationLibrary::CalculateDirection(velocity, m_Character->GetActorRotation());
 	UCharacterMovementComponent* moveComp = m_Character->GetCharacterMovement();
 	m_IsAccerelating = moveComp->GetCurrentAcceleration().Length() > 0.f;
-	m_IsCrouching = m_Character->m_IsCrouching;
 	m_IsJumping = moveComp->IsFalling();
 	m_IsSprinting = m_Character->m_IsSprinting;
 	m_IsADS = m_Character->GetIsADS();

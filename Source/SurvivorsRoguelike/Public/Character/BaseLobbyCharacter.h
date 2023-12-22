@@ -5,6 +5,9 @@
 
 class UBaseLobbyPlayerAnimInst;
 
+constexpr float ProneHalfHeight=30.f;
+constexpr float OriginHalfHeight=91.5f;
+
 UCLASS()
 class SURVIVORSROGUELIKE_API ABaseLobbyCharacter : public ACharacter
 {
@@ -24,6 +27,13 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Component")
 	TObjectPtr<UCameraComponent> m_Camera;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Animation")
+	TObjectPtr<UBaseLobbyPlayerAnimInst> m_Anim;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
+	TObjectPtr<UAnimMontage> m_ProneToStand;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Animation")
+	TObjectPtr<UAnimMontage> m_StandToProne;
+
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	float m_MoveForwardValue;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
@@ -31,11 +41,17 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	float m_MaxWalkSpeed;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
+	float m_MaxJogSpeed;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	float m_MaxSprintSpeed;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	bool m_IsSprinting;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	bool m_IsCrouching;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
+	bool m_IsProning;
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
+	bool m_IsWalking;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Movement", meta = (AllowPrivateAccess = true))
 	bool m_CanMove;
 
@@ -49,6 +65,10 @@ protected:
 	bool m_IsInvertX;
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Camera", meta = (AllowPrivateAccess = true))
 	bool m_IsInvertY;
+
+private:
+	bool CanMove(FVector vec);
+	bool CanProne(FVector& adjustedLoc);
 
 protected:
 	UFUNCTION()
@@ -66,13 +86,18 @@ protected:
 	void StopJumping();
 	void Sprint();
 	void PlayerCrouch(const FInputActionValue& Value);
-	void CollectPickUps();
+	void Interaction();
+	void Walk();
+	void Prone(const FInputActionValue& Value);
 
-	void HandleCameraShake();
+	UFUNCTION(Server, Reliable)
+	void ToggleProne_Server();
+	void ToggleProne_Server_Implementation();
+	UFUNCTION(NetMulticast, Reliable)
+	void ToggleProne_Multicast();
+	void ToggleProne_Multicast_Implementation();
 
 public:
-	void OnPlayerDeath();
-
 	bool GetIsADS()
 	{
 		return false;

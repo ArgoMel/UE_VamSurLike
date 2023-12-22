@@ -22,13 +22,10 @@ public:
 
 protected:
 	float mTime = 0.f;
-	TObjectPtr<AActor>	mPlayer;
+	FVector	mPlayerLoc;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> mCollision;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<UStaticMeshComponent>	mMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float		mOffensePower;
@@ -45,11 +42,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EMLWeaponType	mWeaponType;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UStaticMeshComponent>	mMesh;
 
 public :
 	void Init(int32 num, EItemType ItemType, FString name, float AttackSpeed, 
 		float OffensePower, FVector CollisionScale, FVector CollisionLoc, 
-		EMLWeaponType WeaponType, UStaticMesh* Mesh, AActor* Player);
+		EMLWeaponType WeaponType, UStaticMesh* Mesh);
 
 protected:
 	// Called when the game starts or when spawned

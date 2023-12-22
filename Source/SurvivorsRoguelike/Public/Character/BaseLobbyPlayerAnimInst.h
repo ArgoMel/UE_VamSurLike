@@ -9,6 +9,7 @@ UCLASS()
 class SURVIVORSROGUELIKE_API UBaseLobbyPlayerAnimInst : public UAnimInstance
 {
 	GENERATED_BODY()
+	friend ABaseLobbyCharacter;
 public:
 	UBaseLobbyPlayerAnimInst();
 	virtual void NativeInitializeAnimation();
@@ -22,7 +23,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Montage")
 	TObjectPtr<UAnimMontage>	m_GrabItem;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
+	UPROPERTY(BlueprintReadWrite, Category = "Weapon")
 	TObjectPtr<ABaseLobbyCharacter> m_Character;
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
 	FTransform m_LHandTransform;
@@ -39,6 +40,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Weapon")
 	bool m_IsADS;
 
+	UPROPERTY(BlueprintReadWrite, Category = "BasicMovement")
+	ELobbyPlayerState m_State;
 	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")
 	float m_Speed;
 	UPROPERTY(BlueprintReadOnly, Category = "BasicMovement")

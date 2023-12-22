@@ -30,24 +30,24 @@ void UUseMLWeapon::Attack()
 
 		mWeapon = GetWorld()->SpawnActor<AMLWeaponBase>(mWeaponClass,
 			GetOwner()->GetActorLocation() + FVector(0.f, 0.f, 0.f),
-			FRotator(0.f, 0.f, 0.f),
+			GetOwner()->GetActorRotation() + FRotator(0.f, 0.f, 0.f),
 			ActorParam);
 
 		mWeapon->Init(mNum, mItemType, mName.ToString(), mAttackSpeed, mOffensePower, mCollisionScale,
-			mCollisionLoc, mWeaponType, mMeshPtr, GetOwner());
+			mCollisionLoc, mWeaponType, mMeshPtr);
 
-		FName PlayerSocket = FName(TEXT("MLWeaponSocket"));
+		FName PlayerSocket(TEXT("MLWeaponSocket"));
 		
 		FAttachmentTransformRules	AttachRule(
 			EAttachmentRule::SnapToTarget,
 			EAttachmentRule::SnapToTarget,
 			EAttachmentRule::KeepRelative,
 			false);
-		
-		mWeapon->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
+
+		mWeapon->AttachToComponent(GetOwner()->GetRootComponent(),
 			AttachRule, PlayerSocket);
-		
-		
+
+
 		mWeapon->SetActorRelativeRotation(FRotator(0.f, 0.f, 90.f));
 	}
 }
