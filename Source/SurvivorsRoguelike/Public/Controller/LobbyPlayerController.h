@@ -54,4 +54,7 @@ public:
 
 	void SetNewController();
 	void AddController();
+
+	UFUNCTION(BlueprintCallable)
+	void RefreshKeyMapping();
 };

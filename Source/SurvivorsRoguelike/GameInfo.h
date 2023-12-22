@@ -366,3 +366,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float	AttackSpeed;
 };
+
+USTRUCT(BlueprintType)
+struct FControlConfig
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FName ControlName;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FText ControlLabel;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	float Scale;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FKey DefualtKey;
+};
