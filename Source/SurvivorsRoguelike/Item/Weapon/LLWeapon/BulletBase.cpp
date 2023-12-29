@@ -3,7 +3,7 @@
 
 #include "BulletBase.h"
 
-inline int BulletSpeed = 10000;
+inline int BulletSpeed = 4000;
 
 // Sets default values
 ABulletBase::ABulletBase()
@@ -36,6 +36,14 @@ ABulletBase::ABulletBase()
 void ABulletBase::SetProjectileRot(const FVector& Vector)
 {
 	mProjectile->Velocity = Vector * BulletSpeed;
+}
+
+void ABulletBase::SetBulletStat(const FBulletStat& Stat)
+{
+	mBulletStat.Element = Stat.Element;
+	mBulletStat.OffensePower = Stat.OffensePower;
+	mBulletStat.Penetrating = Stat.Penetrating;
+	mBulletStat.Range = Stat.Range;
 }
 
 // Called when the game starts or when spawned

@@ -30,8 +30,6 @@ void ALLWeaponBase::Init(int32 num, EItemType ItemType, FString name, float Offe
 
 void ALLWeaponBase::Fire()
 {
-	SetBullet();
-
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
@@ -41,15 +39,10 @@ void ALLWeaponBase::Fire()
 		FRotator::ZeroRotator,
 		ActorParam);
 
-	mBullet->SetProjectileRot(mCharacterFwdLoc);
-}
+	ALLWeaponBase::SetBulletStat();
 
-void ALLWeaponBase::SetBullet()
-{
-	//Bullet.Element = EElement::None;
-	//Bullet.OffensePower = mOffensePower;
-	//Bullet.Penetrating = mPenetrating;
-	//Bullet.Range = mRange;
+	mBullet->SetProjectileRot(mCharacterFwdLoc);
+	mBullet->SetBulletStat(mBulletStat);
 }
 
 void ALLWeaponBase::BeginPlay()

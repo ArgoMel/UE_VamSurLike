@@ -17,7 +17,7 @@ public:
 	ABulletBase();
 
 private :
-	static FBulletStat Bullet;
+	FBulletStat mBulletStat;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UProjectileMovementComponent> mProjectile;
@@ -28,13 +28,15 @@ private :
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USphereComponent>	mCollision;
 
+
 public :
 	void SetProjectileRot(const FVector& Vector);
+	void SetBulletStat(const FBulletStat& Stat);
 
 	UFUNCTION(BlueprintCallable)
-	float GetElement()
+	FBulletStat GetBulletStat()
 	{
-		return 0;
+		return mBulletStat;
 	}
 	
 protected:

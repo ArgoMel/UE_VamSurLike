@@ -19,38 +19,6 @@ void UUseMLWeapon::LoadWeaponData()
 		TEXT("/Script/Engine.DataTable'/Game/00_Weapon/DataTable/MLWeaponData.MLWeaponData'"));
 }
 
-void UUseMLWeapon::Attack()
-{
-	FActorSpawnParameters	ActorParam;
-	ActorParam.SpawnCollisionHandlingOverride =
-		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-
-	if (mMeshPtr)
-	{
-
-		mWeapon = GetWorld()->SpawnActor<AMLWeaponBase>(mWeaponClass,
-			GetOwner()->GetActorLocation() + FVector(0.f, 0.f, 0.f),
-			GetOwner()->GetActorRotation() + FRotator(0.f, 0.f, 0.f),
-			ActorParam);
-
-		mWeapon->Init(mNum, mItemType, mName.ToString(), mAttackSpeed, mOffensePower, mCollisionScale,
-			mCollisionLoc, mWeaponType, mMeshPtr);
-
-		FName PlayerSocket(TEXT("MLWeaponSocket"));
-		
-		FAttachmentTransformRules	AttachRule(
-			EAttachmentRule::SnapToTarget,
-			EAttachmentRule::SnapToTarget,
-			EAttachmentRule::KeepRelative,
-			false);
-
-		mWeapon->AttachToComponent(GetOwner()->GetRootComponent(),
-			AttachRule, PlayerSocket);
-
-
-		mWeapon->SetActorRelativeRotation(FRotator(0.f, 0.f, 90.f));
-	}
-}
 
 void UUseMLWeapon::ClearWeapon()
 {
@@ -81,6 +49,35 @@ void UUseMLWeapon::BeginPlay()
 			SetWeaponInfo(mName, Data);
 		}
 	}
+
+	FActorSpawnParameters	ActorParam;
+	ActorParam.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	if (mMeshPtr)
+	{
+		mWeapon = GetWorld()->SpawnActor<AMLWeaponBase>(mWeaponClass,
+			GetOwner()->GetActorLocation() + FVector(0.f, 0.f, 0.f),
+			GetOwner()->GetActorRotation() + FRotator(0.f, 0.f, 0.f),
+			ActorParam);
+
+		mWeapon->Init(mNum, mItemType, mName.ToString(), mAttackSpeed, mOffensePower, mCollisionScale,
+			mCollisionLoc, mWeaponType, mMeshPtr, mElement);
+
+		FName PlayerSocket(TEXT("MLWeaponSocket"));
+
+		FAttachmentTransformRules	AttachRule(
+			EAttachmentRule::SnapToTarget,
+			EAttachmentRule::SnapToTarget,
+			EAttachmentRule::KeepRelative,
+			false);
+
+		mWeapon->AttachToComponent(GetOwner()->GetRootComponent(),
+			AttachRule, PlayerSocket);
+
+
+		
+	}
 }
 
 // Called every frame
@@ -89,11 +86,5 @@ void UUseMLWeapon::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	mTime += DeltaTime;
-	if (mTime >= (1 / mAttackSpeed))
-	{
-		Attack();
-		mTime = 0;
-	}
 }
 
