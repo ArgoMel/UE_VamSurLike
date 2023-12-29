@@ -19,10 +19,10 @@ public:
 	ALLWeaponBase();
 
 protected:
-	static TObjectPtr<UDataTable>	mWeaponDataTable;
-	TSubclassOf<class ABulletBase>	mBulletClass;
-	TObjectPtr<class ABulletBase>	mBullet;
+	TSubclassOf<ABulletBase>	mBulletClass;
+	TObjectPtr<ABulletBase>	mBullet;
 	FVector	mCharacterFwdLoc;
+	FBulletStat	mBulletStat;
 
 	float mTime;
 
@@ -31,6 +31,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> mMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	EElement mElement = EElement::None;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mOffensePower;
@@ -46,10 +49,17 @@ public:
 		float Penetrating, float Range, ELLWeaponType WeaponType, USkeletalMesh* Mesh);
 
 	void Fire();
-	void SetBullet();
 	void SetCharacterFwdLoc(const FVector& Vector)
 	{
 		mCharacterFwdLoc = Vector;
+	}
+
+	void SetBulletStat()
+	{
+		mBulletStat.Element = EElement::Fire;
+		mBulletStat.OffensePower = mOffensePower;
+		mBulletStat.Penetrating = mPenetrating;
+		mBulletStat.Range = mRange;
 	}
 
 protected:

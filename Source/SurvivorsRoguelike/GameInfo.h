@@ -89,6 +89,17 @@ enum class EPlayerJob : uint8
 	End
 };
 
+
+UENUM(BlueprintType)
+enum class ELobbyPlayerState : uint8
+{
+	Idle,
+	Fight,
+	Gun,
+	Bow,
+	Melee
+};
+
 UENUM(BlueprintType)
 enum class EAIKind : uint8
 {
@@ -305,7 +316,6 @@ public :
 	EElement	Element;
 };
 
-
 USTRUCT(BlueprintType)
 struct FMLWeaponData :
 	public FTableRowBase
@@ -413,6 +423,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float		AttackSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float		Range;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMesh>		Mesh;

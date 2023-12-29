@@ -20,8 +20,8 @@ public:
 
 private:
 	static TObjectPtr<UDataTable>	mWeaponDataTable;
-	TObjectPtr<class ALLWeaponBase>	mWeapon;
-	TSubclassOf<class ALLWeaponBase>	mWeaponClass;
+	TObjectPtr<ALLWeaponBase>	mWeapon;
+	TSubclassOf<ALLWeaponBase>	mWeaponClass;
 	float mTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -90,5 +90,4 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
 };
