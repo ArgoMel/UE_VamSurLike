@@ -14,14 +14,10 @@ ABaseCharacter::ABaseCharacter()
 	LLWeapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("LLWeapon"));
 	LLWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	if (!GetMesh()->DoesSocketExist(TEXT("LLWeaponSocket")))
-	{
 		LLWeapon->SetupAttachment(GetMesh());
-		LLWeapon->SetRelativeLocation(FVector3d(-20.0, 41.0, 129.0));
-	}
 	else
 		LLWeapon->SetupAttachment(GetMesh(), "LLWeaponSocket");
 	
-
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_AR4(
 		TEXT("/Script/Engine.SkeletalMesh'/Game/FPS_Weapon_Bundle/Weapons/Meshes/AR4/SK_AR4.SK_AR4'"));
 	if (SK_AR4.Succeeded())
