@@ -79,6 +79,11 @@ public:
 	
 
 	void ClearWeapon();
+	void Init(const FString& Name);
+	TObjectPtr<AMLWeaponBase> GetWeapon()
+	{
+		return mWeapon;
+	}
 
 protected:
 	static const FMLWeaponData* FindWeaponData(const FName& Name);

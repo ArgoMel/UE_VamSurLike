@@ -62,6 +62,17 @@ public:
 		mBulletStat.Range = mRange;
 	}
 
+	void SetElement(EElement Element)
+	{
+		mElement = Element;
+	}
+
+	void SetLLWeaponStat(float Penetrating, float AttackSpeed)
+	{
+		mPenetrating = Penetrating;
+		mAttackSpeed = AttackSpeed;
+	}
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -3,3 +3,10 @@
 
 #include "RelicBase.h"
 
+ARelicBase::ARelicBase()
+{
+}
+
+void ARelicBase::Act()
+{
+}

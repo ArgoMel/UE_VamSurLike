@@ -74,6 +74,13 @@ public:
 
 	void Attack();
 	void ClearWeapon();
+	void Init(const FString& Name);
+
+	TObjectPtr<ALLWeaponBase> GetWeapon()
+	{
+		return mWeapon;
+	}
+
 	FVector GetCharacterFwdLoc()
 	{
 		return GetOwner()->GetActorForwardVector();

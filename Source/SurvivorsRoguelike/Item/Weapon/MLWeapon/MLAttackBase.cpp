@@ -29,8 +29,6 @@ AMLAttackBase::AMLAttackBase()
 
 }
 
-
-
 void AMLAttackBase::Init(float OffensePower, FVector CollisionScale, 
 	FVector CollisionLoc, UStaticMesh* Mesh, EElement Element)
 {

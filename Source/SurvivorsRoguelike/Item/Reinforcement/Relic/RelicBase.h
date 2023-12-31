@@ -14,4 +14,9 @@ class SURVIVORSROGUELIKE_API ARelicBase : public AItemBase
 {
 	GENERATED_BODY()
 	
+public :
+	ARelicBase();
+
+public :
+	void Act();
 };

@@ -57,7 +57,11 @@ public:
 		return mTargetEnemy;
 	}
 
-
+	void SetMGWeaponStat(float SpellPower, float AttackSpeed)
+	{
+		mSpellPower = SpellPower;
+		mAttackSpeed = AttackSpeed;
+	}
 
 
 protected:
