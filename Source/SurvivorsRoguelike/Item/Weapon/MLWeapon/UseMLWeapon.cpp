@@ -1,4 +1,5 @@
 #include "UseMLWeapon.h"
+#include "../../../Public/Character/BaseCharacter.h"
 
 // Sets default values for this component's properties
 TObjectPtr<UDataTable>	UUseMLWeapon::mWeaponDataTable;
@@ -25,20 +26,10 @@ void UUseMLWeapon::ClearWeapon()
 
 }
 
-const FMLWeaponData* UUseMLWeapon::FindWeaponData(const FName& Name)
+void UUseMLWeapon::Init(const FString& Name)
 {
-	return mWeaponDataTable->FindRow<FMLWeaponData>(Name, TEXT(""));
-}
 
-
-// Called when the game starts
-void UUseMLWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-
-	LoadWeaponData();
-
-	mName = "1";
+	mName = FName(Name);
 
 	if (IsValid(mWeaponDataTable))
 	{
@@ -75,9 +66,24 @@ void UUseMLWeapon::BeginPlay()
 		mWeapon->AttachToComponent(GetOwner()->GetRootComponent(),
 			AttachRule, PlayerSocket);
 
-
-		
 	}
+}
+
+const FMLWeaponData* UUseMLWeapon::FindWeaponData(const FName& Name)
+{
+	return mWeaponDataTable->FindRow<FMLWeaponData>(Name, TEXT(""));
+}
+
+
+// Called when the game starts
+void UUseMLWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+
+	LoadWeaponData();
+
+	FString WeaponName = Cast<ABaseCharacter>(GetOwner())->GetMLWeaponName();
+	Init(WeaponName);
 }
 
 // Called every frame

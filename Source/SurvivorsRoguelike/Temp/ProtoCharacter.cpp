@@ -53,19 +53,6 @@ AProtoCharacter::AProtoCharacter()
 	mFollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	mFollowCamera->SetupAttachment(mCameraBoom);
 	mFollowCamera->FieldOfView = 45.f;
-
-	LLWeapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("LLWeapon"));
-	LLWeapon->SetupAttachment(GetMesh());
-	LLWeapon->SetupAttachment(GetMesh(), "LLWeaponSocket");
-	LLWeapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> SK_AR4(
-		TEXT("/Script/Engine.SkeletalMesh'/Game/FPS_Weapon_Bundle/Weapons/Meshes/AR4/SK_AR4.SK_AR4'"));
-	if (SK_AR4.Succeeded())
-		LLWeapon->SetSkeletalMesh(SK_AR4.Object);
-
-	LLWeaponRange = 1000.f;
-	LLWeaponRate = 1.0f;
 }
 
 // Called when the game starts or when spawned
@@ -73,10 +60,6 @@ void AProtoCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	/*FTimerHandle HitTimerHandle =
-		UKismetSystemLibrary::K2_SetTimer(this, TEXT("SpawnBulletPerSec"), LLWeaponRPM, true);*/
-
-	GetWorldTimerManager().SetTimer(mHitTimerHandle, this, &AProtoCharacter::SpawnBulletPerSec, LLWeaponRate, true);
 }
 
 // Called every frame
@@ -85,30 +68,4 @@ void AProtoCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 
-}
-
-void AProtoCharacter::SpawnBulletPerSec()
-{
-	FActorSpawnParameters ActorParam;
-	ActorParam.SpawnCollisionHandlingOverride =
-		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	AProtoPlayerController* PPController = Cast<AProtoPlayerController>(GetController());
-
-	FVector3d LLWeaponMuzzleLocation = LLWeapon->GetSocketLocation(TEXT("b_gun_muzzleflash"));
-	FVector3d LLWeaponMuzzleRelativeLocation = LLWeapon->GetSocketTransform(
-		TEXT("b_gun_muzzleflash"), ERelativeTransformSpace::RTS_Actor).GetLocation();
-
-	FVector3d CursorHit = PPController->GetCursorHit();
-	CursorHit = FVector3d(
-		CursorHit.X,
-		CursorHit.Y,
-		CursorHit.Z + LLWeaponMuzzleRelativeLocation.Z
-	);
-
-	GetWorld()->SpawnActor<ATempProjectile>(
-		LLWeaponMuzzleLocation,
-		(CursorHit - LLWeaponMuzzleLocation).Rotation(),
-		ActorParam
-	);
 }

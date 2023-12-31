@@ -2,6 +2,7 @@
 
 
 #include "UseLLWeapon.h"
+#include "../../../Public/Character/BaseCharacter.h"
 
 // Sets default values for this component's properties
 TObjectPtr<UDataTable>	UUseLLWeapon::mWeaponDataTable;
@@ -34,19 +35,9 @@ void UUseLLWeapon::ClearWeapon()
 {
 }
 
-const FLLWeaponData* UUseLLWeapon::FindWeaponData(const FName& Name)
+void UUseLLWeapon::Init(const FString& Name)
 {
-	return mWeaponDataTable->FindRow<FLLWeaponData>(Name, TEXT(""));
-}
-
-// Called when the game starts
-void UUseLLWeapon::BeginPlay()
-{
-	Super::BeginPlay();
-
-	LoadWeaponData();
-
-	mName = "1";
+	mName = FName(Name);
 
 	if (IsValid(mWeaponDataTable))
 	{
@@ -60,7 +51,7 @@ void UUseLLWeapon::BeginPlay()
 
 	if (!mMeshPtr)
 		return;
-	
+
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
@@ -74,6 +65,22 @@ void UUseLLWeapon::BeginPlay()
 
 	mWeapon->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
+}
+
+const FLLWeaponData* UUseLLWeapon::FindWeaponData(const FName& Name)
+{
+	return mWeaponDataTable->FindRow<FLLWeaponData>(Name, TEXT(""));
+}
+
+// Called when the game starts
+void UUseLLWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	LoadWeaponData();
+
+	FString WeaponName = Cast<ABaseCharacter>(GetOwner())->GetLLWeaponName();
+	Init(WeaponName);
 }
 
 void UUseLLWeapon::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

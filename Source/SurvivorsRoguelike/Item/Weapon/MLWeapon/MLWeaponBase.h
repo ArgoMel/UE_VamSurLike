@@ -52,7 +52,17 @@ protected:
 	
 public :
 	void Attack();
+	
+	void SetElement(EElement Element)
+	{
+		mElement = Element;
+	}
 
+	void SetMLWeaponStat(float OffensePower, float AttackSpeed)
+	{
+		mOffensePower = OffensePower;
+		mAttackSpeed = AttackSpeed;
+	}
 
 public :
 	void Init(int32 num, EItemType ItemType, FString name, float AttackSpeed, 

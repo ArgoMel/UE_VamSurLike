@@ -2,6 +2,7 @@
 
 
 #include "UseMGWeapon.h"
+#include "../../../Public/Character/BaseCharacter.h"
 
 TObjectPtr<UDataTable>	UUseMGWeapon::mWeaponDataTable;
 
@@ -30,11 +31,9 @@ void UUseMGWeapon::ClearWeapon()
 {
 }
 
-void UUseMGWeapon::CreateMGWeapon()
+void UUseMGWeapon::Init(const FString& Name)
 {
-	LoadWeaponData();
-
-	mName = "1";
+	mName = FName(Name);
 
 	if (IsValid(mWeaponDataTable))
 	{
@@ -74,7 +73,10 @@ void UUseMGWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CreateMGWeapon();
+	LoadWeaponData();
+	
+	FString WeaponName = Cast<ABaseCharacter>(GetOwner())->GetMGWeaponName();
+	Init(WeaponName);
 }
 
 

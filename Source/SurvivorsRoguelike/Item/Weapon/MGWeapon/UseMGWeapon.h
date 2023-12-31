@@ -71,7 +71,11 @@ public:
 
 	void Attack();
 	void ClearWeapon();
-	void CreateMGWeapon();
+	void Init(const FString& Name);
+	TObjectPtr<AMGWeaponBase> GetWeapon()
+	{
+		return mWeapon;
+	}
 
 
 protected:
