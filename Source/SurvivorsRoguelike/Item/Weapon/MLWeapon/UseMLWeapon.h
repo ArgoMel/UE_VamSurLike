@@ -76,7 +76,6 @@ public:
 		mCollisionLoc = Data->CollisionLoc;
 		mMeshPtr = Data->Mesh;
 	}
-	
 
 	void ClearWeapon();
 	void Init(const FString& Name);

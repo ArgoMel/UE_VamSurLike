@@ -2,9 +2,11 @@
 
 
 #include "RelicBase.h"
+#include "../Public/Character/BaseCharacter.h"
 
 ARelicBase::ARelicBase()
 {
+	mRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
 }
 
 void ARelicBase::Act()

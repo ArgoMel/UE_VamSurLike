@@ -2,6 +2,7 @@
 
 
 #include "RelicInventory.h"
+#include "Relic_OffensePowerReinforce.h"
 
 // Sets default values for this component's properties
 URelicInventory::URelicInventory()
@@ -10,22 +11,25 @@ URelicInventory::URelicInventory()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
+	mRelicClass = ARelic_OffensePowerReinforce::StaticClass();
+
+	
 }
 
 
-void URelicInventory::AddRelic(TSubclassOf<ARelicBase> Relic)
+void URelicInventory::AddRelic()
 {
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	TObjectPtr<ARelicBase> RelicObj = 
-		GetWorld()->SpawnActor<ARelicBase>(Relic, ActorParam);
+	mRelic = GetWorld()->SpawnActor<ARelicBase>(mRelicClass, ActorParam);
 	
-	mRelicInventory.Add(RelicObj);
+	mRelicInventory.Add(mRelic);
 
-	RelicObj->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
+	mRelic->SetPlayer(Cast<ABaseCharacter>(GetOwner()));
+
+	mRelic->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
 
 }
@@ -43,8 +47,10 @@ void URelicInventory::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	Cast<ABaseCharacter>(GetOwner())->SetRelicInvent(this);
+
+	AddRelic();
+	ActRelic();
 }
 
 

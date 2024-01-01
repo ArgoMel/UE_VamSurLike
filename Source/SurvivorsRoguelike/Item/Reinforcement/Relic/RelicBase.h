@@ -4,6 +4,7 @@
 
 #include "../../../GameInfo.h"
 #include "../ItemBase.h"
+#include "../../../Public/Character/BaseCharacter.h"
 #include "RelicBase.generated.h"
 
 /**
@@ -17,6 +18,20 @@ class SURVIVORSROGUELIKE_API ARelicBase : public AItemBase
 public :
 	ARelicBase();
 
+private :
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USceneComponent> mRoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UTexture2D* Icon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ABaseCharacter> mPlayer;
+
 public :
-	void Act();
+	virtual void Act();
+	void SetPlayer(TObjectPtr<ABaseCharacter> Player)
+	{
+		mPlayer = Player;
+	}
 };
