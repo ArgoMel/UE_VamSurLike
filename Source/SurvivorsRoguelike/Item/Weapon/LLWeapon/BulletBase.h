@@ -18,6 +18,7 @@ public:
 
 private :
 	FBulletStat mBulletStat;
+	float mMovedDistance;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UProjectileMovementComponent> mProjectile;

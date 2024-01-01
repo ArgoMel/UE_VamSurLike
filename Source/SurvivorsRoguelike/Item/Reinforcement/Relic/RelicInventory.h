@@ -5,6 +5,7 @@
 #include "../../../GameInfo.h"
 #include "Components/ActorComponent.h"
 #include "RelicBase.h"
+#include "../../../Public/Character/BaseCharacter.h"
 #include "RelicInventory.generated.h"
 
 
@@ -19,9 +20,11 @@ public:
 
 protected :
 	TArray<TObjectPtr<ARelicBase>> mRelicInventory;
+	TObjectPtr<ARelicBase>	mRelic;
+	TSubclassOf<ARelicBase>	mRelicClass;
 
 public :
-	void AddRelic(TSubclassOf<ARelicBase> Relic);
+	void AddRelic();
 	void ActRelic();
 
 protected:

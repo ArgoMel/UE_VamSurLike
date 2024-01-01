@@ -3,16 +3,17 @@
 
 #include "BulletBase.h"
 
-inline int BulletSpeed = 4000;
+inline int BulletSpeed = 2000;
 
 // Sets default values
 ABulletBase::ABulletBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	mProjectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile"));
 	
+	mProjectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile"));
+	mProjectile->ProjectileGravityScale = 0.f;
+
 	mCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	mCollision->SetCollisionProfileName("PlayerProjectile");
 	mCollision->bVisualizeComponent = true;
@@ -53,11 +54,17 @@ void ABulletBase::BeginPlay()
 	
 }
 
-// Called every frame
+// Called every frameTravel distance
 void ABulletBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	mMovedDistance += DeltaTime * BulletSpeed;
+
+	if (mMovedDistance >= mBulletStat.Range)
+	{
+		Destroy();
+	}
 }
 
 void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent, 

@@ -4,12 +4,21 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "../../Item/Reinforcement/Relic/RelicInventory.h"
 #include "GameFramework/SpringArmComponent.h"
 
 ABaseCharacter::ABaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	MaxHealth = 100.f;
+
+	mRelicInventory = CreateDefaultSubobject<UActorComponent>(TEXT("RelicInventory"));
+
+	mMLWeaponName = "Sword";
+
+	mLLWeaponName = "Riffle";
+
+	mMGWeaponName = "MagicBook";
 }
 
 void ABaseCharacter::BeginPlay()
