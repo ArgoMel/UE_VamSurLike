@@ -95,11 +95,11 @@ void AWorldGenerator::BeginPlay()
 
 	m_RandomStream = UKismetMathLibrary::MakeRandomStream(m_InitialSeed);
 	InitalizeFoliageTypes();
-	FTimerHandle m_GenerateTileTimer;
-	GetWorldTimerManager().SetTimer(m_GenerateTileTimer, this,
+	FTimerHandle generateTileTimer;
+	GetWorldTimerManager().SetTimer(generateTileTimer, this,
 		&AWorldGenerator::SpawnTilesAroundPlayer, 0.3f, true, 0.f);
-	FTimerHandle m_RelocateActorTimer;
-	GetWorldTimerManager().SetTimer(m_RelocateActorTimer, this,
+	FTimerHandle relocateActorTimer;
+	GetWorldTimerManager().SetTimer(relocateActorTimer, this,
 		&AWorldGenerator::RelocatedActors, 20.f, true, 0.f);
 
 	m_Terrain->OnComponentPhysicsStateChanged.AddDynamic(this, &AWorldGenerator::OnPhysicsStateChanged);
