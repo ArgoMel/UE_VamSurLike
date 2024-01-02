@@ -4,7 +4,7 @@
 #include "BaseCharacter.generated.h"
 
 class UUseMLWeapon;
-class UUseLLWeapon;
+class UUseLRWeapon;
 class UUseMGWeapon;
 class URelicInventory;
 
@@ -27,7 +27,7 @@ private:
 
 protected:
 	TObjectPtr<UUseMLWeapon> mUseMLWeapon;
-	TObjectPtr<UUseLLWeapon> mUseLLWeapon;
+	TObjectPtr<UUseLRWeapon> mUseLRWeapon;
 	TObjectPtr<UUseMGWeapon> mUseMGWeapon;
 	TObjectPtr<URelicInventory> mRelicInventory;
 
@@ -42,7 +42,7 @@ protected:
 	FString mMGWeaponName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FString mLLWeaponName;
+	FString mLRWeaponName;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float mOffensePower;
@@ -73,7 +73,7 @@ public:
 	void StartPercentDamage();
 
 	FString GetMLWeaponName() { return mMLWeaponName; }
-	FString GetLLWeaponName() { return mLLWeaponName; }
+	FString GetLRWeaponName() { return mLRWeaponName; }
 	FString GetMGWeaponName() {	return mMGWeaponName; }
 
 	float GetOffensePower() { return mOffensePower; }
@@ -96,6 +96,6 @@ public:
 
 	void SetRelicInvent(URelicInventory* RelicInventory) { mRelicInventory = RelicInventory; }
 	void ChangeUseMLWeapon(FString MLWeaponName);
-	void ChangeUseLLWeapon(FString LLWeaponName);
+	void ChangeUseLRWeapon(FString LRWeaponName);
 	void ChangeUseMGWeapon(FString MGWeaponName);
 };

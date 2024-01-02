@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "LLWeaponBase.h"
-ALLWeaponBase::ALLWeaponBase()
+#include "LRWeaponBase.h"
+ALRWeaponBase::ALRWeaponBase()
 {
 
 	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
@@ -12,8 +12,8 @@ ALLWeaponBase::ALLWeaponBase()
 	mBulletClass = ABulletBase::StaticClass();
 }
 
-void ALLWeaponBase::Init(int32 num, EItemType ItemType, FString name, float OffensePower,
-	float AttackSpeed, float Penetrating, float Range, ELLWeaponType WeaponType, USkeletalMesh* Mesh)
+void ALRWeaponBase::Init(int32 num, EItemType ItemType, FString name, float OffensePower,
+	float AttackSpeed, float Penetrating, float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh)
 {
 	mNum = num;
 	mItemType = ItemType;
@@ -28,7 +28,7 @@ void ALLWeaponBase::Init(int32 num, EItemType ItemType, FString name, float Offe
 		mMesh->SetSkeletalMesh(Mesh);
 }
 
-void ALLWeaponBase::Fire()
+void ALRWeaponBase::Fire()
 {
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
@@ -39,17 +39,17 @@ void ALLWeaponBase::Fire()
 		FRotator::ZeroRotator,
 		ActorParam);
 
-	ALLWeaponBase::SetBulletStat();
+	ALRWeaponBase::SetBulletStat();
 
 	mBullet->SetProjectileRot(mCharacterFwdLoc);
 	mBullet->SetBulletStat(mBulletStat);
 }
 
-void ALLWeaponBase::BeginPlay()
+void ALRWeaponBase::BeginPlay()
 {
 }
 
-void ALLWeaponBase::Tick(float DeltaTime)
+void ALRWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }

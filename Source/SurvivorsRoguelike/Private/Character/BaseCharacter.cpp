@@ -1,7 +1,7 @@
 #include "Character/BaseCharacter.h"
 #include "Controller/InGamePlayerController.h"
 #include "../../Item/Weapon/MLWeapon/UseMLWeapon.h"
-#include "../../Item/Weapon/LLWeapon/UseLLWeapon.h"
+#include "../../Item/Weapon/LRWeapon/UseLRWeapon.h"
 #include "../../Item/Weapon/MGWeapon/UseMGWeapon.h"
 #include "../../Item/Reinforcement/Relic/RelicInventory.h"
 
@@ -11,7 +11,7 @@ ABaseCharacter::ABaseCharacter()
 	MaxHealth = 100.f;
 
 	mUseMLWeapon = CreateDefaultSubobject<UUseMLWeapon>(TEXT("UseMLWeapon"));
-	mUseLLWeapon = CreateDefaultSubobject<UUseLLWeapon>(TEXT("UseLLWeapon"));
+	mUseLRWeapon = CreateDefaultSubobject<UUseLRWeapon>(TEXT("UseLRWeapon"));
 	mUseMGWeapon = CreateDefaultSubobject<UUseMGWeapon>(TEXT("UseMGWeapon"));
 	mRelicInventory = CreateDefaultSubobject<URelicInventory>(TEXT("RelicInventory"));
 }
@@ -21,17 +21,17 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	mMLWeaponName = "Sword";
-	mLLWeaponName = "Rifle";
+	mLRWeaponName = "Rifle";
 	mMGWeaponName = "MagicBook";
 
 	mUseMLWeapon->Init(mMLWeaponName);
-	mUseLLWeapon->Init(mLLWeaponName);
+	mUseLRWeapon->Init(mLRWeaponName);
 	mUseMGWeapon->Init(mMGWeaponName);
 
 	mOffensePower = mUseMLWeapon->GetOffensePower();
 	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
-	mPenetraitngPower = mUseLLWeapon->GetPenetrating();
-	mLLAttackSpeed = mUseLLWeapon->GetAttackSpeed();
+	mPenetraitngPower = mUseLRWeapon->GetPenetrating();
+	mLLAttackSpeed = mUseLRWeapon->GetAttackSpeed();
 	mSpellPower = mUseMGWeapon->GetSpellPower();
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 	mElement = EElement::None;
@@ -67,12 +67,12 @@ void ABaseCharacter::ChangeUseMLWeapon(FString MLWeaponName)
 	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
 }
 
-void ABaseCharacter::ChangeUseLLWeapon(FString LLWeaponName)
+void ABaseCharacter::ChangeUseLRWeapon(FString LRWeaponName)
 {
-	mLLWeaponName = LLWeaponName;
-	mUseLLWeapon->Init(mLLWeaponName);
-	mPenetraitngPower = mUseLLWeapon->GetPenetrating();
-	mLLAttackSpeed = mUseLLWeapon->GetAttackSpeed();
+	mLRWeaponName = LRWeaponName;
+	mUseLRWeapon->Init(mLRWeaponName);
+	mPenetraitngPower = mUseLRWeapon->GetPenetrating();
+	mLLAttackSpeed = mUseLRWeapon->GetAttackSpeed();
 }
 
 void ABaseCharacter::ChangeUseMGWeapon(FString MGWeaponName)

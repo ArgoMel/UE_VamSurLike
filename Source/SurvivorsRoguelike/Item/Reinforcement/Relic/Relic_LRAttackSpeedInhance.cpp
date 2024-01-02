@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Relic_LLAttackSpeed.h"
+#include "Relic_LRAttackSpeedInhance.h"
 

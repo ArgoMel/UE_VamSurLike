@@ -4,18 +4,18 @@
 
 #include "../../../GameInfo.h"
 #include "RelicBase.h"
-#include "Relic_LLWeaponRangeInhance.generated.h"
+#include "Relic_LRWeaponRangeInhance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SURVIVORSROGUELIKE_API ARelic_LLWeaponRangeInhance : public ARelicBase
+class SURVIVORSROGUELIKE_API ARelic_LRWeaponRangeInhance : public ARelicBase
 {
 	GENERATED_BODY()
 	
 public:
-	ARelic_LLWeaponRangeInhance();
+	ARelic_LRWeaponRangeInhance();
 
 	virtual void Act() override;
 };

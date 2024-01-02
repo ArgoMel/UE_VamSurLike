@@ -256,7 +256,7 @@ UENUM(BlueprintType)
 enum class EItemType : uint8
 {
 	MLWeapon,
-	LLWeapon,
+	LRWeapon,
 	MGWeapon,
 	Relic,
 	Element
@@ -290,7 +290,7 @@ enum class EMLWeaponType : uint8
 };
 
 UENUM(BlueprintType)
-enum class ELLWeaponType : uint8
+enum class ELRWeaponType : uint8
 {
 	Rifle,
 	Shotgun,
@@ -367,7 +367,7 @@ public:
 
 
 USTRUCT(BlueprintType)
-struct FLLWeaponData :
+struct FLRWeaponData :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
@@ -380,7 +380,7 @@ public:
 	EItemType	ItemType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	ELLWeaponType	WeaponType;
+	ELRWeaponType	WeaponType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EItemRank	Rank;
@@ -446,9 +446,6 @@ struct FRelicData :
 	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FName		Name;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTexture2D* Icon;
 
