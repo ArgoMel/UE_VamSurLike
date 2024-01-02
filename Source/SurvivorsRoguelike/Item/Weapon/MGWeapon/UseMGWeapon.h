@@ -77,6 +77,8 @@ public:
 		return mWeapon;
 	}
 
+	float GetSpellPower() { return mSpellPower; }
+	float GetAttackSpeed() { return mAttackSpeed; }
 
 protected:
 	static const FMGWeaponData* FindWeaponData(const FName& Name);

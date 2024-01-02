@@ -78,9 +78,6 @@ void UUseLLWeapon::BeginPlay()
 	Super::BeginPlay();
 	
 	LoadWeaponData();
-
-	FString WeaponName = Cast<ABaseCharacter>(GetOwner())->GetLLWeaponName();
-	Init(WeaponName);
 }
 
 void UUseLLWeapon::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
