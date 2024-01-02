@@ -20,6 +20,10 @@ public:
 
 public :
 	void ActRelic(TSubclassOf<ARelicBase> RelicClass);
+	void Hello() {
+		GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red,
+			TEXT("¤±¤¤¤·"));
+	}
 
 protected:
 	// Called when the game starts

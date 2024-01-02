@@ -11,7 +11,6 @@ AMLAttackBase::AMLAttackBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	mCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
-	mCollision->bVisualizeComponent = true;
 	mCollision->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	mCollision->SetCollisionProfileName("PlayerMLAttack");
 	mCollision->OnComponentBeginOverlap.AddDynamic(this,

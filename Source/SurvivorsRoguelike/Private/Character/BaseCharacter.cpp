@@ -12,8 +12,6 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	MaxHealth = 100.f;
 
-	mRelicInventory = CreateDefaultSubobject<UActorComponent>(TEXT("RelicInventory"));
-
 	mMLWeaponName = "Sword";
 
 	mLLWeaponName = "Riffle";
@@ -24,7 +22,6 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
 	
 }
 

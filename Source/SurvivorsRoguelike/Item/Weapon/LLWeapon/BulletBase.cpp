@@ -16,7 +16,6 @@ ABulletBase::ABulletBase()
 
 	mCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	mCollision->SetCollisionProfileName("PlayerProjectile");
-	mCollision->bVisualizeComponent = true;
 	mCollision->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	mCollision->OnComponentBeginOverlap.AddDynamic(this,
 		&ABulletBase::OverlapBegin);

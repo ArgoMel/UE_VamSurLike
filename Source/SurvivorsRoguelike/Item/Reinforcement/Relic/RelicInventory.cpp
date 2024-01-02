@@ -23,6 +23,8 @@ void URelicInventory::ActRelic(TSubclassOf<ARelicBase> RelicClass)
 
 	mRelic->SetPlayer(Cast<ABaseCharacter>(GetOwner()));
 
+	//Cast<ABaseCharacter>(GetOwner())->SetRelicInvent(this);
+
 }
 
 // Called when the game starts

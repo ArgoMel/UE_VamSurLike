@@ -28,9 +28,6 @@ protected:
 	float MaxHealth;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UActorComponent> mRelicInventory;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FString mMLWeaponName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -58,8 +55,4 @@ public:
 		return mMGWeaponName;
 	}
 
-	void SetRelicInvent(UActorComponent* RelicInventory)
-	{
-		mRelicInventory = RelicInventory;
-	}
 };
