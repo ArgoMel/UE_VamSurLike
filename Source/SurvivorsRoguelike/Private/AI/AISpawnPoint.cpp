@@ -17,11 +17,11 @@ AAISpawnPoint::AAISpawnPoint()
 
 	SetRootComponent(mRoot);
 
-	mRoot->bVisualizeComponent = true;
 
 #if WITH_EDITORONLY_DATA
 	mArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	mArrow->SetupAttachment(mRoot);
+	mRoot->bVisualizeComponent = true;
 #endif
 
 	mSpawnTime = 1.f;
