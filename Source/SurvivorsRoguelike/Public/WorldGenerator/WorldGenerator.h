@@ -129,6 +129,7 @@ protected:
 	int32 SectionIndexX;
 	int32 SectionIndexY;
 	int32 CellLODLevel;
+	bool mIsCharacterExist;
 
 protected:
 	UFUNCTION()

@@ -28,6 +28,7 @@ AWorldGenerator::AWorldGenerator()
 	SectionIndexX = 0;
 	SectionIndexY = 0;
 	CellLODLevel = 1;
+	mIsCharacterExist = false;
 
 	m_InitialSeed = 0;
 	m_RandomizeFoliage = true;
@@ -94,11 +95,11 @@ void AWorldGenerator::BeginPlay()
 
 	m_RandomStream = UKismetMathLibrary::MakeRandomStream(m_InitialSeed);
 	InitalizeFoliageTypes();
-	FTimerHandle m_GenerateTileTimer;
-	GetWorldTimerManager().SetTimer(m_GenerateTileTimer, this,
+	FTimerHandle generateTileTimer;
+	GetWorldTimerManager().SetTimer(generateTileTimer, this,
 		&AWorldGenerator::SpawnTilesAroundPlayer, 0.3f, true, 0.f);
-	FTimerHandle m_RelocateActorTimer;
-	GetWorldTimerManager().SetTimer(m_RelocateActorTimer, this,
+	FTimerHandle relocateActorTimer;
+	GetWorldTimerManager().SetTimer(relocateActorTimer, this,
 		&AWorldGenerator::RelocatedActors, 20.f, true, 0.f);
 
 	m_Terrain->OnComponentPhysicsStateChanged.AddDynamic(this, &AWorldGenerator::OnPhysicsStateChanged);
@@ -138,6 +139,10 @@ void AWorldGenerator::SpawnTilesAroundPlayer()
 		FIntPoint xRange;
 		FIntPoint yRange;
 		GetTileIndicesAroundPlayer(xRange, yRange);
+		if(!mIsCharacterExist)
+		{
+			return;
+		}
 		for (int32 y = yRange.X; y <= yRange.Y; ++y)
 		{
 			for (int32 x = xRange.X; x <= xRange.Y; ++x)
@@ -221,7 +226,8 @@ void AWorldGenerator::DrawTile()
 FVector AWorldGenerator::GetPlayerLoc()
 {
 	ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	if(IsValid(player))
+	mIsCharacterExist = IsValid(player);
+	if(mIsCharacterExist)
 	{
 		return player->GetActorLocation();
 	}
