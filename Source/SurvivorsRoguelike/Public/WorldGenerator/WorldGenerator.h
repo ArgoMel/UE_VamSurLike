@@ -46,20 +46,21 @@ public:
 	AWorldGenerator();
 protected:
 	virtual void BeginPlay() override;
-public:	
+	virtual void OnConstruction(const FTransform& Transform);
 	virtual void Tick(float DeltaTime) override;
-
-private:
-	FTimerHandle m_GenerateTileTimer;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Component")
 	TObjectPtr<UProceduralMeshComponent> m_Terrain;
 	UPROPERTY(BlueprintReadWrite, Category = "Component")
 	TArray<TObjectPtr<UInstancedStaticMeshComponent>> m_FoliageComponents;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Component")
+	TObjectPtr<UStaticMeshComponent> m_Sea;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Terrain")
 	TMap<FIntPoint, int32> QueuedTiles;
+	UPROPERTY(BlueprintReadWrite, Category = "Terrain")
+	TMap<FIntPoint, FIntPoint> RemoveLODQueue;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Terrain")
 	TObjectPtr<UMaterialInterface> TerrainMaterial;
 	UPROPERTY(BlueprintReadOnly, Category = "Terrain")
@@ -110,9 +111,24 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Foliage")
 	bool m_RandomizeFoliage;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Relocated")
+	TArray<TObjectPtr<AActor>> ActorsToBeRelocated;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Relocated")
+	float RelocateDistance;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Sea")
+	TObjectPtr<UMaterialParameterCollection> mSeaMtrlParamCollection;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Sea")
+	float mSeaLevel;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Sea")
+	float mSeaScale;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Sea")
+	bool mEnableSea;
+
 	TArray<int32> Triangles;
 	int32 SectionIndexX;
 	int32 SectionIndexY;
+	int32 CellLODLevel;
 
 protected:
 	UFUNCTION()
@@ -137,6 +153,11 @@ public:
 	FIntPoint GetClosestQueuedTile();
 	UFUNCTION(BlueprintCallable)
 	int32 GetFurthestUpdatableTile();
+	UFUNCTION(BlueprintCallable)
+	void RelocatedActors();
+
+	UFUNCTION(BlueprintPure)
+	int32 GetTileLODLevel(int32 x, int32 y);
 
 	UFUNCTION(BlueprintCallable, Category = "Foliage")
 	void InitalizeFoliageTypes();
@@ -151,6 +172,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Foliage")
 	void SpawnFoliageCluster(UFoliageType_InstancedStaticMesh* foliageType, 
 		UInstancedStaticMeshComponent* foliageISMComponent,const FVector clusterLoc);
+
+	UFUNCTION(BlueprintCallable, Category = "Sea")
+	void UpdateSeaParameters();
 
 	void GenerateTerrain(const int32 inSectionIndexX, const int32 inSectionIndexY);
 	float GetHeight(const FVector2D loc);
