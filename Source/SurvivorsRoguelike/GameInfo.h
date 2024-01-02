@@ -256,10 +256,18 @@ UENUM(BlueprintType)
 enum class EItemType : uint8
 {
 	MLWeapon,
-	LLWeapon,
+	LRWeapon,
 	MGWeapon,
 	Relic,
 	Element
+};
+
+UENUM(BlueprintType)
+enum class ERelicType : uint8
+{
+	Inhance,
+	Magic,
+	ElementEnhance
 };
 
 UENUM(BlueprintType)
@@ -282,7 +290,7 @@ enum class EMLWeaponType : uint8
 };
 
 UENUM(BlueprintType)
-enum class ELLWeaponType : uint8
+enum class ELRWeaponType : uint8
 {
 	Rifle,
 	Shotgun,
@@ -359,7 +367,7 @@ public:
 
 
 USTRUCT(BlueprintType)
-struct FLLWeaponData :
+struct FLRWeaponData :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
@@ -372,7 +380,7 @@ public:
 	EItemType	ItemType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	ELLWeaponType	WeaponType;
+	ELRWeaponType	WeaponType;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EItemRank	Rank;
@@ -429,4 +437,24 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMesh>		Mesh;
+};
+
+USTRUCT(BlueprintType)
+struct FRelicData :
+	public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UTexture2D* Icon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	ERelicType Type;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class ARelicBase> RelicClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FText mEffectDescription;
 };

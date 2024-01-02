@@ -16,14 +16,13 @@ ABulletBase::ABulletBase()
 
 	mCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	mCollision->SetCollisionProfileName("PlayerProjectile");
-	mCollision->bVisualizeComponent = true;
 	mCollision->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	mCollision->OnComponentBeginOverlap.AddDynamic(this,
 		&ABulletBase::OverlapBegin);
 	mCollision->SetWorldScale3D(FVector(0.3f, 0.3f, 0.3f));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(
-		TEXT("/Script/Engine.StaticMesh'/Game/00_Weapon/WeaponAsset/LLWeapon/Rifle/Sphere.Sphere'"));
+		TEXT("/Script/Engine.StaticMesh'/Game/00_Weapon/WeaponAsset/LRWeapon/Rifle/Sphere.Sphere'"));
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	if (MESH.Succeeded())

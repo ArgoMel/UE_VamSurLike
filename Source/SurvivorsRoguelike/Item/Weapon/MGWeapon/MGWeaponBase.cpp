@@ -31,6 +31,27 @@ void AMGWeaponBase::Init(int32 num, EItemType ItemType, FString name, float Spel
 		mMesh->SetStaticMesh(Mesh);
 }
 
+void AMGWeaponBase::SetTargetEnemy(const TArray<TObjectPtr<AActor>>& TargetEnemy)
+{
+	mTargetEnemy = TargetEnemy;
+
+	for (auto& Magic : mMagic)
+	{
+		Magic->SetTarget(mTargetEnemy);
+	}
+}
+
+void AMGWeaponBase::SetMGWeaponStat(float SpellPower, float AttackSpeed)
+{
+	mSpellPower = SpellPower;
+	mAttackSpeed = AttackSpeed;
+
+	for (auto& Magic : mMagic)
+	{
+		Magic->SetMGWeaponStat(mSpellPower, mAttackSpeed);
+	}
+}
+
 void AMGWeaponBase::BeginPlay()
 {
 }

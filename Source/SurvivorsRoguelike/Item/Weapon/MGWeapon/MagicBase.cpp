@@ -9,11 +9,13 @@ AMagicBase::AMagicBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	mParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle"));
+	mSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Sound"));
 }
 
-void AMagicBase::SetTarget(const TArray<TObjectPtr<AMagicBase>>& TargetEnemy)
+void AMagicBase::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)
 {
-
+	
 }
 
 // Called when the game starts or when spawned

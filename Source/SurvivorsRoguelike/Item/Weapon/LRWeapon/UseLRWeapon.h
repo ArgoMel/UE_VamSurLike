@@ -4,24 +4,24 @@
 
 #include "../../../GameInfo.h"
 #include "Components/ActorComponent.h"
-#include "LLWeaponBase.h"
-#include "UseLLWeapon.generated.h"
+#include "LRWeaponBase.h"
+#include "UseLRWeapon.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class SURVIVORSROGUELIKE_API UUseLLWeapon : public UActorComponent
+class SURVIVORSROGUELIKE_API UUseLRWeapon : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UUseLLWeapon();
+	UUseLRWeapon();
 
 
 private:
 	static TObjectPtr<UDataTable>	mWeaponDataTable;
-	TObjectPtr<ALLWeaponBase>	mWeapon;
-	TSubclassOf<ALLWeaponBase>	mWeaponClass;
+	TObjectPtr<ALRWeaponBase>	mWeapon;
+	TSubclassOf<ALRWeaponBase>	mWeaponClass;
 	float mTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -34,7 +34,7 @@ private:
 	EItemType	mItemType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	ELLWeaponType	mWeaponType;
+	ELRWeaponType	mWeaponType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float		mOffensePower;
@@ -60,7 +60,7 @@ public:
 		mName = name;
 	}
 
-	void SetWeaponInfo(const FName& name, const FLLWeaponData* Data)
+	void SetWeaponInfo(const FName& name, const FLRWeaponData* Data)
 	{
 		mNum = Data->Num;
 		mItemType = Data->ItemType;
@@ -76,7 +76,7 @@ public:
 	void ClearWeapon();
 	void Init(const FString& Name);
 
-	TObjectPtr<ALLWeaponBase> GetWeapon()
+	TObjectPtr<ALRWeaponBase> GetWeapon()
 	{
 		return mWeapon;
 	}
@@ -90,7 +90,7 @@ public:
 	float GetAttackSpeed() { return mAttackSpeed; }
 
 protected:
-	static const FLLWeaponData* FindWeaponData(const FName& Name);
+	static const FLRWeaponData* FindWeaponData(const FName& Name);
 
 protected:
 	// Called when the game starts
