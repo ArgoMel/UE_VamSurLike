@@ -4,18 +4,18 @@
 
 #include "../../../GameInfo.h"
 #include "RelicBase.h"
-#include "Relic_OffensePowerReinforce.generated.h"
+#include "Relic_OffensePowerInhance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SURVIVORSROGUELIKE_API ARelic_OffensePowerReinforce : public ARelicBase
+class SURVIVORSROGUELIKE_API ARelic_OffensePowerInhance : public ARelicBase
 {
 	GENERATED_BODY()
 	
 public :
-	ARelic_OffensePowerReinforce();
+	ARelic_OffensePowerInhance();
 
 	virtual void Act() override;
 };

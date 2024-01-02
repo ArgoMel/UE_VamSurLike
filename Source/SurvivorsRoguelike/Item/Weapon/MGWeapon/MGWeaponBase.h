@@ -42,26 +42,16 @@ public:
 	void Init(int32 num, EItemType ItemType, FString name, float SpellPower,
 		float AttackSpeed, float Range, EMGWeaponType WeaponType, UStaticMesh* Mesh);
 
+	void SetTargetEnemy(const TArray<TObjectPtr<AActor>>& TargetEnemy);
+
+	void SetMGWeaponStat(float SpellPower, float AttackSpeed);
+
 	void SetMagic(AMagicBase* Magic)
 	{
 		mMagic.Add(Magic);
 	}
 
-	void SetTargetEnemy(TArray<TObjectPtr<AActor>>& TargetEnemy)
-	{
-		mTargetEnemy = TargetEnemy;
-	}
 
-	TArray<TObjectPtr<AActor>> GetTargetEnemy()
-	{
-		return mTargetEnemy;
-	}
-
-	void SetMGWeaponStat(float SpellPower, float AttackSpeed)
-	{
-		mSpellPower = SpellPower;
-		mAttackSpeed = AttackSpeed;
-	}
 
 
 protected:

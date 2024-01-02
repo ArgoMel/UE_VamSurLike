@@ -61,6 +61,8 @@ void UUseMGWeapon::Init(const FString& Name)
 
 	mWeapon->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
+
+
 }
 
 const FMGWeaponData* UUseMGWeapon::FindWeaponData(const FName& Name)

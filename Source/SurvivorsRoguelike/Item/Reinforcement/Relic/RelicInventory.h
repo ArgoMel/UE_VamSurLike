@@ -18,14 +18,12 @@ public:
 	// Sets default values for this component's properties
 	URelicInventory();
 
-protected :
-	TArray<TObjectPtr<ARelicBase>> mRelicInventory;
-	TObjectPtr<ARelicBase>	mRelic;
-	TSubclassOf<ARelicBase>	mRelicClass;
-
 public :
-	void AddRelic();
-	void ActRelic();
+	void ActRelic(TSubclassOf<ARelicBase> RelicClass);
+	void Hello() {
+		GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red,
+			TEXT("¤±¤¤¤·"));
+	}
 
 protected:
 	// Called when the game starts
