@@ -86,6 +86,9 @@ public:
 		return GetOwner()->GetActorForwardVector();
 	}
 
+	float GetPenetrating() { return mPenetrating; }
+	float GetAttackSpeed() { return mAttackSpeed; }
+
 protected:
 	static const FLLWeaponData* FindWeaponData(const FName& Name);
 

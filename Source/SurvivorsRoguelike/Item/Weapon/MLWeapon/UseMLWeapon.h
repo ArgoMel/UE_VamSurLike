@@ -84,6 +84,9 @@ public:
 		return mWeapon;
 	}
 
+	float GetOffensePower() { return mOffensePower; }
+	float GetAttackSpeed() { return mAttackSpeed; }
+
 protected:
 	static const FMLWeaponData* FindWeaponData(const FName& Name);
 

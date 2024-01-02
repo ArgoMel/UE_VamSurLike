@@ -81,9 +81,6 @@ void UUseMLWeapon::BeginPlay()
 	Super::BeginPlay();
 
 	LoadWeaponData();
-
-	FString WeaponName = Cast<ABaseCharacter>(GetOwner())->GetMLWeaponName();
-	Init(WeaponName);
 }
 
 // Called every frame
