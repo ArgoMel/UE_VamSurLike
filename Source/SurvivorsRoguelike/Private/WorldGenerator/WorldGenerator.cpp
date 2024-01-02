@@ -28,6 +28,7 @@ AWorldGenerator::AWorldGenerator()
 	SectionIndexX = 0;
 	SectionIndexY = 0;
 	CellLODLevel = 1;
+	mIsCharacterExist = false;
 
 	m_InitialSeed = 0;
 	m_RandomizeFoliage = true;
@@ -138,6 +139,10 @@ void AWorldGenerator::SpawnTilesAroundPlayer()
 		FIntPoint xRange;
 		FIntPoint yRange;
 		GetTileIndicesAroundPlayer(xRange, yRange);
+		if(!mIsCharacterExist)
+		{
+			return;
+		}
 		for (int32 y = yRange.X; y <= yRange.Y; ++y)
 		{
 			for (int32 x = xRange.X; x <= xRange.Y; ++x)
@@ -221,7 +226,8 @@ void AWorldGenerator::DrawTile()
 FVector AWorldGenerator::GetPlayerLoc()
 {
 	ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	if(IsValid(player))
+	mIsCharacterExist = IsValid(player);
+	if(mIsCharacterExist)
 	{
 		return player->GetActorLocation();
 	}
