@@ -11,7 +11,7 @@ class SURVIVORSROGUELIKE_API AMagicBase : public AActor
 {
 	GENERATED_BODY()
 	
-private:	
+public:	
 	AMagicBase();
 	
 protected :
@@ -19,17 +19,31 @@ protected :
 	TObjectPtr<UParticleSystemComponent> mParticle;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	float mRange;
+	TObjectPtr<UAudioComponent> mSound;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	float mDamage;
+	float mDamageRate;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mAttackDelay;
 
-public : 
-	void SetTarget(const TArray<TObjectPtr<AMagicBase>>& TargetEnemy);
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	EElement mElement;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float mSpellPower;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float mAttackSpeed;
+
+
+public : 
+	void SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy);
+	void SetMGWeaponStat(float SpellPower, float AttackSpeed)
+	{
+		mSpellPower = SpellPower;
+		mAttackSpeed = AttackSpeed;
+	}
 
 protected:
 	// Called when the game starts or when spawned

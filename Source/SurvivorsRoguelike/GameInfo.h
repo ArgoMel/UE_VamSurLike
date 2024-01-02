@@ -263,6 +263,14 @@ enum class EItemType : uint8
 };
 
 UENUM(BlueprintType)
+enum class ERelicType : uint8
+{
+	Inhance,
+	Magic,
+	ElementEnhance
+};
+
+UENUM(BlueprintType)
 enum class EElement : uint8
 {
 	None,
@@ -429,4 +437,27 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMesh>		Mesh;
+};
+
+USTRUCT(BlueprintType)
+struct FRelicData :
+	public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FName		Name;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UTexture2D* Icon;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	ERelicType Type;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class ARelicBase> RelicClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FText mEffectDescription;
 };
