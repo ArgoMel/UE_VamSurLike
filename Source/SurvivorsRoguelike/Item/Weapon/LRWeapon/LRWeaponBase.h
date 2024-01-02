@@ -5,18 +5,18 @@
 #include "../../../GameInfo.h"
 #include "../WeaponBase.h"
 #include "BulletBase.h"
-#include "LLWeaponBase.generated.h"
+#include "LRWeaponBase.generated.h"
 
 
 
 
 UCLASS()
-class SURVIVORSROGUELIKE_API ALLWeaponBase : public AWeaponBase
+class SURVIVORSROGUELIKE_API ALRWeaponBase : public AWeaponBase
 {
 	GENERATED_BODY()
 
 public:
-	ALLWeaponBase();
+	ALRWeaponBase();
 
 protected:
 	TSubclassOf<ABulletBase>	mBulletClass;
@@ -27,7 +27,7 @@ protected:
 	float mTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
-	ELLWeaponType	mWeaponType;
+	ELRWeaponType	mWeaponType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> mMesh;
@@ -46,7 +46,7 @@ protected:
 
 public:
 	void Init(int32 num, EItemType ItemType, FString name, float OffensePower, float AttackSpeed,
-		float Penetrating, float Range, ELLWeaponType WeaponType, USkeletalMesh* Mesh);
+		float Penetrating, float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh);
 
 	void Fire();
 	void SetCharacterFwdLoc(const FVector& Vector)
@@ -67,7 +67,7 @@ public:
 		mElement = Element;
 	}
 
-	void SetLLWeaponStat(float Penetrating, float AttackSpeed)
+	void SetLRWeaponStat(float Penetrating, float AttackSpeed)
 	{
 		mPenetrating = Penetrating;
 		mAttackSpeed = AttackSpeed;

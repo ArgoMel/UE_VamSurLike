@@ -4,13 +4,13 @@
 
 #include "../../../GameInfo.h"
 #include "RelicBase.h"
-#include "Relic_LLAttackSpeed.generated.h"
+#include "Relic_LRAttackSpeedInhance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SURVIVORSROGUELIKE_API ARelic_LLAttackSpeed : public ARelicBase
+class SURVIVORSROGUELIKE_API ARelic_LRAttackSpeedInhance : public ARelicBase
 {
 	GENERATED_BODY()
 	
