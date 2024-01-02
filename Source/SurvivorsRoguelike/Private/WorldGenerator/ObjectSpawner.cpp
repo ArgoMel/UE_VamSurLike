@@ -36,6 +36,10 @@ void AObjectSpawner::SpawnObject(const FHitResult hit)
 {
 }
 
+void AObjectSpawner::RemoveTile(const FVector tileCenter)
+{
+}
+
 FVector AObjectSpawner::GetPlayerCell()
 {
 	FVector playerLoc=FVector::Zero();
@@ -115,6 +119,38 @@ void AObjectSpawner::UpdateTile(const FVector tileCenter,APawn* player)
 					FColor::Red, false, 0.5f);
 #endif
 				SpawnObject(hit);
+			}
+		}
+	}
+}
+
+void AObjectSpawner::RemoveFarTiles()
+{
+	FVector playerCell = GetPlayerCell();
+	TArray<FVector2D> spawnedTilesCopy;
+	spawnedTilesCopy.Append(mSpawnedTiles);
+	for (int32 tileIndex = 0; tileIndex < spawnedTilesCopy.Num(); ++tileIndex)
+	{
+		FVector2D relativeTileLoc = spawnedTilesCopy[tileIndex] - FVector2D(playerCell);
+		float boundary = mCellCount * 0.5f * mCellSize;
+		if (FMath::Abs(relativeTileLoc.X) > boundary ||
+			FMath::Abs(relativeTileLoc.Y) > boundary)
+		{
+			FHitResult hit;
+			FCollisionQueryParams collisionParams;
+			collisionParams.bReturnPhysicalMaterial = true;
+			FVector tileCenter = FVector(spawnedTilesCopy[tileIndex], playerCell.Z);
+			FVector startLoc = tileCenter + FVector::UpVector * mTraceDist;
+			FVector endLoc = tileCenter - FVector::UpVector * mTraceDist;
+			bool isHit = GetWorld()->LineTraceSingleByChannel(hit,
+				startLoc, endLoc, ECC_Visibility, collisionParams);
+			if (isHit)
+			{
+#if ENABLE_DRAW_DEBUG
+				DrawDebugBox(GetWorld(), hit.Location, FVector(mCellSize * 0.5f), FColor::Blue, false, 0.5f);
+#endif
+				RemoveTile(hit.Location);
+				mSpawnedTiles.Remove(spawnedTilesCopy[tileIndex]);
 			}
 		}
 	}

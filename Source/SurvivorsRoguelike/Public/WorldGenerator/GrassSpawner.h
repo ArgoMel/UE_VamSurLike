@@ -16,6 +16,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 protected:
 	virtual void SpawnObject(const FHitResult hit) override;
+	virtual void RemoveTile(const FVector tileCenter) override;
 
 protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Foliage")
