@@ -18,8 +18,6 @@ ABaseCharacter::ABaseCharacter()
 
 void ABaseCharacter::BeginPlay()
 {
-	Super::BeginPlay();
-
 	mMLWeaponName = "Sword";
 	mLLWeaponName = "Rifle";
 	mMGWeaponName = "MagicBook";
@@ -36,6 +34,8 @@ void ABaseCharacter::BeginPlay()
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 	mElement = EElement::None;
 	mDamege = 0;
+
+	Super::BeginPlay();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
