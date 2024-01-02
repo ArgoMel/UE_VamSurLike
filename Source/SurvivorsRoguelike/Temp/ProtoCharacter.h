@@ -36,15 +36,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> mFollowCamera;
 
-	// 원거리 무기
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMeshComponent> LLWeapon;
-
 	FTimerHandle mHitTimerHandle;
 
 private:
-	float LLWeaponRange;
-	float LLWeaponRate;
-
-	void SpawnBulletPerSec();
 };

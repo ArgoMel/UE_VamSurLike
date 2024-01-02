@@ -4,6 +4,7 @@
 
 #include "../../../GameInfo.h"
 #include "../WeaponBase.h"
+#include "MLAttackBase.h"
 #include "MLWeaponBase.generated.h"
 
 /**
@@ -22,10 +23,11 @@ public:
 
 protected:
 	float mTime = 0.f;
-	FVector	mPlayerLoc;
+	TObjectPtr<AMLAttackBase>	mWeapon;
+	TSubclassOf<AMLAttackBase>	mWeaponClass;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<UBoxComponent> mCollision;
+	TObjectPtr<USceneComponent> mRoot;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float		mOffensePower;
@@ -43,12 +45,29 @@ protected:
 	EMLWeaponType	mWeaponType;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TObjectPtr<UStaticMeshComponent>	mMesh;
+	TObjectPtr<UStaticMesh>	mMesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	EElement mElement = EElement::None;
+	
+public :
+	void Attack();
+	
+	void SetElement(EElement Element)
+	{
+		mElement = Element;
+	}
+
+	void SetMLWeaponStat(float OffensePower, float AttackSpeed)
+	{
+		mOffensePower = OffensePower;
+		mAttackSpeed = AttackSpeed;
+	}
 
 public :
 	void Init(int32 num, EItemType ItemType, FString name, float AttackSpeed, 
 		float OffensePower, FVector CollisionScale, FVector CollisionLoc, 
-		EMLWeaponType WeaponType, UStaticMesh* Mesh);
+		EMLWeaponType WeaponType, UStaticMesh* Mesh, EElement Element);
 
 protected:
 	// Called when the game starts or when spawned
@@ -58,9 +77,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION()
-	void OverlapBegin(UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor, UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex, bool bFromSweep,
-		const FHitResult& SweepResult);
+
 };

@@ -19,8 +19,8 @@ public:
 
 private:
 	static TObjectPtr<UDataTable>	mWeaponDataTable;
-	TObjectPtr<class AMLWeaponBase>	mWeapon;
-	TSubclassOf<class AMLWeaponBase>	mWeaponClass;
+	TObjectPtr<AMLWeaponBase>	mWeapon;
+	TSubclassOf<AMLWeaponBase>	mWeaponClass;
 	float mTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -53,6 +53,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMesh>	mMeshPtr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	EElement mElement = EElement::None;
 
 public:
 	static void LoadWeaponData();
@@ -75,8 +77,12 @@ public:
 		mMeshPtr = Data->Mesh;
 	}
 
-	void Attack();
 	void ClearWeapon();
+	void Init(const FString& Name);
+	TObjectPtr<AMLWeaponBase> GetWeapon()
+	{
+		return mWeapon;
+	}
 
 protected:
 	static const FMLWeaponData* FindWeaponData(const FName& Name);

@@ -1,4 +1,5 @@
 #include "UseMLWeapon.h"
+#include "../../../Public/Character/BaseCharacter.h"
 
 // Sets default values for this component's properties
 TObjectPtr<UDataTable>	UUseMLWeapon::mWeaponDataTable;
@@ -19,25 +20,43 @@ void UUseMLWeapon::LoadWeaponData()
 		TEXT("/Script/Engine.DataTable'/Game/00_Weapon/DataTable/MLWeaponData.MLWeaponData'"));
 }
 
-void UUseMLWeapon::Attack()
+
+void UUseMLWeapon::ClearWeapon()
 {
+
+}
+
+void UUseMLWeapon::Init(const FString& Name)
+{
+
+	mName = FName(Name);
+
+	if (IsValid(mWeaponDataTable))
+	{
+		const FMLWeaponData* Data = FindWeaponData(mName);
+
+		if (Data)
+		{
+			SetWeaponInfo(mName, Data);
+		}
+	}
+
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 	if (mMeshPtr)
 	{
-
 		mWeapon = GetWorld()->SpawnActor<AMLWeaponBase>(mWeaponClass,
 			GetOwner()->GetActorLocation() + FVector(0.f, 0.f, 0.f),
 			GetOwner()->GetActorRotation() + FRotator(0.f, 0.f, 0.f),
 			ActorParam);
 
 		mWeapon->Init(mNum, mItemType, mName.ToString(), mAttackSpeed, mOffensePower, mCollisionScale,
-			mCollisionLoc, mWeaponType, mMeshPtr);
+			mCollisionLoc, mWeaponType, mMeshPtr, mElement);
 
 		FName PlayerSocket(TEXT("MLWeaponSocket"));
-		
+
 		FAttachmentTransformRules	AttachRule(
 			EAttachmentRule::SnapToTarget,
 			EAttachmentRule::SnapToTarget,
@@ -47,14 +66,7 @@ void UUseMLWeapon::Attack()
 		mWeapon->AttachToComponent(GetOwner()->GetRootComponent(),
 			AttachRule, PlayerSocket);
 
-
-		mWeapon->SetActorRelativeRotation(FRotator(0.f, 0.f, 90.f));
 	}
-}
-
-void UUseMLWeapon::ClearWeapon()
-{
-
 }
 
 const FMLWeaponData* UUseMLWeapon::FindWeaponData(const FName& Name)
@@ -70,17 +82,8 @@ void UUseMLWeapon::BeginPlay()
 
 	LoadWeaponData();
 
-	mName = "1";
-
-	if (IsValid(mWeaponDataTable))
-	{
-		const FMLWeaponData* Data = FindWeaponData(mName);
-
-		if (Data)
-		{
-			SetWeaponInfo(mName, Data);
-		}
-	}
+	FString WeaponName = Cast<ABaseCharacter>(GetOwner())->GetMLWeaponName();
+	Init(WeaponName);
 }
 
 // Called every frame
@@ -89,11 +92,5 @@ void UUseMLWeapon::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	mTime += DeltaTime;
-	if (mTime >= (1 / mAttackSpeed))
-	{
-		Attack();
-		mTime = 0;
-	}
 }
 
