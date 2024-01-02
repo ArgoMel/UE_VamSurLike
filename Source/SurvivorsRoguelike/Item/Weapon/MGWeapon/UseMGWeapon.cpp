@@ -76,9 +76,6 @@ void UUseMGWeapon::BeginPlay()
 	Super::BeginPlay();
 
 	LoadWeaponData();
-	
-	FString WeaponName = Cast<ABaseCharacter>(GetOwner())->GetMGWeaponName();
-	Init(WeaponName);
 }
 
 

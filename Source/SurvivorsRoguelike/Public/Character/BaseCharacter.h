@@ -3,6 +3,11 @@
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
 
+class UUseMLWeapon;
+class UUseLLWeapon;
+class UUseMGWeapon;
+class URelicInventory;
+
 UCLASS()
 class SURVIVORSROGUELIKE_API ABaseCharacter : public ACharacter
 {
@@ -17,11 +22,14 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-protected:
-	FTimerHandle mHitTimerHandle;
-
 private:
 	FTimerHandle mPercentDamageHandle;
+
+protected:
+	TObjectPtr<UUseMLWeapon> mUseMLWeapon;
+	TObjectPtr<UUseLLWeapon> mUseLLWeapon;
+	TObjectPtr<UUseMGWeapon> mUseMGWeapon;
+	TObjectPtr<URelicInventory> mRelicInventory;
 
 protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
@@ -36,23 +44,58 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FString mLLWeaponName;
 
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mOffensePower;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mMLAttackSpeed;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mPenetraitngPower;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mLLAttackSpeed;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mSpellPower;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mMGAttackSpeed;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EElement mElement;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mDamege;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void StartPercentDamage();
 
-	FString GetMLWeaponName()
-	{
-		return mMLWeaponName;
-	}
+	FString GetMLWeaponName() { return mMLWeaponName; }
+	FString GetLLWeaponName() { return mLLWeaponName; }
+	FString GetMGWeaponName() {	return mMGWeaponName; }
 
-	FString GetLLWeaponName()
-	{
-		return mLLWeaponName;
-	}
+	float GetOffensePower() { return mOffensePower; }
+	float GetMLAttackSpeed() { return mMLAttackSpeed; }
+	float GetPenetraitngPower() { return mPenetraitngPower; }
+	float GetLLAttackSpeed() { return mLLAttackSpeed; }
+	float GetSpellPower() { return mSpellPower; }
+	float GetMGAttackSpeed() { return mMGAttackSpeed; }
+	EElement GetElement() { return mElement; }
+	float GetDamage() { return mDamege; }
 
-	FString GetMGWeaponName()
-	{
-		return mMGWeaponName;
-	}
+	void SetOffensePower(float OffensePower) { mOffensePower = OffensePower; }
+	void SetMLAttackSpeed(float MLAttackSpeed) { mMLAttackSpeed = MLAttackSpeed; }
+	void SetPenetraitngPower(float PenetraitngPower) { mPenetraitngPower = PenetraitngPower; }
+	void SetLLAttackSpeed(float LLAttackSpeed) { mLLAttackSpeed = LLAttackSpeed; }
+	void SetSpellPower(float SpellPower) { mSpellPower = SpellPower; }
+	void SetMGAttackSpeed(float MGAttackSpeed) { mMGAttackSpeed = MGAttackSpeed; }
+	void SetElement(EElement Element) { mElement = Element; }
+	void SetDamage(float Damage) { mDamege = Damage; }
 
+	void SetRelicInvent(URelicInventory* RelicInventory) { mRelicInventory = RelicInventory; }
+	void ChangeUseMLWeapon(FString MLWeaponName);
+	void ChangeUseLLWeapon(FString LLWeaponName);
+	void ChangeUseMGWeapon(FString MGWeaponName);
 };

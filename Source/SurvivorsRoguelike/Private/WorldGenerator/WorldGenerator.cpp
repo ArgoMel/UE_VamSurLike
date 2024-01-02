@@ -1,5 +1,6 @@
 #include "WorldGenerator/WorldGenerator.h"
 #include "KismetProceduralMeshLibrary.h"
+#include "Kismet/KismetMaterialLibrary.h"
 #include "FoliageType_InstancedStaticMesh.h"
 
 AWorldGenerator::AWorldGenerator()
@@ -26,38 +27,88 @@ AWorldGenerator::AWorldGenerator()
 
 	SectionIndexX = 0;
 	SectionIndexY = 0;
+	CellLODLevel = 1;
+	mIsCharacterExist = false;
 
 	m_InitialSeed = 0;
 	m_RandomizeFoliage = true;
 
+	RelocateDistance = 100000.f;
+
+	mSeaLevel = 0.f;
+	mSeaScale = 1.f;
+	mEnableSea = true;
+
 	m_Terrain = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Terrain"));
-	m_Terrain->SetupAttachment(GetRootComponent());
+	SetRootComponent(m_Terrain);
 	m_Terrain->bUseAsyncCooking = true;
+
+	m_Sea = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sea"));
+	m_Sea->SetupAttachment(m_Terrain);
+	m_Sea->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	m_Sea->SetCollisionProfileName(TEXT("NoCollision"));
+	m_Sea->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_SkyFloor(TEXT(
+		"/Game/Lighting/SM_SkyFloor.SM_SkyFloor"));
+	if (SM_SkyFloor.Succeeded())
+	{
+		m_Sea->SetStaticMesh(SM_SkyFloor.Object);
+	}
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> M_WaterFloor_TigtherTile02(TEXT(
+		"/Game/ParagonProps/Monolith/Dawn/Materials/M_WaterFloor_TigtherTile02.M_WaterFloor_TigtherTile02"));
+	if (M_WaterFloor_TigtherTile02.Succeeded())
+	{
+		m_Sea->SetMaterial(0,M_WaterFloor_TigtherTile02.Object);
+	}
+	//static ConstructorHelpers::FObjectFinder<UMaterialInterface> MI_Auto(TEXT(
+	//	"/Game/PracTerrain/Materials/MI_Auto.MI_Auto"));
+	//if (MI_Auto.Succeeded())
+	//{
+	//	TerrainMaterial = MI_Auto.Object;
+	//}
+	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection> MPC_World(TEXT(
+		"/Game/0_KBJ/Material/MPC_World.MPC_World"));
+	if (MPC_World.Succeeded())
+	{
+		mSeaMtrlParamCollection = MPC_World.Object;
+	}
 }
 
 void AWorldGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-	if(RandomizeTerrainLayout)
+	UpdateSeaParameters();
+	if (RandomizeTerrainLayout)
 	{
-		PerlinOffset = FVector2D(FMath::FRandRange(0.,1000000.), 
+		PerlinOffset = FVector2D(FMath::FRandRange(0., 1000000.),
 			FMath::FRandRange(0., 1000000.));
-		MountainHeight *= FMath::FRandRange(0.5f,3.f);
-		BoulderHeight *= FMath::FRandRange(0.5f,2.f);
-		MountainScale *= FMath::FRandRange(0.3f,3.f);
-		BoulderScale *= FMath::FRandRange(0.3f,3.f);
+		MountainHeight *= FMath::FRandRange(0.5f, 3.f);
+		BoulderHeight *= FMath::FRandRange(0.5f, 2.f);
+		MountainScale *= FMath::FRandRange(0.3f, 3.f);
+		BoulderScale *= FMath::FRandRange(0.3f, 3.f);
 	}
-	if(m_RandomizeFoliage)
+	if (m_RandomizeFoliage)
 	{
-		m_InitialSeed = FMath::RandRange(0,100);
+		m_InitialSeed = FMath::RandRange(0, 100);
 	}
 
 	m_RandomStream = UKismetMathLibrary::MakeRandomStream(m_InitialSeed);
-	//InitalizeFoliageTypes();
-	GetWorldTimerManager().SetTimer(m_GenerateTileTimer, this,
-		&AWorldGenerator::SpawnTilesAroundPlayer, 0.3f, true,0.f);
+	InitalizeFoliageTypes();
+	FTimerHandle generateTileTimer;
+	GetWorldTimerManager().SetTimer(generateTileTimer, this,
+		&AWorldGenerator::SpawnTilesAroundPlayer, 0.3f, true, 0.f);
+	FTimerHandle relocateActorTimer;
+	GetWorldTimerManager().SetTimer(relocateActorTimer, this,
+		&AWorldGenerator::RelocatedActors, 20.f, true, 0.f);
 
-	m_Terrain->OnComponentPhysicsStateChanged.AddDynamic(this,&AWorldGenerator::OnPhysicsStateChanged);
+	m_Terrain->OnComponentPhysicsStateChanged.AddDynamic(this, &AWorldGenerator::OnPhysicsStateChanged);
+}
+
+void AWorldGenerator::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	UpdateSeaParameters();
 }
 
 void AWorldGenerator::Tick(float DeltaTime)
@@ -88,6 +139,10 @@ void AWorldGenerator::SpawnTilesAroundPlayer()
 		FIntPoint xRange;
 		FIntPoint yRange;
 		GetTileIndicesAroundPlayer(xRange, yRange);
+		if(!mIsCharacterExist)
+		{
+			return;
+		}
 		for (int32 y = yRange.X; y <= yRange.Y; ++y)
 		{
 			for (int32 x = xRange.X; x <= xRange.Y; ++x)
@@ -171,7 +226,8 @@ void AWorldGenerator::DrawTile()
 FVector AWorldGenerator::GetPlayerLoc()
 {
 	ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-	if(IsValid(player))
+	mIsCharacterExist = IsValid(player);
+	if(mIsCharacterExist)
 	{
 		return player->GetActorLocation();
 	}
@@ -252,17 +308,48 @@ int32 AWorldGenerator::GetFurthestUpdatableTile()
 	return furthestTileIndex;
 }
 
+void AWorldGenerator::RelocatedActors()
+{
+	FVector2D playerLoc = FVector2D(GetPlayerLoc());
+	for (auto& actor : ActorsToBeRelocated)
+	{
+		if (!IsValid(actor))
+		{
+			continue;
+		}
+		FVector actorLoc = actor->GetActorLocation();
+		if (FVector2D::Distance(playerLoc, FVector2D(actorLoc)) > RelocateDistance)
+		{
+			actor->SetActorLocation(FVector(playerLoc.X, playerLoc.Y, actorLoc.Z));
+		}
+	}
+	FVector seaLoc = m_Sea->GetComponentLocation();
+	if (FVector2D::Distance(playerLoc, FVector2D(seaLoc)) > RelocateDistance)
+	{
+		m_Sea->SetWorldLocation(FVector(playerLoc.X, playerLoc.Y, seaLoc.Z));
+	}
+}
+
+int32 AWorldGenerator::GetTileLODLevel(int32 x, int32 y)
+{
+	FVector2D playerLoc = FVector2D(GetPlayerLoc());
+	playerLoc.X /= (XVertexCount - 1) * CellSize;
+	playerLoc.Y /= (YVertexCount - 1) * CellSize;
+	float dist = FVector2D::Distance(FVector2D(x + 0.5f, y + 0.5f), playerLoc);
+	dist = FMath::Max(1.f, dist);
+	return (int32)dist;
+}
+
 void AWorldGenerator::InitalizeFoliageTypes()
 {
 	int32 size = m_FoliageTypes.Num();
-	for (int32 i=0;i< size;++i)
+	for (int32 i = 0; i < size; ++i)
 	{
-		UInstancedStaticMeshComponent* ISMComp = NewObject<UInstancedStaticMeshComponent>();
-		//ISMComp->SetupAttachment(GetRootComponent());
-		ISMComp->SetStaticMesh(m_FoliageTypes[i]->GetStaticMesh());
-		//ISMComp->SetWorldTransform(GetTransform());
-		AddInstanceComponent(ISMComp);
+		UInstancedStaticMeshComponent* ISMComp = NewObject<UInstancedStaticMeshComponent>(this);
 		ISMComp->RegisterComponent();
+		ISMComp->SetStaticMesh(m_FoliageTypes[i]->GetStaticMesh());
+		ISMComp->SetFlags(RF_Transactional);
+		AddInstanceComponent(ISMComp);
 		m_FoliageComponents.Emplace(ISMComp);
 	}
 }
@@ -395,6 +482,25 @@ void AWorldGenerator::SpawnFoliageCluster(UFoliageType_InstancedStaticMesh* foli
 			return;
 		}
 	}
+}
+
+void AWorldGenerator::UpdateSeaParameters()
+{
+	if (mEnableSea)
+	{
+		FVector seaLoc = m_Sea->GetComponentLocation();
+		seaLoc.Z = mSeaLevel;
+		m_Sea->SetWorldLocation(seaLoc);
+		m_Sea->SetRelativeScale3D(FVector(mSeaScale));
+		UKismetMaterialLibrary::SetScalarParameterValue(GetWorld(),
+			mSeaMtrlParamCollection, TEXT("SeaLevel"), mSeaLevel);
+	}
+	else
+	{
+		UKismetMaterialLibrary::SetScalarParameterValue(GetWorld(),
+			mSeaMtrlParamCollection, TEXT("SeaLevel"), TNumericLimits<float>::Min());
+	}
+	m_Sea->SetVisibility(mEnableSea);
 }
 
 void AWorldGenerator::GenerateTerrain(const int32 inSectionIndexX, const int32 inSectionIndexY)

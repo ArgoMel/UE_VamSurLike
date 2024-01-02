@@ -15,7 +15,9 @@ APatrolPoint::APatrolPoint()
 
 	SetRootComponent(mRoot);
 
+#if WITH_EDITORONLY_DATA
 	mRoot->bVisualizeComponent = true;
+#endif
 
 }
 
