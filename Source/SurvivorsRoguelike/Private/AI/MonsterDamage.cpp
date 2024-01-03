@@ -23,12 +23,13 @@ void AMonsterDamage::SetAbnormalTable(EAbnormalTable AbnormalTable)
 	switch (AbnormalTable)
 	{
 	case EAbnormalTable::stun:
-		GetWorld()->GetTimerManager().SetTimer(nonAbnormal, this, &AMonsterDamage::Stun, 3.f,false);
+		Stun();
+	
 		break;
 
 	case EAbnormalTable::Burning:
 		
-		GetWorld()->GetTimerManager().SetTimer(mTimerHandle, this, &AMonsterDamage::BurningDmg, 1.f,true);
+		GetWorld()->GetTimerManager().SetTimer(mTimerHandle, this, &AMonsterDamage::Burning, 1.f,true);
 
 
 		GetWorld()->GetTimerManager().SetTimer(nonAbnormal, this, &AMonsterDamage::FinBurningDmg, 3.f,false);
@@ -48,10 +49,6 @@ void AMonsterDamage::SetAbnormalTable(EAbnormalTable AbnormalTable)
 
 }
 
-void AMonsterDamage::BurningDmg()
-{
-
-}
 
 void AMonsterDamage::FinBurningDmg()
 {
@@ -60,9 +57,10 @@ void AMonsterDamage::FinBurningDmg()
 	AbnormalState[(int32)EAbnormalTable::Burning] = false;
 }
 
-void AMonsterDamage::Stun()
+
+void AMonsterDamage::Stun_Implementation()
 {
-	AbnormalState[(int32)EAbnormalTable::stun] = false;
+
 }
 
 
@@ -76,6 +74,12 @@ void AMonsterDamage::FinSlow()
 void AMonsterDamage::Weakend()
 {
 	AbnormalState[(int32)EAbnormalTable::Weakened] = false;
+}
+
+
+
+void AMonsterDamage::Burning_Implementation()
+{
 }
 
 // Called when the game starts or when spawned

@@ -64,13 +64,18 @@ public:
 
 	void SetAbnormalTable(EAbnormalTable AbnormalTable);
 
-	void BurningDmg();
 	void FinBurningDmg();
+
+	UFUNCTION(BlueprintNativeEvent)
 	void Stun();
+	void Stun_Implementation();
+
 	void FinSlow();
 	void Weakend();
-	
 
+	UFUNCTION(BlueprintNativeEvent)
+	void Burning();
+	void Burning_Implementation();
 
 
 	EElement GetElement()
