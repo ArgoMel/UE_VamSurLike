@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "../GameInfo.h"
 #include "Blueprint/UserWidget.h"
 #include "CharacterStatWidget.generated.h"
 
