@@ -480,7 +480,7 @@ public:
 	int32 MLAttackSpeedInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 PenetraitngPowerInhanceRate;
+	int32 PenetratingPowerInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	int32 LRAttackSpeedInhanceRate;

@@ -17,6 +17,7 @@ void UPlayerHudWidget::UpdateCharacterStat()
 
 	if (IsValid(BaseCharacter))
 	{
+		BaseCharacter->SetPlayerHubWidget(this);
 		mCharacterStat->SetMLText(BaseCharacter->GetOffensePower());
 		mCharacterStat->SetMLSpeedText(BaseCharacter->GetMLAttackSpeed());
 		mCharacterStat->SetLRPenetratingText(BaseCharacter->GetPenetraitngPower());

@@ -39,12 +39,11 @@ void ABaseCharacter::BeginPlay()
 
 	mInhanceRate.OffensePowerInhanceRate = 0;
 	mInhanceRate.MLAttackSpeedInhanceRate = 0;
-	mInhanceRate.PenetraitngPowerInhanceRate = 0;
+	mInhanceRate.PenetratingPowerInhanceRate = 0;
 	mInhanceRate.LRAttackSpeedInhanceRate = 0;
 	mInhanceRate.SpellPowerInhanceRate = 0;
 	mInhanceRate.MGAttackSpeedInhanceRate = 0;
 	mInhanceRate.DamegeInhanceRate = 0;
-
 
 	Super::BeginPlay();
 }
@@ -118,27 +117,28 @@ void ABaseCharacter::ChangeUseMGWeapon(FString MGWeaponName)
 void ABaseCharacter::ResetCharacterStat()
 {
 	mOffensePower = mUseMLWeapon->GetOffensePower() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
-	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
-	mPenetraitngPower = mUseLRWeapon->GetPenetrating() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
-	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
-	mSpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
-	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
-	mDamege = 0.1f * mInhanceRate.OffensePowerInhanceRate;
+	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.MLAttackSpeedInhanceRate);
+	mPenetratingPower = mUseLRWeapon->GetPenetrating() * (1 + 0.1f * mInhanceRate.PenetratingPowerInhanceRate);
+	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.LRAttackSpeedInhanceRate);
+	mSpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mInhanceRate.SpellPowerInhanceRate);
+	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.MGAttackSpeedInhanceRate);
+	mDamege = 0.1f * mInhanceRate.DamegeInhanceRate;
 
 	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Green,
 		FString::Printf(TEXT("%d"), mInhanceRate.LRAttackSpeedInhanceRate));
 }
-
+ 
 void ABaseCharacter::SetInhanceRate(FCharacterInhanceRate& InhanceRate)
 {
 	mInhanceRate.OffensePowerInhanceRate += InhanceRate.OffensePowerInhanceRate;
 	mInhanceRate.MLAttackSpeedInhanceRate += InhanceRate.MLAttackSpeedInhanceRate;
-	mInhanceRate.PenetraitngPowerInhanceRate += InhanceRate.PenetraitngPowerInhanceRate;
+	mInhanceRate.PenetratingPowerInhanceRate += InhanceRate.PenetratingPowerInhanceRate;
 	mInhanceRate.LRAttackSpeedInhanceRate += InhanceRate.LRAttackSpeedInhanceRate;
 	mInhanceRate.SpellPowerInhanceRate+= InhanceRate.SpellPowerInhanceRate;
 	mInhanceRate.MGAttackSpeedInhanceRate += InhanceRate.MGAttackSpeedInhanceRate;
 	mInhanceRate.DamegeInhanceRate += InhanceRate.DamegeInhanceRate;
 
 	ResetCharacterStat();
+	mPlayerHubWidget->UpdateCharacterStat();
 }
 

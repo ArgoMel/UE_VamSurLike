@@ -55,3 +55,5 @@ void UCharacterStatWidget::SetDamageText(float val)
 {
 	mDamageText->SetText(FText::FromString(FString::SanitizeFloat(val)));
 }
+
+

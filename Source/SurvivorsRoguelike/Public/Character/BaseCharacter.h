@@ -1,6 +1,7 @@
 #pragma once
 #include "../GameInfo.h"
 #include "GameFramework/Character.h"
+#include "../../Widget/PlayerHudWidget.h"
 #include "BaseCharacter.generated.h"
 
 class UUseMLWeapon;
@@ -30,6 +31,7 @@ protected:
 	TObjectPtr<UUseLRWeapon> mUseLRWeapon;
 	TObjectPtr<UUseMGWeapon> mUseMGWeapon;
 	TObjectPtr<URelicInventory> mRelicInventory;
+	TObjectPtr<UPlayerHudWidget> mPlayerHubWidget;
 
 protected:
 	FCharacterInhanceRate mInhanceRate;
@@ -101,6 +103,7 @@ public:
 	void SetMGAttackSpeed(float MGAttackSpeed) { mMGAttackSpeed = MGAttackSpeed; }
 	void SetElement(EElement Element) { mElement = Element; }
 	void SetDamage(float Damage) { mDamege = Damage; }
+	void SetPlayerHubWidget(TObjectPtr<UPlayerHudWidget> PlayerHubWidget) { mPlayerHubWidget = PlayerHubWidget; }
 
 	void SetRelicInvent(URelicInventory* RelicInventory) { mRelicInventory = RelicInventory; }
 	void ChangeUseMLWeapon(FString MLWeaponName);
