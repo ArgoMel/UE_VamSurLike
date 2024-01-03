@@ -51,7 +51,7 @@ protected:
 	float mMLAttackSpeed;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mPenetraitngPower;
+	float mPenetratingPower;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float mLRAttackSpeed;
@@ -78,16 +78,18 @@ public:
 
 	float GetOffensePower() { return mOffensePower; }
 	float GetMLAttackSpeed() { return mMLAttackSpeed; }
-	float GetPenetraitngPower() { return mPenetraitngPower; }
+	float GetPenetraitngPower() { return mPenetratingPower; }
 	float GetLRAttackSpeed() { return mLRAttackSpeed; }
 	float GetSpellPower() { return mSpellPower; }
 	float GetMGAttackSpeed() { return mMGAttackSpeed; }
 	EElement GetElement() { return mElement; }
 	float GetDamage() { return mDamege; }
 
+	FString GetElementName();
+
 	void SetOffensePower(float OffensePower) { mOffensePower = OffensePower; }
 	void SetMLAttackSpeed(float MLAttackSpeed) { mMLAttackSpeed = MLAttackSpeed; }
-	void SetPenetraitngPower(float PenetraitngPower) { mPenetraitngPower = PenetraitngPower; }
+	void SetPenetraitngPower(float PenetraitngPower) { mPenetratingPower = PenetraitngPower; }
 	void SetLRAttackSpeed(float LRAttackSpeed) { mLRAttackSpeed = LRAttackSpeed; }
 	void SetSpellPower(float SpellPower) { mSpellPower = SpellPower; }
 	void SetMGAttackSpeed(float MGAttackSpeed) { mMGAttackSpeed = MGAttackSpeed; }
