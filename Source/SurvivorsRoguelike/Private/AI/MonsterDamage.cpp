@@ -9,11 +9,13 @@ AMonsterDamage::AMonsterDamage()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	AbnormalState.Init(false, (int32)EAbnormalTable::None);
+
 }
 
 void AMonsterDamage::SetAbnormalTable(EAbnormalTable AbnormalTable)
 {
-	mAbnormalTable = AbnormalTable;
+	//mAbnormalTable = AbnormalTable;
 
 	FTimerHandle nonAbnormal;
 
@@ -21,13 +23,12 @@ void AMonsterDamage::SetAbnormalTable(EAbnormalTable AbnormalTable)
 	switch (AbnormalTable)
 	{
 	case EAbnormalTable::stun:
-		//GetCharacterMovement()->StopMovementImmediately();
 		GetWorld()->GetTimerManager().SetTimer(nonAbnormal, this, &AMonsterDamage::Stun, 3.f,false);
-			break;
+		break;
 
 	case EAbnormalTable::Burning:
 		
-		GetWorld()->GetTimerManager().SetTimer(mTimerHandle, this, &AMonsterDamage::BurningDmg, 0.5f,true);
+		GetWorld()->GetTimerManager().SetTimer(mTimerHandle, this, &AMonsterDamage::BurningDmg, 1.f,true);
 
 
 		GetWorld()->GetTimerManager().SetTimer(nonAbnormal, this, &AMonsterDamage::FinBurningDmg, 3.f,false);
@@ -35,11 +36,11 @@ void AMonsterDamage::SetAbnormalTable(EAbnormalTable AbnormalTable)
 
 	case EAbnormalTable::Slow:
 		GetCharacterMovement()->MaxWalkSpeed = SlowSpeed;
-		GetWorld()->GetTimerManager().SetTimer(nonAbnormal, this, &AMonsterDamage::Slow, 3.f,false);
+		GetWorld()->GetTimerManager().SetTimer(nonAbnormal, this, &AMonsterDamage::FinSlow, 3.f,false);
 		break;
 
 	case EAbnormalTable::Weakened:
-		mIsWeakend = true;
+		//mIsWeakend = true;
 		GetWorld()->GetTimerManager().SetTimer(nonAbnormal, this, &AMonsterDamage::Weakend, 3.f,false);
 		break;
 	}
@@ -55,21 +56,26 @@ void AMonsterDamage::BurningDmg()
 void AMonsterDamage::FinBurningDmg()
 {
 	GetWorld()->GetTimerManager().ClearTimer(mTimerHandle);
+
+	AbnormalState[(int32)EAbnormalTable::Burning] = false;
 }
 
 void AMonsterDamage::Stun()
 {
-	
+	AbnormalState[(int32)EAbnormalTable::stun] = false;
 }
 
-void AMonsterDamage::Slow()
+
+void AMonsterDamage::FinSlow()
 {
 	GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
+
+	AbnormalState[(int32)EAbnormalTable::Slow] = false;
 }
 
 void AMonsterDamage::Weakend()
 {
-
+	AbnormalState[(int32)EAbnormalTable::Weakened] = false;
 }
 
 // Called when the game starts or when spawned
