@@ -20,8 +20,7 @@ public:
 	AMonsterDamage();
 
 protected:
-	EAbnormalTable mAbnormalTable;
-
+	
 	EElement mElemenet;
 
 	FBulletStat mBulletStat;
@@ -32,28 +31,51 @@ protected:
 	float mSlowDuration;
 	float mWeakenedDuration;
 	float mDmg;
+
 	FTimerHandle mTimerHandle;
 
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	bool mIsWeakend;
-
-
+	TArray<bool> AbnormalState;
 
 public:
-	EAbnormalTable GetAbnormalTable()
+	UFUNCTION(BlueprintCallable)
+	bool GetAbnormalState(EAbnormalTable AbnormalTable)
 	{
-		return mAbnormalTable;
+
+		if (AbnormalTable==EAbnormalTable::None)
+			return false;
+
+		return AbnormalState[(int32)AbnormalTable];
+	}
+
+	UFUNCTION(BlueprintCallable)
+	void SetAbnormalState(bool Abnormal, EAbnormalTable AbnormalTable)
+	{
+		if (AbnormalTable == EAbnormalTable::None)
+			
+		AbnormalState[(int32)AbnormalTable] = Abnormal;
+
+		if (Abnormal)
+		{
+			SetAbnormalTable(AbnormalTable);
+		}
 	}
 
 
 	void SetAbnormalTable(EAbnormalTable AbnormalTable);
 
-	void BurningDmg();
 	void FinBurningDmg();
+
+	UFUNCTION(BlueprintNativeEvent)
 	void Stun();
-	void Slow();
+	void Stun_Implementation();
+
+	void FinSlow();
 	void Weakend();
 
+	UFUNCTION(BlueprintNativeEvent)
+	void Burning();
+	void Burning_Implementation();
 
 
 	EElement GetElement()

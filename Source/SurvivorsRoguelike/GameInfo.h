@@ -101,6 +101,13 @@ enum class ELobbyPlayerState : uint8
 };
 
 UENUM(BlueprintType)
+enum class EEnemyState : uint8
+{
+	Active,
+	Disabled,
+};
+
+UENUM(BlueprintType)
 enum class EAIKind : uint8
 {
 	None,
@@ -181,13 +188,13 @@ public:
 UENUM(BlueprintType)
 enum class EAbnormalTable : uint8
 {
-	None,
 	stun,
 	Immobilized,
 	Burning,
 	Slow,
 	Sleep,
-	Weakened
+	Weakened,
+	None,
 };
 
 USTRUCT(BlueprintType)

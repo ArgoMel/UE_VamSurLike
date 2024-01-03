@@ -30,7 +30,7 @@ void ABaseCharacter::BeginPlay()
 
 	mOffensePower = mUseMLWeapon->GetOffensePower();
 	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
-	mPenetraitngPower = mUseLRWeapon->GetPenetrating();
+	mPenetratingPower = mUseLRWeapon->GetPenetrating();
 	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
 	mSpellPower = mUseMGWeapon->GetSpellPower();
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
@@ -70,6 +70,27 @@ void ABaseCharacter::StartPercentDamage()
 	TakeDamage(MaxHealth*0.1f, dmgEvent, GetController(),this);
 }
 
+FString ABaseCharacter::GetElementName()
+{
+	switch (mElement)
+	{
+	case EElement::None:
+		return TEXT("None");
+	case EElement::Fire:
+		return TEXT("Fire");
+	case EElement::Water:
+		return TEXT("Water");
+	case EElement::Eletric:
+		return TEXT("Eletric");
+	case EElement::Glass:
+		return TEXT("Glass");
+	case EElement::Ground:
+		return TEXT("Ground");
+	}
+	
+	return TEXT("ERROR");
+}
+
 void ABaseCharacter::ChangeUseMLWeapon(FString MLWeaponName)
 {
 	mMLWeaponName = MLWeaponName;
@@ -82,7 +103,7 @@ void ABaseCharacter::ChangeUseLRWeapon(FString LRWeaponName)
 {
 	mLRWeaponName = LRWeaponName;
 	mUseLRWeapon->Init(mLRWeaponName);
-	mPenetraitngPower = mUseLRWeapon->GetPenetrating();
+	mPenetratingPower = mUseLRWeapon->GetPenetrating();
 	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
 }
 
