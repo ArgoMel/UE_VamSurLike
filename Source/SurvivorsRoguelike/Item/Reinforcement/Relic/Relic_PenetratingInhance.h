@@ -14,4 +14,9 @@ class SURVIVORSROGUELIKE_API ARelic_PenetratingInhance : public ARelicBase
 {
 	GENERATED_BODY()
 	
+
+public:
+	ARelic_PenetratingInhance();
+
+	virtual void Act() override;
 };

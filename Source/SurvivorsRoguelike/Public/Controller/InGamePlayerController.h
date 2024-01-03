@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "../Character/BaseCharacter.h"
 #include "InGamePlayerController.generated.h"
 
 struct FInputActionValue;
@@ -37,5 +38,14 @@ protected:
 	UPROPERTY(Category = Input, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UInputAction> ProtoMoveAction;
 
+	UPROPERTY(Category = Input, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ABaseCharacter> mBaseCharacter;
+
 	FVector3d CursorLoc, CursorDir, CursorHit;
+
+public :
+	void SetBaseCharacter(TObjectPtr<ABaseCharacter> BaseCharacter)
+	{
+		mBaseCharacter = BaseCharacter;
+	}
 };

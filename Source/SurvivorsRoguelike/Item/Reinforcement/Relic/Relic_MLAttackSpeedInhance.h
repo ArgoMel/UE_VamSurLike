@@ -14,4 +14,9 @@ class SURVIVORSROGUELIKE_API ARelic_MLAttackSpeedInhance : public ARelicBase
 {
 	GENERATED_BODY()
 	
+
+public:
+	ARelic_MLAttackSpeedInhance();
+
+	virtual void Act() override;
 };

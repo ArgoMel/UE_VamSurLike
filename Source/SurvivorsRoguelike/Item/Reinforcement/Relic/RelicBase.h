@@ -18,12 +18,16 @@ class SURVIVORSROGUELIKE_API ARelicBase : public AItemBase
 public :
 	ARelicBase();
 
-private :
+protected :
+	FCharacterInhanceRate mInhanceRate;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ABaseCharacter> mPlayer;
 
 public :
+	UFUNCTION(BlueprintCallable)
 	virtual void Act();
+
 	void SetPlayer(TObjectPtr<ABaseCharacter> Player)
 	{
 		mPlayer = Player;
