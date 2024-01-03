@@ -79,6 +79,13 @@ void AWorldGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 	UpdateSeaParameters();
+
+	if (m_RandomizeFoliage)
+	{
+		m_InitialSeed = FMath::RandRange(0, 100);
+	}
+	m_RandomStream = UKismetMathLibrary::MakeRandomStream(m_InitialSeed);
+
 	if (RandomizeTerrainLayout)
 	{
 		PerlinOffset = FVector2D(FMath::FRandRange(0., 1000000.),
@@ -88,12 +95,7 @@ void AWorldGenerator::BeginPlay()
 		MountainScale *= FMath::FRandRange(0.3f, 3.f);
 		BoulderScale *= FMath::FRandRange(0.3f, 3.f);
 	}
-	if (m_RandomizeFoliage)
-	{
-		m_InitialSeed = FMath::RandRange(0, 100);
-	}
 
-	m_RandomStream = UKismetMathLibrary::MakeRandomStream(m_InitialSeed);
 	InitalizeFoliageTypes();
 	FTimerHandle generateTileTimer;
 	GetWorldTimerManager().SetTimer(generateTileTimer, this,
