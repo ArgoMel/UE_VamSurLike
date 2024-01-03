@@ -61,7 +61,7 @@ void UUseLRWeapon::Init(const FString& Name)
 	mWeapon->Init(mNum, mItemType, mName.ToString(), mOffensePower,
 		mAttackSpeed, mPenetrating, mRange, mWeaponType, mMeshPtr);
 
-	FName PlayerSocket = FName(TEXT("LRWeaponSocket"));
+	FName PlayerSocket = FName(TEXT("LLWeaponSocket"));
 
 	mWeapon->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
