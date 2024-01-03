@@ -10,6 +10,7 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	MaxHealth = 100.f;
 
+	
 	mUseMLWeapon = CreateDefaultSubobject<UUseMLWeapon>(TEXT("UseMLWeapon"));
 	mUseLRWeapon = CreateDefaultSubobject<UUseLRWeapon>(TEXT("UseLRWeapon"));
 	mUseMGWeapon = CreateDefaultSubobject<UUseMGWeapon>(TEXT("UseMGWeapon"));
@@ -18,6 +19,7 @@ ABaseCharacter::ABaseCharacter()
 
 void ABaseCharacter::BeginPlay()
 {
+	Cast<AInGamePlayerController>(GetController())->SetBaseCharacter(this);
 	mMLWeaponName = "Sword";
 	mLRWeaponName = "Rifle";
 	mMGWeaponName = "MagicBook";
@@ -34,6 +36,15 @@ void ABaseCharacter::BeginPlay()
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 	mElement = EElement::None;
 	mDamege = 0;
+
+	mInhanceRate.OffensePowerInhanceRate = 0;
+	mInhanceRate.MLAttackSpeedInhanceRate = 0;
+	mInhanceRate.PenetraitngPowerInhanceRate = 0;
+	mInhanceRate.LRAttackSpeedInhanceRate = 0;
+	mInhanceRate.SpellPowerInhanceRate = 0;
+	mInhanceRate.MGAttackSpeedInhanceRate = 0;
+	mInhanceRate.DamegeInhanceRate = 0;
+
 
 	Super::BeginPlay();
 }
@@ -82,3 +93,31 @@ void ABaseCharacter::ChangeUseMGWeapon(FString MGWeaponName)
 	mSpellPower = mUseMGWeapon->GetSpellPower();
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 }
+
+void ABaseCharacter::ResetCharacterStat()
+{
+	mOffensePower = mUseMLWeapon->GetOffensePower() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
+	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
+	mPenetraitngPower = mUseLRWeapon->GetPenetrating() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
+	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
+	mSpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
+	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.OffensePowerInhanceRate);
+	mDamege = 0.1f * mInhanceRate.OffensePowerInhanceRate;
+
+	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Green,
+		FString::Printf(TEXT("%d"), mInhanceRate.LRAttackSpeedInhanceRate));
+}
+
+void ABaseCharacter::SetInhanceRate(FCharacterInhanceRate& InhanceRate)
+{
+	mInhanceRate.OffensePowerInhanceRate += InhanceRate.OffensePowerInhanceRate;
+	mInhanceRate.MLAttackSpeedInhanceRate += InhanceRate.MLAttackSpeedInhanceRate;
+	mInhanceRate.PenetraitngPowerInhanceRate += InhanceRate.PenetraitngPowerInhanceRate;
+	mInhanceRate.LRAttackSpeedInhanceRate += InhanceRate.LRAttackSpeedInhanceRate;
+	mInhanceRate.SpellPowerInhanceRate+= InhanceRate.SpellPowerInhanceRate;
+	mInhanceRate.MGAttackSpeedInhanceRate += InhanceRate.MGAttackSpeedInhanceRate;
+	mInhanceRate.DamegeInhanceRate += InhanceRate.DamegeInhanceRate;
+
+	ResetCharacterStat();
+}
+

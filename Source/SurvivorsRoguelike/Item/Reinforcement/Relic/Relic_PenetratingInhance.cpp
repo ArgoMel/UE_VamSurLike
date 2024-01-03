@@ -3,3 +3,10 @@
 
 #include "Relic_PenetratingInhance.h"
 
+ARelic_PenetratingInhance::ARelic_PenetratingInhance()
+{
+}
+
+void ARelic_PenetratingInhance::Act()
+{
+}

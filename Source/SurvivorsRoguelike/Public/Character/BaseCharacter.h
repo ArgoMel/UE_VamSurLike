@@ -32,6 +32,8 @@ protected:
 	TObjectPtr<URelicInventory> mRelicInventory;
 
 protected:
+	FCharacterInhanceRate mInhanceRate;
+
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	float MaxHealth;
 
@@ -68,6 +70,10 @@ protected:
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float mDamege;
 
+
+
+
+
 public:
 	UFUNCTION(BlueprintCallable)
 	void StartPercentDamage();
@@ -98,4 +104,13 @@ public:
 	void ChangeUseMLWeapon(FString MLWeaponName);
 	void ChangeUseLRWeapon(FString LRWeaponName);
 	void ChangeUseMGWeapon(FString MGWeaponName);
+
+	void ResetCharacterStat();
+
+	FCharacterInhanceRate& GetInhanceRate()
+	{
+		return mInhanceRate;
+	}
+
+	void SetInhanceRate(FCharacterInhanceRate& InhanceRate);
 };

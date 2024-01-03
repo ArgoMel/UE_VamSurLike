@@ -3,3 +3,10 @@
 
 #include "Relic_MLAttackSpeedInhance.h"
 
+ARelic_MLAttackSpeedInhance::ARelic_MLAttackSpeedInhance()
+{
+}
+
+void ARelic_MLAttackSpeedInhance::Act()
+{
+}
