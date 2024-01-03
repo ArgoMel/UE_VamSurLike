@@ -61,12 +61,12 @@ AWorldGenerator::AWorldGenerator()
 	{
 		m_Sea->SetMaterial(0,M_WaterFloor_TigtherTile02.Object);
 	}
-	//static ConstructorHelpers::FObjectFinder<UMaterialInterface> MI_Auto(TEXT(
-	//	"/Game/PracTerrain/Materials/MI_Auto.MI_Auto"));
-	//if (MI_Auto.Succeeded())
-	//{
-	//	TerrainMaterial = MI_Auto.Object;
-	//}
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> MI_LandScape(TEXT(
+		"/Game/0_KBJ/Material/Landscape/MI_LandScape.MI_LandScape"));
+	if (MI_LandScape.Succeeded())
+	{
+		TerrainMaterial = MI_LandScape.Object;
+	}
 	static ConstructorHelpers::FObjectFinder<UMaterialParameterCollection> MPC_World(TEXT(
 		"/Game/0_KBJ/Material/MPC_World.MPC_World"));
 	if (MPC_World.Succeeded())
