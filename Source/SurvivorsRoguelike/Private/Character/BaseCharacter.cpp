@@ -18,8 +18,6 @@ ABaseCharacter::ABaseCharacter()
 
 void ABaseCharacter::BeginPlay()
 {
-	Super::BeginPlay();
-
 	mMLWeaponName = "Sword";
 	mLRWeaponName = "Rifle";
 	mMGWeaponName = "MagicBook";
@@ -31,11 +29,13 @@ void ABaseCharacter::BeginPlay()
 	mOffensePower = mUseMLWeapon->GetOffensePower();
 	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
 	mPenetraitngPower = mUseLRWeapon->GetPenetrating();
-	mLLAttackSpeed = mUseLRWeapon->GetAttackSpeed();
+	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
 	mSpellPower = mUseMGWeapon->GetSpellPower();
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 	mElement = EElement::None;
 	mDamege = 0;
+
+	Super::BeginPlay();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
@@ -72,7 +72,7 @@ void ABaseCharacter::ChangeUseLRWeapon(FString LRWeaponName)
 	mLRWeaponName = LRWeaponName;
 	mUseLRWeapon->Init(mLRWeaponName);
 	mPenetraitngPower = mUseLRWeapon->GetPenetrating();
-	mLLAttackSpeed = mUseLRWeapon->GetAttackSpeed();
+	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
 }
 
 void ABaseCharacter::ChangeUseMGWeapon(FString MGWeaponName)
