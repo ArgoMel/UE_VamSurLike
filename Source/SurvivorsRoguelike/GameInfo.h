@@ -181,13 +181,13 @@ public:
 UENUM(BlueprintType)
 enum class EAbnormalTable : uint8
 {
-	None,
 	stun,
 	Immobilized,
 	Burning,
 	Slow,
 	Sleep,
-	Weakened
+	Weakened,
+	None,
 };
 
 USTRUCT(BlueprintType)
