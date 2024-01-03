@@ -78,14 +78,6 @@ AWorldGenerator::AWorldGenerator()
 void AWorldGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-	UpdateSeaParameters();
-
-	if (m_RandomizeFoliage)
-	{
-		m_InitialSeed = FMath::RandRange(0, 100);
-	}
-	m_RandomStream = UKismetMathLibrary::MakeRandomStream(m_InitialSeed);
-
 	if (RandomizeTerrainLayout)
 	{
 		PerlinOffset = FVector2D(FMath::FRandRange(0., 1000000.),
@@ -96,13 +88,23 @@ void AWorldGenerator::BeginPlay()
 		BoulderScale *= FMath::FRandRange(0.3f, 3.f);
 	}
 
+	UpdateSeaParameters();
+
+	if (m_RandomizeFoliage)
+	{
+		m_InitialSeed = FMath::RandRange(0, 100);
+	}
+	m_RandomStream = UKismetMathLibrary::MakeRandomStream(m_InitialSeed);
+
 	InitalizeFoliageTypes();
+	SpawnTilesAroundPlayer();
 	FTimerHandle generateTileTimer;
 	GetWorldTimerManager().SetTimer(generateTileTimer, this,
-		&AWorldGenerator::SpawnTilesAroundPlayer, 0.3f, true, 0.f);
+		&AWorldGenerator::SpawnTilesAroundPlayer, 0.3f, true);
+	RelocatedActors();
 	FTimerHandle relocateActorTimer;
 	GetWorldTimerManager().SetTimer(relocateActorTimer, this,
-		&AWorldGenerator::RelocatedActors, 20.f, true, 0.f);
+		&AWorldGenerator::RelocatedActors, 20.f, true);
 
 	m_Terrain->OnComponentPhysicsStateChanged.AddDynamic(this, &AWorldGenerator::OnPhysicsStateChanged);
 }
@@ -131,10 +133,12 @@ void AWorldGenerator::OnPhysicsStateChanged(UPrimitiveComponent* ChangedComponen
 
 void AWorldGenerator::SpawnTilesAroundPlayer()
 {
-	if (m_GeneratorBusy &&
-		m_TileDataReady)
+	if (m_GeneratorBusy)
 	{
-		DrawTile();
+		if(m_TileDataReady)
+		{
+			DrawTile();
+		}
 	}
 	else
 	{
