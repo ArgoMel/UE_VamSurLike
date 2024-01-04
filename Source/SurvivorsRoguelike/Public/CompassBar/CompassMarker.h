@@ -3,21 +3,33 @@
 #include "GameFramework/Actor.h"
 #include "CompassMarker.generated.h"
 
+class UCompassBar;
+
 UCLASS()
 class SURVIVORSROGUELIKE_API ACompassMarker : public AActor
 {
 	GENERATED_BODY()
-	
 public:	
-	// Sets default values for this actor's properties
 	ACompassMarker();
-
 protected:
-	// Called when the game starts or when spawned
+	virtual void OnConstruction(const FTransform& Transform);
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	TSubclassOf<UUserWidget>	mUIClass;
+	TObjectPtr<UMaterialInterface>	mMaterial;
+
+protected:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Component")
+	TObjectPtr<UStaticMeshComponent> mCone;
+
+	UPROPERTY(BlueprintReadWrite)
+	TObjectPtr<UCompassBar>	mCompassMarkerWidget;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FLinearColor mColor;
+
+protected:
+	UFUNCTION(BlueprintCallable)
+	void CreateMarker();
 };
