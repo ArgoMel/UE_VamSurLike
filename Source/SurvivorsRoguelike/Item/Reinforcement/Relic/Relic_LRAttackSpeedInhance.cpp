@@ -11,7 +11,7 @@ void ARelic_LRAttackSpeedInhance::Act()
 {
 	Super::Act();
 
-	mInhanceRate.LRAttackSpeedInhanceRate += 20.f;
+	mInhanceRate.LRAttackSpeedInhanceRate += 2.f;
 	mPlayer->SetInhanceRate(mInhanceRate);
 
 	Destroy();

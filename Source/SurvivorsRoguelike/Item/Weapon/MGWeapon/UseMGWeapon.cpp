@@ -2,8 +2,6 @@
 
 
 #include "UseMGWeapon.h"
-#include "../../../Public/Character/BaseCharacter.h"
-#include "Magic_FireExplosion.h"
 
 TObjectPtr<UDataTable>	UUseMGWeapon::mWeaponDataTable;
 
@@ -64,7 +62,7 @@ void UUseMGWeapon::Init(const FString& Name)
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
 
 	// 임시로 마법 하나 설정, 속성 별로 사용 마법을 구분하는 코드 필요
-	mWeapon->AddMagic(AMagic_FireExplosion::StaticClass());
+	//mWeapon->AddMagic(AMagic_FireExplosion::StaticClass());
 }
 
 const FMGWeaponData* UUseMGWeapon::FindWeaponData(const FName& Name)
