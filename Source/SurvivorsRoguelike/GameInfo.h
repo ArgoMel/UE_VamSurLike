@@ -192,7 +192,6 @@ enum class EAbnormalTable : uint8
 	Immobilized,
 	Burning,
 	Slow,
-	Sleep,
 	Weakened,
 	None,
 };
@@ -329,6 +328,35 @@ public :
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EElement	Element;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ACharacter>	Character;
+};
+
+USTRUCT(BlueprintType)
+struct FMLAttackStat :
+	public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float		OffensePower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EElement	Element;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FVector		CollisionScale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FVector		CollisionLoc;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UStaticMesh>	Mesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<ACharacter>	Character;
 };
 
 USTRUCT(BlueprintType)

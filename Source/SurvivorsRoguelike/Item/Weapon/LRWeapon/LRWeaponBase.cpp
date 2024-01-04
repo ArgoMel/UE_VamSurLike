@@ -2,18 +2,19 @@
 
 
 #include "LRWeaponBase.h"
+
+
 ALRWeaponBase::ALRWeaponBase()
 {
 
 	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	SetRootComponent(mMesh);
 	mBulletClass = ABulletBase::StaticClass();
 }
 
-void ALRWeaponBase::Init(int32 num, EItemType ItemType, FString name, float OffensePower,
-	float AttackSpeed, float Penetrating, float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh)
+void ALRWeaponBase::Init(int32 num, EItemType ItemType, FString name, float OffensePower, float AttackSpeed, 
+	float Penetrating, float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh, TObjectPtr<ACharacter> Character)
 {
 	mNum = num;
 	mItemType = ItemType;
@@ -23,6 +24,7 @@ void ALRWeaponBase::Init(int32 num, EItemType ItemType, FString name, float Offe
 	mPenetrating = Penetrating;
 	mOffensePower = OffensePower;
 	mRange = Range;
+	mCharacter = Character;
 
 	if(Mesh)
 		mMesh->SetSkeletalMesh(Mesh);
@@ -32,7 +34,7 @@ void ALRWeaponBase::Fire()
 {
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
-		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	mBullet = GetWorld()->SpawnActor<ABulletBase>(mBulletClass,
 		mMesh->GetSocketLocation(TEXT("MuzzleFlash")),
@@ -41,7 +43,7 @@ void ALRWeaponBase::Fire()
 
 	SetBulletStat();
 
-	mBullet->SetProjectileRot(mCharacterFwdLoc);
+	mBullet->SetProjectileRot(GetActorRightVector());
 	mBullet->SetBulletStat(mBulletStat);
 }
 
@@ -52,6 +54,10 @@ void ALRWeaponBase::BeginPlay()
 
 void ALRWeaponBase::Tick(float DeltaTime)
 {
-	/*GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green,
-		FString::Printf(TEXT("Hit Result")));*/
+	mTime += DeltaTime;
+	if (mTime >= (1 / mAttackSpeed))
+	{
+		Fire();
+		mTime = 0;
+	}
 }

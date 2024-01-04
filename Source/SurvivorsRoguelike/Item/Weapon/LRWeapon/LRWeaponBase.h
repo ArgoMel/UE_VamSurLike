@@ -21,9 +21,8 @@ public:
 protected:
 	TSubclassOf<ABulletBase>	mBulletClass;
 	TObjectPtr<ABulletBase>	mBullet;
-	FVector	mCharacterFwdLoc;
+	TObjectPtr<ACharacter> mCharacter;
 	FBulletStat	mBulletStat;
-
 	float mTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
@@ -45,14 +44,10 @@ protected:
 	float mRange;
 
 public:
-	void Init(int32 num, EItemType ItemType, FString name, float OffensePower, float AttackSpeed,
-		float Penetrating, float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh);
+	void Init(int32 num, EItemType ItemType, FString name, float OffensePower, float AttackSpeed, float Penetrating, 
+		float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh, TObjectPtr<ACharacter> Character);
 
 	void Fire();
-	void SetCharacterFwdLoc(const FVector& Vector)
-	{
-		mCharacterFwdLoc = Vector;
-	}
 
 	void SetBulletStat()
 	{
@@ -60,6 +55,7 @@ public:
 		mBulletStat.OffensePower = mOffensePower;
 		mBulletStat.Penetrating = mPenetrating;
 		mBulletStat.Range = mRange;
+		mBulletStat.Character = mCharacter;
 	}
 
 	void SetLRWeaponStat(float Penetrating, float AttackSpeed, float Range, EElement Element)

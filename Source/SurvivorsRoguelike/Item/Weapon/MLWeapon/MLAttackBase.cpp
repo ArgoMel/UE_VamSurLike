@@ -12,7 +12,7 @@ AMLAttackBase::AMLAttackBase()
 
 	mCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
 	mCollision->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
-	mCollision->SetCollisionProfileName("PlayerMLAttack");
+	mCollision->SetCollisionProfileName("PlayerAttack");
 	mCollision->OnComponentBeginOverlap.AddDynamic(this,
 		&AMLAttackBase::OverlapBegin);
 
@@ -28,18 +28,14 @@ AMLAttackBase::AMLAttackBase()
 
 }
 
-void AMLAttackBase::Init(float OffensePower, FVector CollisionScale, 
-	FVector CollisionLoc, UStaticMesh* Mesh, EElement Element)
+void AMLAttackBase::SetAttackStat(const FMLAttackStat& Stat)
 {
-	mOffensePower = OffensePower;
-	mElement = Element;
+	mAttackStat = Stat;
 
-	if (!Mesh)
-		return;
-
-	mMesh->SetStaticMesh(Mesh);
-	mCollision->SetRelativeLocation(CollisionLoc);
-	mCollision->SetRelativeScale3D(CollisionScale);
+	if(Stat.Mesh)
+		mMesh->SetStaticMesh(Stat.Mesh);
+	mCollision->SetRelativeLocation(Stat.CollisionLoc);
+	mCollision->SetRelativeScale3D(Stat.CollisionScale);
 }
 
 // Called when the game starts or when spawned
@@ -67,6 +63,12 @@ void AMLAttackBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	FDamageEvent DmgEvent;
+	float Dmg = mAttackStat.OffensePower;
 
+	if (OtherActor)
+	{
+		OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
+	}
 }
 

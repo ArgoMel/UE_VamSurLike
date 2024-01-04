@@ -30,6 +30,7 @@ private :
 	TObjectPtr<USphereComponent>	mCollision;
 
 
+
 public :
 	void SetProjectileRot(const FVector& Vector);
 	void SetBulletStat(const FBulletStat& Stat);
