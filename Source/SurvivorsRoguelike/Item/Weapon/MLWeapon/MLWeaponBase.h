@@ -58,10 +58,11 @@ public :
 		mElement = Element;
 	}
 
-	void SetMLWeaponStat(float OffensePower, float AttackSpeed)
+	void SetMLWeaponStat(float OffensePower, float AttackSpeed, EElement Element)
 	{
 		mOffensePower = OffensePower;
 		mAttackSpeed = AttackSpeed;
+		mElement = Element;
 	}
 
 public :

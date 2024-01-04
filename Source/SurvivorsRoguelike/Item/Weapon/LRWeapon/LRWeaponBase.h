@@ -56,21 +56,18 @@ public:
 
 	void SetBulletStat()
 	{
-		mBulletStat.Element = EElement::Fire;
+		mBulletStat.Element = mElement;
 		mBulletStat.OffensePower = mOffensePower;
 		mBulletStat.Penetrating = mPenetrating;
 		mBulletStat.Range = mRange;
 	}
 
-	void SetElement(EElement Element)
-	{
-		mElement = Element;
-	}
-
-	void SetLRWeaponStat(float Penetrating, float AttackSpeed)
+	void SetLRWeaponStat(float Penetrating, float AttackSpeed, float Range, EElement Element)
 	{
 		mPenetrating = Penetrating;
 		mAttackSpeed = AttackSpeed;
+		mRange = Range;
+		mElement = Element;
 	}
 
 protected:
@@ -78,5 +75,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public :
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };

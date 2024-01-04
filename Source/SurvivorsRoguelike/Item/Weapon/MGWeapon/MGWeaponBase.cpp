@@ -52,6 +52,18 @@ void AMGWeaponBase::SetMGWeaponStat(float SpellPower, float AttackSpeed)
 	}
 }
 
+void AMGWeaponBase::AddMagic(const TSubclassOf<AMagicBase>& Magic)
+{
+	FActorSpawnParameters	ActorParam;
+	ActorParam.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+	TObjectPtr<AMagicBase> MAGIC = 
+		GetWorld()->SpawnActor<AMagicBase>(Magic, ActorParam);
+
+	mMagic.Add(MAGIC);
+}
+
 void AMGWeaponBase::BeginPlay()
 {
 }
