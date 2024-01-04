@@ -24,7 +24,7 @@ AMLAttackBase::AMLAttackBase()
 	SetRootComponent(mMesh);
 	mCollision->SetupAttachment(mMesh);
 
-	RootComponent->SetWorldScale3D(FVector(2.f, 2.f, 2.f));
+	RootComponent->SetWorldScale3D(FVector(3.f, 3.f, 3.f));
 
 }
 
