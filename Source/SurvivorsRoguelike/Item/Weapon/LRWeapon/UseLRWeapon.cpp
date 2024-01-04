@@ -25,12 +25,6 @@ void UUseLRWeapon::LoadWeaponData()
 		TEXT("/Script/Engine.DataTable'/Game/00_Weapon/DataTable/LRWeaponData.LRWeaponData'"));
 }
 
-void UUseLRWeapon::Attack()
-{
-	mWeapon->SetCharacterFwdLoc(GetOwner()->GetActorForwardVector());
-	mWeapon->Fire();
-}
-
 void UUseLRWeapon::ClearWeapon()
 {
 }
@@ -56,15 +50,24 @@ void UUseLRWeapon::Init(const FString& Name)
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	mWeapon = GetWorld()->SpawnActor<ALRWeaponBase>(mWeaponClass, ActorParam);
+	mWeapon = GetWorld()->SpawnActor<ALRWeaponBase>(mWeaponClass,
+		FVector::ZeroVector,
+		FRotator::ZeroRotator,
+		ActorParam);
 
 	mWeapon->Init(mNum, mItemType, mName.ToString(), mOffensePower,
-		mAttackSpeed, mPenetrating, mRange, mWeaponType, mMeshPtr);
+		mAttackSpeed, mPenetrating, mRange, mWeaponType, mMeshPtr, Cast<ACharacter>(GetOwner()));
 
 	FName PlayerSocket = FName(TEXT("LRWeaponSocket"));
 
+	FAttachmentTransformRules	AttachRule(
+		EAttachmentRule::SnapToTarget,
+		EAttachmentRule::SnapToTarget,
+		EAttachmentRule::SnapToTarget,
+		false);
+
 	mWeapon->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
-		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
+		AttachRule, PlayerSocket);
 }
 
 const FLRWeaponData* UUseLRWeapon::FindWeaponData(const FName& Name)
@@ -80,15 +83,11 @@ void UUseLRWeapon::BeginPlay()
 	LoadWeaponData();
 }
 
-void UUseLRWeapon::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UUseLRWeapon::TickComponent(float DeltaTime, ELevelTick TickType, 
+	FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	mTime += DeltaTime;
-	if (mTime >= (1 / mAttackSpeed))
-	{
-		Attack();
-		mTime = 0;
-	}
+	
 }
 

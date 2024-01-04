@@ -8,7 +8,6 @@ AMGWeaponBase::AMGWeaponBase()
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-
 	SetRootComponent(mMesh);
 }
 
@@ -66,10 +65,10 @@ void AMGWeaponBase::AddMagic(const TSubclassOf<AMagicBase>& Magic)
 
 void AMGWeaponBase::BeginPlay()
 {
+	Super::BeginPlay();
 }
 
 void AMGWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }

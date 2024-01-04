@@ -45,28 +45,29 @@ void UUseMLWeapon::Init(const FString& Name)
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	if (mMeshPtr)
-	{
-		mWeapon = GetWorld()->SpawnActor<AMLWeaponBase>(mWeaponClass,
-			GetOwner()->GetActorLocation() + FVector(0.f, 0.f, 0.f),
-			GetOwner()->GetActorRotation() + FRotator(0.f, 0.f, 0.f),
-			ActorParam);
+	if (!mMeshPtr)
+		return;
 
-		mWeapon->Init(mNum, mItemType, mName.ToString(), mAttackSpeed, mOffensePower, mCollisionScale,
-			mCollisionLoc, mWeaponType, mMeshPtr, mElement);
+	mWeapon = GetWorld()->SpawnActor<AMLWeaponBase>(mWeaponClass,
+		GetOwner()->GetActorLocation() + FVector(0.f, 0.f, 0.f),
+		GetOwner()->GetActorRotation() + FRotator(0.f, 0.f, 0.f),
+		ActorParam);
 
-		FName PlayerSocket(TEXT("MLWeaponSocket"));
+	mWeapon->Init(mNum, mItemType, mName.ToString(), mAttackSpeed, mOffensePower, mCollisionScale,
+		mCollisionLoc, mWeaponType, mMeshPtr, mElement, Cast<ACharacter>(GetOwner()));
 
-		FAttachmentTransformRules	AttachRule(
-			EAttachmentRule::SnapToTarget,
-			EAttachmentRule::SnapToTarget,
-			EAttachmentRule::KeepRelative,
-			false);
+	FName PlayerSocket(TEXT("MLWeaponSocket"));
 
-		mWeapon->AttachToComponent(GetOwner()->GetRootComponent(),
-			AttachRule, PlayerSocket);
+	FAttachmentTransformRules	AttachRule(
+		EAttachmentRule::SnapToTarget,
+		EAttachmentRule::SnapToTarget,
+		EAttachmentRule::KeepRelative,
+		false);
 
-	}
+	mWeapon->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
+		AttachRule, PlayerSocket);
+
+	
 }
 
 const FMLWeaponData* UUseMLWeapon::FindWeaponData(const FName& Name)
