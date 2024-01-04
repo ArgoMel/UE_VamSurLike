@@ -39,7 +39,7 @@ void ALRWeaponBase::Fire()
 		FRotator::ZeroRotator,
 		ActorParam);
 
-	ALRWeaponBase::SetBulletStat();
+	SetBulletStat();
 
 	mBullet->SetProjectileRot(mCharacterFwdLoc);
 	mBullet->SetBulletStat(mBulletStat);
@@ -51,5 +51,6 @@ void ALRWeaponBase::BeginPlay()
 
 void ALRWeaponBase::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green,
+		FString::Printf(TEXT("Hit Result")));
 }

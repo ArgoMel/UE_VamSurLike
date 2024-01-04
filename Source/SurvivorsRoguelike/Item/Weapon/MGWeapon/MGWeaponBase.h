@@ -46,10 +46,7 @@ public:
 
 	void SetMGWeaponStat(float SpellPower, float AttackSpeed);
 
-	void SetMagic(AMagicBase* Magic)
-	{
-		mMagic.Add(Magic);
-	}
+	void AddMagic(const TSubclassOf<AMagicBase>& Magic);
 
 
 

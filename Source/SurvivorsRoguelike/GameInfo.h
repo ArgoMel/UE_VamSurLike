@@ -474,23 +474,26 @@ struct FCharacterInhanceRate :
 
 public:
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 OffensePowerInhanceRate;
+	float OffensePowerInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 MLAttackSpeedInhanceRate;
+	float MLAttackSpeedInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 PenetratingPowerInhanceRate;
+	float PenetratingPowerInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 LRAttackSpeedInhanceRate;
+	float LRAttackSpeedInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 SpellPowerInhanceRate;
+	float SpellPowerInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 MGAttackSpeedInhanceRate;
+	float MGAttackSpeedInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 DamegeInhanceRate;
+	float DamegeInhanceRate;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float LRRangeInhanceRate;
 };
