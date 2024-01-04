@@ -15,6 +15,9 @@ public:
 	AMagicBase();
 	
 protected :
+	TObjectPtr<ACharacter> mCharacter;
+	AActor* TargetActor;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UParticleSystemComponent> mParticle;
 
@@ -23,6 +26,9 @@ protected :
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mDamageRate;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	FVector mTargetLoc;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mAttackDelay;
@@ -44,6 +50,7 @@ public :
 		mSpellPower = SpellPower;
 		mAttackSpeed = AttackSpeed;
 	}
+	void SetCharacter(TObjectPtr<ACharacter> Character) { mCharacter = Character; }
 
 protected:
 	// Called when the game starts or when spawned

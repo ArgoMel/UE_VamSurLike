@@ -47,10 +47,11 @@ void ALRWeaponBase::Fire()
 
 void ALRWeaponBase::BeginPlay()
 {
+	Super::BeginPlay();
 }
 
 void ALRWeaponBase::Tick(float DeltaTime)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green,
-		FString::Printf(TEXT("Hit Result")));
+	/*GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green,
+		FString::Printf(TEXT("Hit Result")));*/
 }
