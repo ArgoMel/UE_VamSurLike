@@ -5,20 +5,34 @@ ACompassMarker::ACompassMarker()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	mColor = FLinearColor::Red;
+
 	mCone = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cone"));
 	SetRootComponent(mCone);
+	mCone->SetRelativeRotation(FRotator(180.,0.,0.));
+	mCone->SetRelativeScale3D(FVector(0.5));
+	mCone->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	mCone->SetCollisionProfileName(TEXT("NoCollision"));
+	mCone->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
+	mCone->bReceivesDecals = false;
 
-	static ConstructorHelpers::FClassFinder<UUserWidget> WBP_CompassMarker(TEXT(
-		"/Game/0_KBJ/CompasBar/UI/WBP_CompassMarker.WBP_CompassMarker_C"));
-	if (WBP_CompassMarker.Succeeded())
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> Cone(TEXT(
+		"/Engine/BasicShapes/Cone.Cone"));
+	if (Cone.Succeeded())
 	{
-		mUIClass = WBP_CompassMarker.Class;
+		mCone->SetStaticMesh(Cone.Object);
 	}
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> MI_Ramp(TEXT(
 		"/Game/0_KBJ/CompasBar/Materials/MI_Ramp.MI_Ramp"));
 	if (MI_Ramp.Succeeded())
 	{
-		mCone->SetMaterial(0,MI_Ramp.Object);
+		mCone->SetMaterial(0, MI_Ramp.Object);
+	}
+	static ConstructorHelpers::FClassFinder<UUserWidget> WBP_CompassMarker(TEXT(
+		"/Game/0_KBJ/CompasBar/UI/WBP_CompassMarker.WBP_CompassMarker_C"));
+	if (WBP_CompassMarker.Succeeded())
+	{
+		mUIClass = WBP_CompassMarker.Class;
 	}
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> MI_Marker(TEXT(
 		"/Game/0_KBJ/CompasBar/Materials/MI_Marker.MI_Marker"));
@@ -61,3 +75,7 @@ void ACompassMarker::CreateMarker()
 	}
 }
 
+void ACompassMarker::SetMarkerSize(FVector size)
+{
+	mCone->SetRelativeScale3D(size);
+}

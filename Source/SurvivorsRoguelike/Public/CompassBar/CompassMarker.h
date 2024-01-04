@@ -32,4 +32,8 @@ protected:
 protected:
 	UFUNCTION(BlueprintCallable)
 	void CreateMarker();
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void SetMarkerSize(FVector size);
 };
