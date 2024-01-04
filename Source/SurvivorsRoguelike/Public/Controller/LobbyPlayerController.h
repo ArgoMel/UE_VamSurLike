@@ -1,9 +1,11 @@
 #pragma once
 #include "Controller/BasePlayerController.h"
+#include "CompassBar/CompassBar.h"
 #include "LobbyPlayerController.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
+class UCompassBar;
 
 UCLASS()
 class SURVIVORSROGUELIKE_API ALobbyPlayerController : public ABasePlayerController
@@ -21,6 +23,10 @@ private:
 	TObjectPtr<UInputAction> m_Walk;
 	TObjectPtr<UInputAction> m_Interaction;
 	TObjectPtr<UInputAction> m_Prone;
+
+protected:
+	UPROPERTY(BlueprintReadWrite, Category = " UI")
+	TObjectPtr<UCompassBar> mCompassBar;
 
 public:
 	UInputAction* GetKeyMove()
@@ -50,6 +56,10 @@ public:
 	UInputAction* GetKeyProne()
 	{
 		return m_Prone;
+	}
+	bool HasCompassBar()
+	{
+		return IsValid(mCompassBar);
 	}
 
 	void SetNewController();

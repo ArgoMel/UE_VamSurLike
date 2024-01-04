@@ -1,5 +1,7 @@
 #include "CompassBar/CompassMarker.h"
 #include "CompassBar/CompassBar.h"
+#include "Kismet/GameplayStatics.h"
+#include "Controller/LobbyPlayerController.h"
 
 ACompassMarker::ACompassMarker()
 {
@@ -67,6 +69,14 @@ void ACompassMarker::CreateMarker()
 	{
 		return;
 	}
+	//temp
+	ALobbyPlayerController* controller=Cast<ALobbyPlayerController>(
+		UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	if (!IsValid(controller)|| !controller->HasCompassBar())
+	{
+		return;
+	}
+	//
 	mCompassMarkerWidget = CreateWidget<UCompassBar>(GetWorld(), mUIClass);
 	if (IsValid(mCompassMarkerWidget))
 	{
