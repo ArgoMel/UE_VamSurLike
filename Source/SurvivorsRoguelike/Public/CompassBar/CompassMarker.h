@@ -21,7 +21,7 @@ private:
 	TObjectPtr<UMaterialInterface>	mMaterial;
 
 protected:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Component")
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Component")
 	TObjectPtr<UStaticMeshComponent> mCone;
 
 	UPROPERTY(BlueprintReadWrite)
