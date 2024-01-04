@@ -88,6 +88,7 @@ public:
 
 	float GetPenetrating() { return mPenetrating; }
 	float GetAttackSpeed() { return mAttackSpeed; }
+	float GetRange() { return mRange; }
 
 protected:
 	static const FLRWeaponData* FindWeaponData(const FName& Name);
