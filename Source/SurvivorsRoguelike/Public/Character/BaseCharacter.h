@@ -72,6 +72,9 @@ protected:
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float mDamege;
 
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mRange;
+
 
 
 
@@ -92,6 +95,9 @@ public:
 	float GetMGAttackSpeed() { return mMGAttackSpeed; }
 	EElement GetElement() { return mElement; }
 	float GetDamage() { return mDamege; }
+	TObjectPtr<UUseMLWeapon> GetMLWeaponComponent() { return mUseMLWeapon; }
+	TObjectPtr<UUseLRWeapon> GetLRWeaponComponent() { return mUseLRWeapon; }
+	TObjectPtr<UUseMGWeapon> GetMGWeaponComponent() { return mUseMGWeapon; }
 
 	FString GetElementName();
 

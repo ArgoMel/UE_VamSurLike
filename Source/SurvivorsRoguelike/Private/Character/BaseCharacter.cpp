@@ -36,6 +36,7 @@ void ABaseCharacter::BeginPlay()
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 	mElement = EElement::None;
 	mDamege = 0;
+	mRange = mUseLRWeapon->GetRange();
 
 	mInhanceRate.OffensePowerInhanceRate = 0;
 	mInhanceRate.MLAttackSpeedInhanceRate = 0;
@@ -123,9 +124,11 @@ void ABaseCharacter::ResetCharacterStat()
 	mSpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mInhanceRate.SpellPowerInhanceRate);
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.MGAttackSpeedInhanceRate);
 	mDamege = 0.1f * mInhanceRate.DamegeInhanceRate;
+	mRange = mUseLRWeapon->GetRange() * (1 + 0.1f * mInhanceRate.LRRangeInhanceRate);
 
-	GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Green,
-		FString::Printf(TEXT("%d"), mInhanceRate.LRAttackSpeedInhanceRate));
+	mUseMLWeapon->GetWeapon()->SetMLWeaponStat(mOffensePower, mMLAttackSpeed, mElement);
+	mUseMGWeapon->GetWeapon()->SetMGWeaponStat(mSpellPower, mMGAttackSpeed);
+	mUseLRWeapon->GetWeapon()->SetLRWeaponStat(mPenetratingPower, mLRAttackSpeed, mRange, mElement);
 }
  
 void ABaseCharacter::SetInhanceRate(FCharacterInhanceRate& InhanceRate)
@@ -137,6 +140,7 @@ void ABaseCharacter::SetInhanceRate(FCharacterInhanceRate& InhanceRate)
 	mInhanceRate.SpellPowerInhanceRate+= InhanceRate.SpellPowerInhanceRate;
 	mInhanceRate.MGAttackSpeedInhanceRate += InhanceRate.MGAttackSpeedInhanceRate;
 	mInhanceRate.DamegeInhanceRate += InhanceRate.DamegeInhanceRate;
+	mInhanceRate.LRRangeInhanceRate += InhanceRate.LRRangeInhanceRate;
 
 	ResetCharacterStat();
 	mPlayerHubWidget->UpdateCharacterStat();

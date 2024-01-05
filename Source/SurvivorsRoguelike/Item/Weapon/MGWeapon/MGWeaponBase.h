@@ -24,6 +24,7 @@ protected:
 	TArray<TObjectPtr<AMagicBase>> mMagic;
 	TArray<TObjectPtr<AActor>>	mTargetEnemy;
 	FVector	TargetLoc;
+	TObjectPtr<ACharacter> mCharacter;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent>	mMesh;
@@ -40,16 +41,13 @@ protected:
 
 public:
 	void Init(int32 num, EItemType ItemType, FString name, float SpellPower,
-		float AttackSpeed, float Range, EMGWeaponType WeaponType, UStaticMesh* Mesh);
+		float AttackSpeed, float Range, EMGWeaponType WeaponType, UStaticMesh* Mesh, TObjectPtr<ACharacter> Character);
 
 	void SetTargetEnemy(const TArray<TObjectPtr<AActor>>& TargetEnemy);
 
 	void SetMGWeaponStat(float SpellPower, float AttackSpeed);
 
-	void SetMagic(AMagicBase* Magic)
-	{
-		mMagic.Add(Magic);
-	}
+	void AddMagic(const TSubclassOf<AMagicBase>& Magic);
 
 
 

@@ -17,4 +17,6 @@ ARelicBase::ARelicBase()
 
 void ARelicBase::Act()
 {
+	if (!mPlayer)
+		return;
 }

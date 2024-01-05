@@ -21,9 +21,8 @@ public:
 protected:
 	TSubclassOf<ABulletBase>	mBulletClass;
 	TObjectPtr<ABulletBase>	mBullet;
-	FVector	mCharacterFwdLoc;
+	TObjectPtr<ACharacter> mCharacter;
 	FBulletStat	mBulletStat;
-
 	float mTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
@@ -45,32 +44,26 @@ protected:
 	float mRange;
 
 public:
-	void Init(int32 num, EItemType ItemType, FString name, float OffensePower, float AttackSpeed,
-		float Penetrating, float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh);
+	void Init(int32 num, EItemType ItemType, FString name, float OffensePower, float AttackSpeed, float Penetrating, 
+		float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh, TObjectPtr<ACharacter> Character);
 
 	void Fire();
-	void SetCharacterFwdLoc(const FVector& Vector)
-	{
-		mCharacterFwdLoc = Vector;
-	}
 
 	void SetBulletStat()
 	{
-		mBulletStat.Element = EElement::Fire;
+		mBulletStat.Element = mElement;
 		mBulletStat.OffensePower = mOffensePower;
 		mBulletStat.Penetrating = mPenetrating;
 		mBulletStat.Range = mRange;
+		mBulletStat.Character = mCharacter;
 	}
 
-	void SetElement(EElement Element)
-	{
-		mElement = Element;
-	}
-
-	void SetLRWeaponStat(float Penetrating, float AttackSpeed)
+	void SetLRWeaponStat(float Penetrating, float AttackSpeed, float Range, EElement Element)
 	{
 		mPenetrating = Penetrating;
 		mAttackSpeed = AttackSpeed;
+		mRange = Range;
+		mElement = Element;
 	}
 
 protected:
@@ -78,5 +71,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public :
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };

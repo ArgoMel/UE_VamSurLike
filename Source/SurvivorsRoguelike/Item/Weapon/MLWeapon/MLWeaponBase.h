@@ -22,9 +22,11 @@ public:
 	~AMLWeaponBase();
 
 protected:
-	float mTime = 0.f;
 	TObjectPtr<AMLAttackBase>	mWeapon;
 	TSubclassOf<AMLAttackBase>	mWeaponClass;
+	TObjectPtr<ACharacter> mCharacter;
+	FMLAttackStat mAttackStat;
+	float mTime;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> mRoot;
@@ -52,22 +54,28 @@ protected:
 	
 public :
 	void Attack();
-	
-	void SetElement(EElement Element)
+
+	void SetAttackStat()
 	{
-		mElement = Element;
+		mAttackStat.Element = mElement;
+		mAttackStat.OffensePower = mOffensePower;
+		mAttackStat.Character = mCharacter;
+		mAttackStat.CollisionLoc = mCollisionLoc;
+		mAttackStat.CollisionScale = mCollisionScale;
+		mAttackStat.Mesh = mMesh;
 	}
 
-	void SetMLWeaponStat(float OffensePower, float AttackSpeed)
+	void SetMLWeaponStat(float OffensePower, float AttackSpeed, EElement Element)
 	{
 		mOffensePower = OffensePower;
 		mAttackSpeed = AttackSpeed;
+		mElement = Element;
 	}
 
 public :
 	void Init(int32 num, EItemType ItemType, FString name, float AttackSpeed, 
 		float OffensePower, FVector CollisionScale, FVector CollisionLoc, 
-		EMLWeaponType WeaponType, UStaticMesh* Mesh, EElement Element);
+		EMLWeaponType WeaponType, UStaticMesh* Mesh, EElement Element, TObjectPtr<ACharacter> Character);
 
 protected:
 	// Called when the game starts or when spawned

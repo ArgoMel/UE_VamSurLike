@@ -72,7 +72,6 @@ public:
 		mMeshPtr = Data->Mesh;
 	}
 
-	void Attack();
 	void ClearWeapon();
 	void Init(const FString& Name);
 
@@ -88,6 +87,7 @@ public:
 
 	float GetPenetrating() { return mPenetrating; }
 	float GetAttackSpeed() { return mAttackSpeed; }
+	float GetRange() { return mRange; }
 
 protected:
 	static const FLRWeaponData* FindWeaponData(const FName& Name);

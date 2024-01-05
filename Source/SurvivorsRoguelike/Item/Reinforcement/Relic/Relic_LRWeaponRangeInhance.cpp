@@ -9,4 +9,5 @@ ARelic_LRWeaponRangeInhance::ARelic_LRWeaponRangeInhance()
 
 void ARelic_LRWeaponRangeInhance::Act()
 {
+	Destroy();
 }
