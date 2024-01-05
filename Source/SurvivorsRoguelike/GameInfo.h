@@ -525,3 +525,13 @@ public:
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float LRRangeInhanceRate;
 };
+
+UENUM(BlueprintType)
+enum class ESetTargetMethod : uint8
+{
+	Near,
+	Random,
+	Scope,
+	Line,
+	All
+};

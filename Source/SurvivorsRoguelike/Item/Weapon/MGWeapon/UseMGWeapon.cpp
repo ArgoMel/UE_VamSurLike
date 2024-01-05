@@ -3,6 +3,10 @@
 
 #include "UseMGWeapon.h"
 
+// 테스트용 마법 include
+//#include "Magic_FireExplosion.h"
+#include "Magic_Thunderbolt.h"
+
 TObjectPtr<UDataTable>	UUseMGWeapon::mWeaponDataTable;
 
 UUseMGWeapon::UUseMGWeapon()
@@ -61,8 +65,9 @@ void UUseMGWeapon::Init(const FString& Name)
 	mWeapon->AttachToComponent(Cast<ACharacter>(GetOwner())->GetMesh(),
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
 
-	// 임시로 마법 하나 설정, 속성 별로 사용 마법을 구분하는 코드 필요
+	// 테스트용 마법 지정
 	//mWeapon->AddMagic(AMagic_FireExplosion::StaticClass());
+	mWeapon->AddMagic(AMagic_Thunderbolt::StaticClass());
 }
 
 const FMGWeaponData* UUseMGWeapon::FindWeaponData(const FName& Name)
