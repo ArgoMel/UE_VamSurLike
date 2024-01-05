@@ -9,5 +9,10 @@ ARelic_LRWeaponRangeInhance::ARelic_LRWeaponRangeInhance()
 
 void ARelic_LRWeaponRangeInhance::Act()
 {
+	Super::Act();
+
+	mInhanceRate.LRRangeInhanceRate += 3.f;
+	mPlayer->SetInhanceRate(mInhanceRate);
+
 	Destroy();
 }
