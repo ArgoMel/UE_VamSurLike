@@ -31,12 +31,12 @@ void AMagicBase::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)
 		return;
 	case ESetTargetMethod::Random:
 	{
-		float RandomTargetNum = 5;
-		if (TargetEnemy.Num() < RandomTargetNum)
-			RandomTargetNum = TargetEnemy.Num();
+		float RandTargetNum = RandomTargetNum;
+		if (TargetEnemy.Num() < RandTargetNum)
+			RandTargetNum = TargetEnemy.Num();
 		TArray<TObjectPtr<AActor>> TempArray = TargetEnemy;
 		TargetMultiActor.Empty();
-		for (int i = 0; i < RandomTargetNum; i++) {
+		for (int i = 0; i < RandTargetNum; i++) {
 			int32 RandNum = FMath::RandRange(0, TempArray.Num() - 1);
 			TargetMultiActor.Add(TempArray[RandNum]);
 			TempArray.RemoveAtSwap(RandNum);
