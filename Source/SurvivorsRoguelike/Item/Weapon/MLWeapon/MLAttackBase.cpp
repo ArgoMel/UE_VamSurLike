@@ -3,12 +3,13 @@
 
 #include "MLAttackBase.h"
 
-inline float ROTATIONTIME = 0.3f;
+inline float ROTATIONTIME = 0.5f;
 
 // Sets default values
 AMLAttackBase::AMLAttackBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	
 
 	mCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
 	mCollision->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
@@ -20,11 +21,12 @@ AMLAttackBase::AMLAttackBase()
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mMesh->SetAbsolute(false, true, false); //부모회전 영향x
+	mMesh->CastShadow = false;
 
 	SetRootComponent(mMesh);
 	mCollision->SetupAttachment(mMesh);
 
-	RootComponent->SetWorldScale3D(FVector(3.f, 3.f, 3.f));
+	RootComponent->SetWorldScale3D(FVector(3.f, 3.f, 2.5f));
 
 }
 

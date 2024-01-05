@@ -9,4 +9,10 @@ ARelic_MGAttackSpeed::ARelic_MGAttackSpeed()
 
 void ARelic_MGAttackSpeed::Act()
 {
+	Super::Act();
+
+	mInhanceRate.MGAttackSpeedInhanceRate += 2.f;
+	mPlayer->SetInhanceRate(mInhanceRate);
+
+	Destroy();
 }

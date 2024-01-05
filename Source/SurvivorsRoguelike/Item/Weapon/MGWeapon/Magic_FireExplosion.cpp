@@ -12,11 +12,11 @@ AMagic_FireExplosion::AMagic_FireExplosion()
 	if (Impact_Fire.Succeeded())
 		mParticle->SetTemplate(Impact_Fire.Object);
 
-	mParticle->SetRelativeScale3D(FVector3d(5.0, 5.0, 5.0));
+	SetTargetMethod = ESetTargetMethod::Near;
+
+	// ---------- Can modify ----------
 	mDamageRate = 2.f;
 	mAttackDelay = 1.f;
-	mTime = 1.f;
-	SetTargetMethod = ESetTargetMethod::Near;
 }
 
 void AMagic_FireExplosion::BeginPlay()
@@ -32,17 +32,27 @@ void AMagic_FireExplosion::Tick(float DeltaTime)
 	if (mTime >= (mAttackDelay / mAttackSpeed))
 	{
 		if (IsValid(TargetActor)) {
-			mParticle->SetWorldLocation(TargetActor->GetActorLocation());
-
-			TargetActor->TakeDamage(
-				mSpellPower * mDamageRate,
-				MagicDamageEvent,
-				mCharacter->GetController(),
-				this);
-
-			mParticle->Deactivate();
-			mParticle->Activate();
+			Attack();
 		}
 		mTime = 0.f;
 	}
+}
+
+void AMagic_FireExplosion::Attack()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(
+		GetWorld(),
+		mParticle->Template,
+		UKismetMathLibrary::MakeTransform(
+			TargetActor->GetActorLocation(),
+			FRotator3d(0.0, 0.0, 0.0),
+			FVector3d(5.0, 5.0, 5.0)
+		)
+	);	
+	
+	TargetActor->TakeDamage(
+		mSpellPower * mDamageRate,
+		MagicDamageEvent,
+		mCharacter->GetController(),
+		this);
 }

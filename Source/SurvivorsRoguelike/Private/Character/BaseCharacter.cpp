@@ -20,23 +20,9 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Cast<AInGamePlayerController>(GetController())->SetBaseCharacter(this);
-	mMLWeaponName = "Sword";
-	mLRWeaponName = "Rifle";
-	mMGWeaponName = "MagicBook";
 
-	mUseMLWeapon->Init(mMLWeaponName);
-	mUseLRWeapon->Init(mLRWeaponName);
-	mUseMGWeapon->Init(mMGWeaponName);
-
-	mOffensePower = mUseMLWeapon->GetOffensePower();
-	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
-	mPenetratingPower = mUseLRWeapon->GetPenetrating();
-	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
-	mSpellPower = mUseMGWeapon->GetSpellPower();
-	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 	mElement = EElement::None;
 	mDamege = 0;
-	mRange = mUseLRWeapon->GetRange();
 
 	mInhanceRate.OffensePowerInhanceRate = 0;
 	mInhanceRate.MLAttackSpeedInhanceRate = 0;
@@ -105,6 +91,7 @@ void ABaseCharacter::ChangeUseLRWeapon(FString LRWeaponName)
 	mUseLRWeapon->Init(mLRWeaponName);
 	mPenetratingPower = mUseLRWeapon->GetPenetrating();
 	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
+	mRange = mUseLRWeapon->GetRange();
 }
 
 void ABaseCharacter::ChangeUseMGWeapon(FString MGWeaponName)

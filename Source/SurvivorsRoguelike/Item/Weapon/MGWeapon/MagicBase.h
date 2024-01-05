@@ -43,9 +43,12 @@ protected :
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mAttackSpeed;
 
-	float mTime;
+	float mTime = 0.f;
 	FDamageEvent MagicDamageEvent;
 	ESetTargetMethod SetTargetMethod;
+
+	// ---------- Can modify ----------
+	float RandomTargetNum = 5.f;
 
 
 public : 
