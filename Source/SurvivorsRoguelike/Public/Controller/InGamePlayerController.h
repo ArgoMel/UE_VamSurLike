@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/PlayerController.h"
+#include "BasePlayerController.h"
 #include "../Character/BaseCharacter.h"
 #include "InGamePlayerController.generated.h"
 
@@ -12,7 +12,7 @@ class UInputAction;
 class UInputMappingContext;
 
 UCLASS()
-class SURVIVORSROGUELIKE_API AInGamePlayerController : public APlayerController
+class SURVIVORSROGUELIKE_API AInGamePlayerController : public ABasePlayerController
 {
 	GENERATED_BODY()
 

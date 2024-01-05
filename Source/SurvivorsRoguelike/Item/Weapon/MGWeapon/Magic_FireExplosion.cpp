@@ -12,11 +12,11 @@ AMagic_FireExplosion::AMagic_FireExplosion()
 	if (Impact_Fire.Succeeded())
 		mParticle->SetTemplate(Impact_Fire.Object);
 
-	mParticle->bAutoActivate = false;
 	mParticle->SetRelativeScale3D(FVector3d(5.0, 5.0, 5.0));
 	mDamageRate = 2.f;
 	mAttackDelay = 1.f;
-	mTime = 0.f;
+	mTime = 1.f;
+	SetTargetMethod = ESetTargetMethod::Near;
 }
 
 void AMagic_FireExplosion::BeginPlay()
@@ -27,7 +27,6 @@ void AMagic_FireExplosion::BeginPlay()
 void AMagic_FireExplosion::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	// 타깃 찾는 함수 추가 필요
 
 	mTime += DeltaTime;
 	if (mTime >= (mAttackDelay / mAttackSpeed))
@@ -43,14 +42,7 @@ void AMagic_FireExplosion::Tick(float DeltaTime)
 
 			mParticle->Deactivate();
 			mParticle->Activate();
-		}		
-		
-		// 공격 함수 추가 필요
+		}
 		mTime = 0.f;
 	}
-}
-
-void AMagic_FireExplosion::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)
-{
-	
 }

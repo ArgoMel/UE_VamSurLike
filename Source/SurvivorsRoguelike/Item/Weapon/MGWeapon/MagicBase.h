@@ -16,7 +16,8 @@ public:
 	
 protected :
 	TObjectPtr<ACharacter> mCharacter;
-	AActor* TargetActor;
+	TObjectPtr<AActor> TargetActor;
+	TArray<TObjectPtr<AActor>> TargetMultiActor;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UParticleSystemComponent> mParticle;
@@ -41,6 +42,10 @@ protected :
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mAttackSpeed;
+
+	float mTime;
+	FDamageEvent MagicDamageEvent;
+	ESetTargetMethod SetTargetMethod;
 
 
 public : 
