@@ -9,4 +9,10 @@ ARelic_PenetratingInhance::ARelic_PenetratingInhance()
 
 void ARelic_PenetratingInhance::Act()
 {
+	Super::Act();
+
+	mInhanceRate.PenetratingPowerInhanceRate += 5.f;
+	mPlayer->SetInhanceRate(mInhanceRate);
+
+	Destroy();
 }
