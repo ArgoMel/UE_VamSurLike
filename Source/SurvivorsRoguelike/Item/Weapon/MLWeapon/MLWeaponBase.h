@@ -38,6 +38,9 @@ protected:
 	float		mWeight;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float		mDamage;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector		mCollisionScale;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -63,13 +66,15 @@ public :
 		mAttackStat.CollisionLoc = mCollisionLoc;
 		mAttackStat.CollisionScale = mCollisionScale;
 		mAttackStat.Mesh = mMesh;
+		mAttackStat.Damage = mDamage;
 	}
 
-	void SetMLWeaponStat(float OffensePower, float AttackSpeed, EElement Element)
+	void SetMLWeaponStat(float OffensePower, float AttackSpeed, EElement Element, float Damage)
 	{
 		mOffensePower = OffensePower;
 		mAttackSpeed = AttackSpeed;
 		mElement = Element;
+		mDamage = Damage;
 	}
 
 public :

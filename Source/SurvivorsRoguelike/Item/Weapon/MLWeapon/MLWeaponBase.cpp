@@ -33,6 +33,7 @@ void AMLWeaponBase::Init(int32 num, EItemType ItemType, FString name,
 	mCharacter = Character;
 	mCollisionLoc = CollisionLoc;
 	mCollisionScale = CollisionScale;
+	mDamage = 1.f;
 }
 
 void AMLWeaponBase::BeginPlay()

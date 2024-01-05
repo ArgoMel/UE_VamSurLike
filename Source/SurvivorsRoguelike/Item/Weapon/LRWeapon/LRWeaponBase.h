@@ -43,6 +43,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mRange;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float		mDamage;
+
 public:
 	void Init(int32 num, EItemType ItemType, FString name, float OffensePower, float AttackSpeed, float Penetrating, 
 		float Range, ELRWeaponType WeaponType, USkeletalMesh* Mesh, TObjectPtr<ACharacter> Character);
@@ -56,14 +59,16 @@ public:
 		mBulletStat.Penetrating = mPenetrating;
 		mBulletStat.Range = mRange;
 		mBulletStat.Character = mCharacter;
+		mBulletStat.Damage = mDamage;
 	}
 
-	void SetLRWeaponStat(float Penetrating, float AttackSpeed, float Range, EElement Element)
+	void SetLRWeaponStat(float Penetrating, float AttackSpeed, float Range, EElement Element, float Damage)
 	{
 		mPenetrating = Penetrating;
 		mAttackSpeed = AttackSpeed;
 		mRange = Range;
 		mElement = Element;
+		mDamage = Damage;
 	}
 
 protected:

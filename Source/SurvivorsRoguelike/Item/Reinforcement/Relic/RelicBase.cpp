@@ -12,7 +12,7 @@ ARelicBase::ARelicBase()
 	mInhanceRate.LRAttackSpeedInhanceRate = 0;
 	mInhanceRate.SpellPowerInhanceRate = 0;
 	mInhanceRate.MGAttackSpeedInhanceRate = 0;
-	mInhanceRate.DamegeInhanceRate = 0;
+	mInhanceRate.DamageInhanceRate = 0;
 }
 
 void ARelicBase::Act()
