@@ -83,6 +83,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartPercentDamage();
 
+	UFUNCTION(BlueprintCallable)
+	void SetWeaponActorComponent(const FString& MLWeaponName, 
+		const FString& LRWeaponName, const FString& MGWeaponName);
+
 	FString GetMLWeaponName() { return mMLWeaponName; }
 	FString GetLRWeaponName() { return mLRWeaponName; }
 	FString GetMGWeaponName() {	return mMGWeaponName; }
@@ -101,6 +105,7 @@ public:
 
 	FString GetElementName();
 
+	
 	void SetOffensePower(float OffensePower) { mOffensePower = OffensePower; }
 	void SetMLAttackSpeed(float MLAttackSpeed) { mMLAttackSpeed = MLAttackSpeed; }
 	void SetPenetraitngPower(float PenetraitngPower) { mPenetratingPower = PenetraitngPower; }
