@@ -8,7 +8,6 @@ AMGWeaponBase::AMGWeaponBase()
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-
 	SetRootComponent(mMesh);
 }
 
@@ -17,7 +16,7 @@ AMGWeaponBase::~AMGWeaponBase()
 }
 
 void AMGWeaponBase::Init(int32 num, EItemType ItemType, FString name, float SpellPower, 
-	float AttackSpeed, float Range, EMGWeaponType WeaponType, UStaticMesh* Mesh)
+	float AttackSpeed, float Range, EMGWeaponType WeaponType, UStaticMesh* Mesh, TObjectPtr<ACharacter> Character)
 {
 	mNum = num;
 	mItemType = ItemType;
@@ -26,6 +25,7 @@ void AMGWeaponBase::Init(int32 num, EItemType ItemType, FString name, float Spel
 	mSpellPower = SpellPower;
 	mWeaponType = WeaponType;
 	mRange = Range;
+	mCharacter = Character;
 
 	if (Mesh)
 		mMesh->SetStaticMesh(Mesh);
@@ -61,15 +61,18 @@ void AMGWeaponBase::AddMagic(const TSubclassOf<AMagicBase>& Magic)
 	TObjectPtr<AMagicBase> MAGIC = 
 		GetWorld()->SpawnActor<AMagicBase>(Magic, ActorParam);
 
+	MAGIC->SetMGWeaponStat(mSpellPower, mAttackSpeed);
+	MAGIC->SetCharacter(mCharacter);
+
 	mMagic.Add(MAGIC);
 }
 
 void AMGWeaponBase::BeginPlay()
 {
+	Super::BeginPlay();
 }
 
 void AMGWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }

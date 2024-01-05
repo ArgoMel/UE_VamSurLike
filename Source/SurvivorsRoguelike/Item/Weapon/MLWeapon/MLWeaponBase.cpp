@@ -20,7 +20,7 @@ AMLWeaponBase::~AMLWeaponBase()
 
 void AMLWeaponBase::Init(int32 num, EItemType ItemType, FString name,
 	float AttackSpeed, float OffensePower, FVector CollisionScale, FVector CollisionLoc, 
-	EMLWeaponType WeaponType, UStaticMesh* Mesh, EElement Element)
+	EMLWeaponType WeaponType, UStaticMesh* Mesh, EElement Element, TObjectPtr<ACharacter> Character)
 {
 	mNum = num;
 	mItemType = ItemType;
@@ -30,7 +30,9 @@ void AMLWeaponBase::Init(int32 num, EItemType ItemType, FString name,
 	mWeaponType = WeaponType;
 	mElement = Element;
 	mMesh = Mesh;
-	
+	mCharacter = Character;
+	mCollisionLoc = CollisionLoc;
+	mCollisionScale = CollisionScale;
 }
 
 void AMLWeaponBase::BeginPlay()
@@ -39,12 +41,11 @@ void AMLWeaponBase::BeginPlay()
 
 }
 
-
 void AMLWeaponBase::Attack()
 {
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
-		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	if (mMesh)
 	{
@@ -53,8 +54,7 @@ void AMLWeaponBase::Attack()
 			GetActorRotation(),
 			ActorParam);
 
-		mWeapon->Init(mOffensePower, mCollisionScale,
-			mCollisionLoc, mMesh, mElement);
+		SetAttackStat();
 
 		FAttachmentTransformRules	AttachRule(
 			EAttachmentRule::SnapToTarget,
@@ -62,9 +62,8 @@ void AMLWeaponBase::Attack()
 			EAttachmentRule::KeepRelative,
 			false);
 
-		mWeapon->AttachToComponent(GetRootComponent(),
-			AttachRule);
-
+		mWeapon->SetAttackStat(mAttackStat);
+		mWeapon->AttachToComponent(GetRootComponent(), AttachRule);
 		mWeapon->SetActorRelativeRotation(FRotator(0.f, 0.f, 90.f));
 	}
 }

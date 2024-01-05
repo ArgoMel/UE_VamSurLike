@@ -72,7 +72,6 @@ public:
 		mMeshPtr = Data->Mesh;
 	}
 
-	void Attack();
 	void ClearWeapon();
 	void Init(const FString& Name);
 

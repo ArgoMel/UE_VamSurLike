@@ -15,7 +15,7 @@ ABulletBase::ABulletBase()
 	mProjectile->ProjectileGravityScale = 0.f;
 
 	mCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
-	mCollision->SetCollisionProfileName("PlayerProjectile");
+	mCollision->SetCollisionProfileName("PlayerAttack");
 	mCollision->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	mCollision->OnComponentBeginOverlap.AddDynamic(this,
 		&ABulletBase::OverlapBegin);
@@ -40,10 +40,7 @@ void ABulletBase::SetProjectileRot(const FVector& Vector)
 
 void ABulletBase::SetBulletStat(const FBulletStat& Stat)
 {
-	mBulletStat.Element = Stat.Element;
-	mBulletStat.OffensePower = Stat.OffensePower;
-	mBulletStat.Penetrating = Stat.Penetrating;
-	mBulletStat.Range = Stat.Range;
+	mBulletStat = Stat;
 }
 
 // Called when the game starts or when spawned
@@ -70,8 +67,12 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 	bool bFromSweep, const FHitResult& SweepResult)
 {
+	FDamageEvent DmgEvent;
+	float Dmg = mBulletStat.OffensePower * 100 / (100 - mBulletStat.Penetrating);
 
-	//GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red,
-	//	TEXT("¤±¤¤¤·"));
+	if (OtherActor)
+	{
+		OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
+	}
 }
 

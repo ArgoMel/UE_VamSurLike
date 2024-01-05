@@ -16,29 +16,18 @@ public:
 	AMLAttackBase();
 
 public :
+	FMLAttackStat mAttackStat;
 	float mTime = 0.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UBoxComponent> mCollision;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	FVector		mCollisionScale;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	FVector		mCollisionLoc;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent>	mMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float		mOffensePower;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	EElement mElement = EElement::None;
 
 public :
-	void Init(float OffensePower, FVector CollisionScale, FVector CollisionLoc,
-		UStaticMesh* Mesh, EElement Element);
+	void SetAttackStat(const FMLAttackStat& Stat);
 
 protected:
 	// Called when the game starts or when spawned

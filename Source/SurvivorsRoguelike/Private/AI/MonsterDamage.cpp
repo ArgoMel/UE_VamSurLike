@@ -2,6 +2,8 @@
 
 
 #include "../../Public/AI/MonsterDamage.h"
+#include "../../Item/Weapon/LRWeapon/BulletBase.h"
+#include "../../Item/Weapon/MLWeapon/MLAttackBase.h"
 
 // Sets default values
 AMonsterDamage::AMonsterDamage()
@@ -102,4 +104,5 @@ void AMonsterDamage::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
 

@@ -15,8 +15,14 @@ AMagicBase::AMagicBase()
 
 void AMagicBase::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)
 {
-	
+	float TargetDistance;
+	TargetActor = UGameplayStatics::FindNearestActor(
+		mCharacter->GetActorLocation(),
+		TargetEnemy,
+		TargetDistance);
 }
+
+
 
 // Called when the game starts or when spawned
 void AMagicBase::BeginPlay()
