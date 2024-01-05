@@ -4,7 +4,7 @@
 #include "UseMGWeapon.h"
 
 // ---------- For Magic Test include ----------
-#include "Magic_FireExplosion.h"
+//#include "Magic_FireExplosion.h"
 //#include "Magic_Thunderbolt.h"
 
 TObjectPtr<UDataTable>	UUseMGWeapon::mWeaponDataTable;
@@ -66,7 +66,7 @@ void UUseMGWeapon::Init(const FString& Name)
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
 
 	// ---------- For Magic Test Set ----------
-	mWeapon->AddMagic(AMagic_FireExplosion::StaticClass());
+	//mWeapon->AddMagic(AMagic_FireExplosion::StaticClass());
 	//mWeapon->AddMagic(AMagic_Thunderbolt::StaticClass());
 }
 

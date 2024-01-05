@@ -43,6 +43,9 @@ protected :
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mAttackSpeed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float		mDamage;
+
 	float mTime = 0.f;
 	FDamageEvent MagicDamageEvent;
 	ESetTargetMethod SetTargetMethod;
@@ -53,10 +56,11 @@ protected :
 
 public : 
 	void SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy);
-	void SetMGWeaponStat(float SpellPower, float AttackSpeed)
+	void SetMGWeaponStat(float SpellPower, float AttackSpeed, float Damage)
 	{
 		mSpellPower = SpellPower;
 		mAttackSpeed = AttackSpeed;
+		mDamage = Damage;
 	}
 	void SetCharacter(TObjectPtr<ACharacter> Character) { mCharacter = Character; }
 

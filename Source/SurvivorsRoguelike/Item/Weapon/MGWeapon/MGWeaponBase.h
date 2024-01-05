@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float		mRange;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float		mDamage;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	EMGWeaponType	mWeaponType;
 
@@ -45,7 +48,7 @@ public:
 
 	void SetTargetEnemy(const TArray<TObjectPtr<AActor>>& TargetEnemy);
 
-	void SetMGWeaponStat(float SpellPower, float AttackSpeed);
+	void SetMGWeaponStat(float SpellPower, float AttackSpeed, float Damage);
 
 	void AddMagic(const TSubclassOf<AMagicBase>& Magic);
 
