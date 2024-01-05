@@ -12,11 +12,11 @@ AMagic_Thunderbolt::AMagic_Thunderbolt()
 	if (Blast_Lightning.Succeeded())
 		mParticle->SetTemplate(Blast_Lightning.Object);
 
-	mParticle->SetRelativeScale3D(FVector3d(5.0, 5.0, 5.0));
-	mDamageRate = 2.f;
-	mAttackDelay = 1.f;
-	mTime = 0.f;
 	SetTargetMethod = ESetTargetMethod::Random;
+
+	// ---------- Can modify ----------
+	mDamageRate = 2.f;
+	mAttackDelay = 1.f;	
 }
 
 void AMagic_Thunderbolt::BeginPlay()
@@ -40,17 +40,6 @@ void AMagic_Thunderbolt::Tick(float DeltaTime)
 
 void AMagic_Thunderbolt::Attack()
 {
-	/*mParticle->SetWorldLocation(TargetActor->GetActorLocation());
-
-	TargetActor->TakeDamage(
-		mSpellPower * mDamageRate,
-		MagicDamageEvent,
-		mCharacter->GetController(),
-		this);
-
-	mParticle->Deactivate();
-	mParticle->Activate();*/
-
 	for (int i = 0; i < TargetMultiActor.Num(); i++) {
 		UGameplayStatics::SpawnEmitterAtLocation(
 			GetWorld(),
