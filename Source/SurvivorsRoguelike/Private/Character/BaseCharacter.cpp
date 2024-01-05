@@ -9,7 +9,6 @@ ABaseCharacter::ABaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	MaxHealth = 100.f;
-
 	
 	mUseMLWeapon = CreateDefaultSubobject<UUseMLWeapon>(TEXT("UseMLWeapon"));
 	mUseLRWeapon = CreateDefaultSubobject<UUseLRWeapon>(TEXT("UseLRWeapon"));
@@ -19,20 +18,11 @@ ABaseCharacter::ABaseCharacter()
 
 void ABaseCharacter::BeginPlay()
 {
+	Super::BeginPlay();
+
 	Cast<AInGamePlayerController>(GetController())->SetBaseCharacter(this);
 
-	mElement = EElement::None;
-	mDamege = 0;
-
-	mInhanceRate.OffensePowerInhanceRate = 0;
-	mInhanceRate.MLAttackSpeedInhanceRate = 0;
-	mInhanceRate.PenetratingPowerInhanceRate = 0;
-	mInhanceRate.LRAttackSpeedInhanceRate = 0;
-	mInhanceRate.SpellPowerInhanceRate = 0;
-	mInhanceRate.MGAttackSpeedInhanceRate = 0;
-	mInhanceRate.DamegeInhanceRate = 0;
-
-	Super::BeginPlay();
+	mPlayerHubWidget->UpdateCharacterStat();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
@@ -75,6 +65,38 @@ FString ABaseCharacter::GetElementName()
 	}
 	
 	return TEXT("ERROR");
+}
+
+void ABaseCharacter::SetWeaponActorComponent(const FString& MLWeaponName, 
+	const FString& LRWeaponName, const FString& MGWeaponName)
+{
+	mMLWeaponName = MLWeaponName;
+	mLRWeaponName = LRWeaponName;
+	mMGWeaponName = MGWeaponName;
+
+	mUseMLWeapon->Init(mMLWeaponName);
+	mUseLRWeapon->Init(mLRWeaponName);
+	mUseMGWeapon->Init(mMGWeaponName);
+
+	mInhanceRate.OffensePowerInhanceRate = 0;
+	mInhanceRate.MLAttackSpeedInhanceRate = 0;
+	mInhanceRate.PenetratingPowerInhanceRate = 0;
+	mInhanceRate.LRAttackSpeedInhanceRate = 0;
+	mInhanceRate.SpellPowerInhanceRate = 0;
+	mInhanceRate.MGAttackSpeedInhanceRate = 0;
+	mInhanceRate.DamegeInhanceRate = 0;
+
+	mOffensePower = mUseMLWeapon->GetOffensePower();
+	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
+	mPenetratingPower = mUseLRWeapon->GetPenetrating();
+	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
+	mRange = mUseLRWeapon->GetRange();
+	mSpellPower = mUseMGWeapon->GetSpellPower();
+	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
+	mElement = EElement::None;
+	mDamege = 0;
+
+	
 }
 
 void ABaseCharacter::ChangeUseMLWeapon(FString MLWeaponName)
