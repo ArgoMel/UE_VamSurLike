@@ -1,23 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Magic_LightningStrike.h"
+#include "Magic_AquaExplosion.h"
 
-AMagic_LightningStrike::AMagic_LightningStrike()
+AMagic_AquaExplosion::AMagic_AquaExplosion()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	SetTargetMethod = ESetTargetMethod::Random;
-	mImpactRange = 300.f;
-	Init("LightningStrike");
+	RandomTargetNum = 4.f;
+	Init("AquaExplosion");
 }
 
-void AMagic_LightningStrike::BeginPlay()
+void AMagic_AquaExplosion::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void AMagic_LightningStrike::Tick(float DeltaTime)
+void AMagic_AquaExplosion::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -31,7 +31,7 @@ void AMagic_LightningStrike::Tick(float DeltaTime)
 	}
 }
 
-void AMagic_LightningStrike::Attack()
+void AMagic_AquaExplosion::Attack()
 {
 	for (int i = 0; i < TargetMultiActor.Num(); i++) {
 		UGameplayStatics::SpawnEmitterAtLocation(
@@ -44,45 +44,22 @@ void AMagic_LightningStrike::Attack()
 					TargetMultiActor[i]->GetActorLocation().Z - TargetMultiActor[i]->GetSimpleCollisionHalfHeight()
 				),
 				FRotator3d(0.0, 0.0, 0.0),
-				FVector3d(1.0, 1.0, 1.0)
+				FVector3d(0.5, 0.5, 1.0)
 			)
 		);
 
 		UGameplayStatics::PlaySound2D(
 			GetWorld(),
 			mSound->GetSound(),
-			0.5f
+			0.07f
 		);
 
-		UGameplayStatics::ApplyRadialDamage(
-			GetWorld(),
+		UGameplayStatics::ApplyDamage(
+			TargetMultiActor[i],
 			mSpellPower * mDamageRate,
-			TargetMultiActor[i]->GetActorLocation(),
-			mImpactRange,
-			nullptr,
-			IgnoreDamageActorList,
+			mCharacter->GetController(),
 			this,
-			mCharacter->GetController(),
-			true,
-			ECC_Camera
+			nullptr
 		);
-
-		// ---------- For ImpactRange Debug ----------
-//#if ENABLE_DRAW_DEBUG
-//		DrawDebugSphere(GetWorld(),
-//			TargetMultiActor[i]->GetActorLocation(),
-//			mImpactRange,
-//			20,
-//			FColor::Green,
-//			false, 0.35f
-//		);
-//#endif
-
-		// ---------- For Take Damage ----------
-		/*TargetMultiActor[i]->TakeDamage(
-			mSpellPower * mDamageRate,
-			MagicDamageEvent,
-			mCharacter->GetController(),
-			this);*/
 	}
 }
