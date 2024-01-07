@@ -43,15 +43,18 @@ protected :
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float mAttackSpeed;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	float		mDamage;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float mDamage;
 
 	float mTime = 0.f;
-	FDamageEvent MagicDamageEvent;
+	//FDamageEvent MagicDamageEvent;
 	ESetTargetMethod SetTargetMethod;
+	TArray<AActor*> IgnoreDamageActorList;
+	float mImpactRange;
+	float RandomTargetNum;
 
-	// ---------- Can modify ----------
-	float RandomTargetNum = 5.f;
+private:
+	static TObjectPtr<UDataTable> mMagicDataTable;
 
 
 public : 
@@ -62,7 +65,14 @@ public :
 		mAttackSpeed = AttackSpeed;
 		mDamage = Damage;
 	}
-	void SetCharacter(TObjectPtr<ACharacter> Character) { mCharacter = Character; }
+	void SetCharacter(TObjectPtr<ACharacter> Character)
+	{
+		mCharacter = Character;
+		IgnoreDamageActorList.AddUnique(mCharacter);
+	}
+
+	static void LoadMagicData();
+	void Init(const FString& Name);
 
 protected:
 	// Called when the game starts or when spawned

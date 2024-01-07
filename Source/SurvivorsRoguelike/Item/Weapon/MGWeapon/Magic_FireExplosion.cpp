@@ -6,17 +6,11 @@
 AMagic_FireExplosion::AMagic_FireExplosion()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> Impact_Fire(
-		TEXT("/Script/Engine.ParticleSystem'/Game/SurvivorsTemplate/Demo/Effects/FX_Combat_Ice/Impact/P_Impact_Fire.P_Impact_Fire'"));
-	if (Impact_Fire.Succeeded())
-		mParticle->SetTemplate(Impact_Fire.Object);
 
 	SetTargetMethod = ESetTargetMethod::Near;
-
-	// ---------- Can modify ----------
-	mDamageRate = 2.f;
-	mAttackDelay = 1.f;
+	mImpactRange = 400.f;
+	RandomTargetNum = 2.f;
+	Init("FireExplosion");
 }
 
 void AMagic_FireExplosion::BeginPlay()
@@ -46,13 +40,44 @@ void AMagic_FireExplosion::Attack()
 		UKismetMathLibrary::MakeTransform(
 			TargetActor->GetActorLocation(),
 			FRotator3d(0.0, 0.0, 0.0),
-			FVector3d(5.0, 5.0, 5.0)
+			FVector3d(1.5, 1.5, 1.5)
 		)
-	);	
-	
-	TargetActor->TakeDamage(
+	);
+
+	UGameplayStatics::PlaySound2D(
+		GetWorld(),
+		mSound->GetSound(),
+		0.5f
+	);
+
+	UGameplayStatics::ApplyRadialDamage(
+		GetWorld(),
+		mSpellPower * mDamageRate,
+		TargetActor->GetActorLocation(),
+		mImpactRange,
+		nullptr,
+		IgnoreDamageActorList,
+		this,
+		mCharacter->GetController(),
+		true,
+		ECC_Camera
+	);
+
+	// ---------- For ImpactRange Debug ----------
+//#if ENABLE_DRAW_DEBUG
+//	DrawDebugSphere(GetWorld(),
+//		TargetActor->GetActorLocation(),
+//		mImpactRange,
+//		20,
+//		FColor::Green,
+//		false, 0.35f
+//	);
+//#endif
+
+	// ---------- For Take Damage ----------
+	/*TargetActor->TakeDamage(
 		mSpellPower * mDamageRate,
 		MagicDamageEvent,
 		mCharacter->GetController(),
-		this);
+		this);*/
 }
