@@ -20,6 +20,11 @@ public:
 	AMonsterDamage();
 
 protected:
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UCapsuleComponent>	mBody;
+
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USkeletalMeshComponent>	mMesh;
 	
 	EElement mElemenet;
 
@@ -36,6 +41,8 @@ protected:
 
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TArray<bool> AbnormalState;
+
+
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -92,6 +99,7 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
+	virtual void OnConstruction(const FTransform& Transform);
 	virtual void BeginPlay() override;
 
 public:	
