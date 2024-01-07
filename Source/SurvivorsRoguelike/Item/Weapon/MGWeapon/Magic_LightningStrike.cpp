@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Magic_Thunderbolt.h"
+#include "Magic_LightningStrike.h"
 
-AMagic_Thunderbolt::AMagic_Thunderbolt()
+AMagic_LightningStrike::AMagic_LightningStrike()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -19,12 +19,12 @@ AMagic_Thunderbolt::AMagic_Thunderbolt()
 	mAttackDelay = 1.f;	
 }
 
-void AMagic_Thunderbolt::BeginPlay()
+void AMagic_LightningStrike::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void AMagic_Thunderbolt::Tick(float DeltaTime)
+void AMagic_LightningStrike::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -38,7 +38,7 @@ void AMagic_Thunderbolt::Tick(float DeltaTime)
 	}
 }
 
-void AMagic_Thunderbolt::Attack()
+void AMagic_LightningStrike::Attack()
 {
 	for (int i = 0; i < TargetMultiActor.Num(); i++) {
 		UGameplayStatics::SpawnEmitterAtLocation(

@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "MagicBase.h"
-#include "Magic_Thunderbolt.generated.h"
+#include "Magic_LightningStrike.generated.h"
 
 UCLASS()
-class SURVIVORSROGUELIKE_API AMagic_Thunderbolt : public AMagicBase
+class SURVIVORSROGUELIKE_API AMagic_LightningStrike : public AMagicBase
 {
 	GENERATED_BODY()
 	
 public:
-	AMagic_Thunderbolt();
+	AMagic_LightningStrike();
 
 protected:
 	virtual void BeginPlay() override;

@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GetMagic_Thunderbolt.h"
+#include "GetMagic_LightningStrike.h"
 
-AGetMagic_Thunderbolt::AGetMagic_Thunderbolt()
+AGetMagic_LightningStrike::AGetMagic_LightningStrike()
 {
-	mMagicClass = AMagic_Thunderbolt::StaticClass();
+	mMagicClass = AMagic_LightningStrike::StaticClass();
 }
 
-void AGetMagic_Thunderbolt::Act()
+void AGetMagic_LightningStrike::Act()
 {
 	Super::Act();
 

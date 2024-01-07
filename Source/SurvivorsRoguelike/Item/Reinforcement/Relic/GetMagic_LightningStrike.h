@@ -4,24 +4,24 @@
 
 #include "../../../GameInfo.h"
 #include "RelicBase.h"
-#include "../../Weapon/MGWeapon/Magic_Thunderbolt.h"
+#include "../../Weapon/MGWeapon/Magic_LightningStrike.h"
 #include "../../Weapon/MGWeapon/UseMGWeapon.h"
-#include "GetMagic_Thunderbolt.generated.h"
+#include "GetMagic_LightningStrike.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SURVIVORSROGUELIKE_API AGetMagic_Thunderbolt : public ARelicBase
+class SURVIVORSROGUELIKE_API AGetMagic_LightningStrike : public ARelicBase
 {
 	GENERATED_BODY()
 	
 
 private:
-	TSubclassOf<AMagic_Thunderbolt> mMagicClass;
+	TSubclassOf<AMagic_LightningStrike> mMagicClass;
 
 public:
-	AGetMagic_Thunderbolt();
+	AGetMagic_LightningStrike();
 
 	virtual void Act() override;
 };
