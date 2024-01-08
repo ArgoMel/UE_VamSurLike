@@ -59,7 +59,7 @@ void AMagic_EarthImpact::Attack()
 
 		UGameplayStatics::ApplyDamage(
 			TargetActor,
-			mSpellPower * mDamageRate,
+			mSpellPower * mDamageRate * mDamage,
 			mCharacter->GetController(),
 			this,
 			nullptr

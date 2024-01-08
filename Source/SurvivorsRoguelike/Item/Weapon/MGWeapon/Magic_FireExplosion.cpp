@@ -53,7 +53,7 @@ void AMagic_FireExplosion::Attack()
 
 		UGameplayStatics::ApplyRadialDamage(
 			GetWorld(),
-			mSpellPower * mDamageRate,
+			mSpellPower * mDamageRate * mDamage,
 			TargetActor->GetActorLocation(),
 			mImpactRange,
 			nullptr,

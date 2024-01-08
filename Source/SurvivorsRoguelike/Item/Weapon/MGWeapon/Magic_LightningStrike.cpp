@@ -59,7 +59,7 @@ void AMagic_LightningStrike::Attack()
 
 			UGameplayStatics::ApplyRadialDamage(
 				GetWorld(),
-				mSpellPower * mDamageRate,
+				mSpellPower * mDamageRate * mDamage,
 				TargetMultiActor[i]->GetActorLocation(),
 				mImpactRange,
 				nullptr,

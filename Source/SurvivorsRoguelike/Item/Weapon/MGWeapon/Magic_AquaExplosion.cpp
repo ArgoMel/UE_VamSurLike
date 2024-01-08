@@ -59,7 +59,7 @@ void AMagic_AquaExplosion::Attack()
 
 			UGameplayStatics::ApplyDamage(
 				TargetMultiActor[i],
-				mSpellPower * mDamageRate,
+				mSpellPower * mDamageRate * mDamage,
 				mCharacter->GetController(),
 				this,
 				nullptr

@@ -55,7 +55,7 @@ void AMagic_WindExplosion::Attack()
 
 		UGameplayStatics::ApplyDamage(
 			TargetActor,
-			mSpellPower * mDamageRate,
+			mSpellPower * mDamageRate * mDamage,
 			mCharacter->GetController(),
 			this,
 			nullptr
