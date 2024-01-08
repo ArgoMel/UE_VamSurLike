@@ -26,6 +26,7 @@ void AMGWeaponBase::Init(int32 num, EItemType ItemType, FString name, float Spel
 	mWeaponType = WeaponType;
 	mRange = Range;
 	mCharacter = Character;
+	mDamage = 1.f;
 
 	if (Mesh)
 		mMesh->SetStaticMesh(Mesh);
@@ -41,14 +42,15 @@ void AMGWeaponBase::SetTargetEnemy(const TArray<TObjectPtr<AActor>>& TargetEnemy
 	}
 }
 
-void AMGWeaponBase::SetMGWeaponStat(float SpellPower, float AttackSpeed)
+void AMGWeaponBase::SetMGWeaponStat(float SpellPower, float AttackSpeed, float Damage)
 {
 	mSpellPower = SpellPower;
 	mAttackSpeed = AttackSpeed;
+	mDamage = Damage;
 
 	for (auto& Magic : mMagic)
 	{
-		Magic->SetMGWeaponStat(mSpellPower, mAttackSpeed);
+		Magic->SetMGWeaponStat(mSpellPower, mAttackSpeed, mDamage);
 	}
 }
 
@@ -61,7 +63,7 @@ void AMGWeaponBase::AddMagic(const TSubclassOf<AMagicBase>& Magic)
 	TObjectPtr<AMagicBase> MAGIC = 
 		GetWorld()->SpawnActor<AMagicBase>(Magic, ActorParam);
 
-	MAGIC->SetMGWeaponStat(mSpellPower, mAttackSpeed);
+	MAGIC->SetMGWeaponStat(mSpellPower, mAttackSpeed, mDamage);
 	MAGIC->SetCharacter(mCharacter);
 
 	mMagic.Add(MAGIC);

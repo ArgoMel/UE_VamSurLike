@@ -73,7 +73,7 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	{
 		PenetratingPerArmor = 100;
 	}
-	float Dmg = mBulletStat.OffensePower * PenetratingPerArmor;
+	float Dmg = mBulletStat.OffensePower * PenetratingPerArmor * mBulletStat.Damage;
 
 	if (OtherActor)
 	{

@@ -4,8 +4,11 @@
 #include "UseMGWeapon.h"
 
 // ---------- For Magic Test include ----------
-#include "Magic_FireExplosion.h"
-//#include "Magic_Thunderbolt.h"
+//#include "Magic_FireExplosion.h"
+//#include "Magic_LightningStrike.h"
+//#include "Magic_EarthImpact.h"
+//#include "Magic_AquaExplosion.h"
+//#include "Magic_WindExplosion.h"
 
 TObjectPtr<UDataTable>	UUseMGWeapon::mWeaponDataTable;
 
@@ -66,8 +69,11 @@ void UUseMGWeapon::Init(const FString& Name)
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), PlayerSocket);
 
 	// ---------- For Magic Test Set ----------
-	mWeapon->AddMagic(AMagic_FireExplosion::StaticClass());
-	//mWeapon->AddMagic(AMagic_Thunderbolt::StaticClass());
+	//mWeapon->AddMagic(AMagic_FireExplosion::StaticClass());
+	//mWeapon->AddMagic(AMagic_LightningStrike::StaticClass());
+	//mWeapon->AddMagic(AMagic_EarthImpact::StaticClass());
+	//mWeapon->AddMagic(AMagic_AquaExplosion::StaticClass());
+	//mWeapon->AddMagic(AMagic_WindExplosion::StaticClass());
 }
 
 const FMGWeaponData* UUseMGWeapon::FindWeaponData(const FName& Name)

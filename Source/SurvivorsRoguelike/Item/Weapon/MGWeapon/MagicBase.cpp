@@ -4,6 +4,8 @@
 #include "MagicBase.h"
 #include "Kismet/KismetArrayLibrary.h"
 
+TObjectPtr<UDataTable> AMagicBase::mMagicDataTable;
+
 // Sets default values
 AMagicBase::AMagicBase()
 {
@@ -14,6 +16,10 @@ AMagicBase::AMagicBase()
 	mSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Sound"));
 
 	mParticle->bAutoActivate = false;
+	mSound->bAutoActivate = false;
+
+	RandomTargetNum = 3.f;
+	LoadMagicData();
 }
 
 void AMagicBase::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)
@@ -56,7 +62,28 @@ void AMagicBase::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Switch is not WORK!!!!!"));
 }
 
+void AMagicBase::LoadMagicData()
+{
+	mMagicDataTable = LoadObject<UDataTable>(nullptr,
+		TEXT("/Script/Engine.DataTable'/Game/00_Weapon/DataTable/MagicData.MagicData'"));
+}
 
+void AMagicBase::Init(const FString& Name)
+{
+	if (IsValid(mMagicDataTable))
+	{
+		const FMagicData* Data =
+			mMagicDataTable->FindRow<FMagicData>(FName(Name), TEXT(""));
+
+		if (Data)
+		{
+			mParticle->SetTemplate(Data->MagicParticle);
+			mSound->SetSound(Data->MagicSound);
+			mDamageRate = Data->DamageRate;
+			mAttackDelay = Data->AttackDelay;
+		}
+	}
+}
 
 // Called when the game starts or when spawned
 void AMagicBase::BeginPlay()
