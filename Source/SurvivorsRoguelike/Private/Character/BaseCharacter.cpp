@@ -9,7 +9,6 @@ ABaseCharacter::ABaseCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	MaxHealth = 100.f;
-
 	
 	mUseMLWeapon = CreateDefaultSubobject<UUseMLWeapon>(TEXT("UseMLWeapon"));
 	mUseLRWeapon = CreateDefaultSubobject<UUseLRWeapon>(TEXT("UseLRWeapon"));
@@ -19,34 +18,11 @@ ABaseCharacter::ABaseCharacter()
 
 void ABaseCharacter::BeginPlay()
 {
-	Cast<AInGamePlayerController>(GetController())->SetBaseCharacter(this);
-	mMLWeaponName = "Sword";
-	mLRWeaponName = "Rifle";
-	mMGWeaponName = "MagicBook";
-
-	mUseMLWeapon->Init(mMLWeaponName);
-	mUseLRWeapon->Init(mLRWeaponName);
-	mUseMGWeapon->Init(mMGWeaponName);
-
-	mOffensePower = mUseMLWeapon->GetOffensePower();
-	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
-	mPenetratingPower = mUseLRWeapon->GetPenetrating();
-	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
-	mSpellPower = mUseMGWeapon->GetSpellPower();
-	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
-	mElement = EElement::None;
-	mDamege = 0;
-	mRange = mUseLRWeapon->GetRange();
-
-	mInhanceRate.OffensePowerInhanceRate = 0;
-	mInhanceRate.MLAttackSpeedInhanceRate = 0;
-	mInhanceRate.PenetratingPowerInhanceRate = 0;
-	mInhanceRate.LRAttackSpeedInhanceRate = 0;
-	mInhanceRate.SpellPowerInhanceRate = 0;
-	mInhanceRate.MGAttackSpeedInhanceRate = 0;
-	mInhanceRate.DamegeInhanceRate = 0;
-
 	Super::BeginPlay();
+
+	Cast<AInGamePlayerController>(GetController())->SetBaseCharacter(this);
+
+	mPlayerHubWidget->UpdateCharacterStat();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
@@ -91,6 +67,38 @@ FString ABaseCharacter::GetElementName()
 	return TEXT("ERROR");
 }
 
+void ABaseCharacter::SetWeaponActorComponent(const FString& MLWeaponName, 
+	const FString& LRWeaponName, const FString& MGWeaponName)
+{
+	mMLWeaponName = MLWeaponName;
+	mLRWeaponName = LRWeaponName;
+	mMGWeaponName = MGWeaponName;
+
+	mUseMLWeapon->Init(mMLWeaponName);
+	mUseLRWeapon->Init(mLRWeaponName);
+	mUseMGWeapon->Init(mMGWeaponName);
+
+	mInhanceRate.OffensePowerInhanceRate = 0;
+	mInhanceRate.MLAttackSpeedInhanceRate = 0;
+	mInhanceRate.PenetratingPowerInhanceRate = 0;
+	mInhanceRate.LRAttackSpeedInhanceRate = 0;
+	mInhanceRate.SpellPowerInhanceRate = 0;
+	mInhanceRate.MGAttackSpeedInhanceRate = 0;
+	mInhanceRate.DamageInhanceRate = 0;
+
+	mOffensePower = mUseMLWeapon->GetOffensePower();
+	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
+	mPenetratingPower = mUseLRWeapon->GetPenetrating();
+	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
+	mRange = mUseLRWeapon->GetRange();
+	mSpellPower = mUseMGWeapon->GetSpellPower();
+	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
+	mElement = EElement::None;
+	mDamage = 1;
+
+	
+}
+
 void ABaseCharacter::ChangeUseMLWeapon(FString MLWeaponName)
 {
 	mMLWeaponName = MLWeaponName;
@@ -105,6 +113,7 @@ void ABaseCharacter::ChangeUseLRWeapon(FString LRWeaponName)
 	mUseLRWeapon->Init(mLRWeaponName);
 	mPenetratingPower = mUseLRWeapon->GetPenetrating();
 	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
+	mRange = mUseLRWeapon->GetRange();
 }
 
 void ABaseCharacter::ChangeUseMGWeapon(FString MGWeaponName)
@@ -123,12 +132,12 @@ void ABaseCharacter::ResetCharacterStat()
 	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.LRAttackSpeedInhanceRate);
 	mSpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mInhanceRate.SpellPowerInhanceRate);
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mInhanceRate.MGAttackSpeedInhanceRate);
-	mDamege = 0.1f * mInhanceRate.DamegeInhanceRate;
+	mDamage = 1 + 0.1f * mInhanceRate.DamageInhanceRate;
 	mRange = mUseLRWeapon->GetRange() * (1 + 0.1f * mInhanceRate.LRRangeInhanceRate);
 
-	mUseMLWeapon->GetWeapon()->SetMLWeaponStat(mOffensePower, mMLAttackSpeed, mElement);
-	mUseMGWeapon->GetWeapon()->SetMGWeaponStat(mSpellPower, mMGAttackSpeed);
-	mUseLRWeapon->GetWeapon()->SetLRWeaponStat(mPenetratingPower, mLRAttackSpeed, mRange, mElement);
+	mUseMLWeapon->GetWeapon()->SetMLWeaponStat(mOffensePower, mMLAttackSpeed, mElement, mDamage);
+	mUseMGWeapon->GetWeapon()->SetMGWeaponStat(mSpellPower, mMGAttackSpeed, mDamage);
+	mUseLRWeapon->GetWeapon()->SetLRWeaponStat(mPenetratingPower, mLRAttackSpeed, mRange, mElement, mDamage);
 }
  
 void ABaseCharacter::SetInhanceRate(FCharacterInhanceRate& InhanceRate)
@@ -139,7 +148,7 @@ void ABaseCharacter::SetInhanceRate(FCharacterInhanceRate& InhanceRate)
 	mInhanceRate.LRAttackSpeedInhanceRate += InhanceRate.LRAttackSpeedInhanceRate;
 	mInhanceRate.SpellPowerInhanceRate+= InhanceRate.SpellPowerInhanceRate;
 	mInhanceRate.MGAttackSpeedInhanceRate += InhanceRate.MGAttackSpeedInhanceRate;
-	mInhanceRate.DamegeInhanceRate += InhanceRate.DamegeInhanceRate;
+	mInhanceRate.DamageInhanceRate += InhanceRate.DamageInhanceRate;
 	mInhanceRate.LRRangeInhanceRate += InhanceRate.LRRangeInhanceRate;
 
 	ResetCharacterStat();

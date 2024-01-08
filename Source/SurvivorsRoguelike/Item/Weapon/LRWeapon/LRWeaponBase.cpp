@@ -25,6 +25,7 @@ void ALRWeaponBase::Init(int32 num, EItemType ItemType, FString name, float Offe
 	mOffensePower = OffensePower;
 	mRange = Range;
 	mCharacter = Character;
+	mDamage = 1.f;
 
 	if(Mesh)
 		mMesh->SetSkeletalMesh(Mesh);

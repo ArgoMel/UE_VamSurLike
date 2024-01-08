@@ -9,4 +9,10 @@ ARelic_OffensePowerInhance::ARelic_OffensePowerInhance()
 
 void ARelic_OffensePowerInhance::Act()
 {
+	Super::Act();
+
+	mInhanceRate.OffensePowerInhanceRate += 2.f;
+	mPlayer->SetInhanceRate(mInhanceRate);
+
+	Destroy();
 }

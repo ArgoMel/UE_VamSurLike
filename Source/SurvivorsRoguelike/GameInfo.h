@@ -327,6 +327,9 @@ public :
 	float		Range;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float	Damage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EElement	Element;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -342,6 +345,9 @@ struct FMLAttackStat :
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float		OffensePower;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float	Damage;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EElement	Element;
@@ -520,7 +526,7 @@ public:
 	float MGAttackSpeedInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float DamegeInhanceRate;
+	float DamageInhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float LRRangeInhanceRate;
@@ -534,4 +540,24 @@ enum class ESetTargetMethod : uint8
 	Scope,
 	Line,
 	All
+};
+
+USTRUCT(BlueprintType)
+struct FMagicData :
+	public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float DamageRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float AttackDelay;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UParticleSystem> MagicParticle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USoundBase> MagicSound;
 };

@@ -70,7 +70,7 @@ protected:
 	EElement mElement;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mDamege;
+	float mDamage;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float mRange;
@@ -83,6 +83,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StartPercentDamage();
 
+	UFUNCTION(BlueprintCallable)
+	void SetWeaponActorComponent(const FString& MLWeaponName, 
+		const FString& LRWeaponName, const FString& MGWeaponName);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void AddMaxHP(float HP);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void AddHP(float HP);
+
 	FString GetMLWeaponName() { return mMLWeaponName; }
 	FString GetLRWeaponName() { return mLRWeaponName; }
 	FString GetMGWeaponName() {	return mMGWeaponName; }
@@ -94,13 +104,14 @@ public:
 	float GetSpellPower() { return mSpellPower; }
 	float GetMGAttackSpeed() { return mMGAttackSpeed; }
 	EElement GetElement() { return mElement; }
-	float GetDamage() { return mDamege; }
+	float GetDamage() { return mDamage; }
 	TObjectPtr<UUseMLWeapon> GetMLWeaponComponent() { return mUseMLWeapon; }
 	TObjectPtr<UUseLRWeapon> GetLRWeaponComponent() { return mUseLRWeapon; }
 	TObjectPtr<UUseMGWeapon> GetMGWeaponComponent() { return mUseMGWeapon; }
 
 	FString GetElementName();
 
+	
 	void SetOffensePower(float OffensePower) { mOffensePower = OffensePower; }
 	void SetMLAttackSpeed(float MLAttackSpeed) { mMLAttackSpeed = MLAttackSpeed; }
 	void SetPenetraitngPower(float PenetraitngPower) { mPenetratingPower = PenetraitngPower; }
@@ -108,9 +119,10 @@ public:
 	void SetSpellPower(float SpellPower) { mSpellPower = SpellPower; }
 	void SetMGAttackSpeed(float MGAttackSpeed) { mMGAttackSpeed = MGAttackSpeed; }
 	void SetElement(EElement Element) { mElement = Element; }
-	void SetDamage(float Damage) { mDamege = Damage; }
+	void SetDamage(float Damage) { mDamage = mDamage; }
 	void SetPlayerHubWidget(TObjectPtr<UPlayerHudWidget> PlayerHubWidget) { mPlayerHubWidget = PlayerHubWidget; }
 
+	
 	void SetRelicInvent(URelicInventory* RelicInventory) { mRelicInventory = RelicInventory; }
 	void ChangeUseMLWeapon(FString MLWeaponName);
 	void ChangeUseLRWeapon(FString LRWeaponName);
