@@ -32,30 +32,33 @@ void AMagic_WindExplosion::Tick(float DeltaTime)
 
 void AMagic_WindExplosion::Attack()
 {
-	UGameplayStatics::SpawnEmitterAtLocation(
-		GetWorld(),
-		mParticle->Template,
-		UKismetMathLibrary::MakeTransform(
-			FVector3d(
-				TargetActor->GetActorLocation().X,
-				TargetActor->GetActorLocation().Y,
-				TargetActor->GetActorLocation().Z - TargetActor->GetSimpleCollisionHalfHeight()
-			),
-			FRotator3d(0.0, 0.0, 0.0)
-		)
-	);
+	if (IsValid(TargetActor))
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			mParticle->Template,
+			UKismetMathLibrary::MakeTransform(
+				FVector3d(
+					TargetActor->GetActorLocation().X,
+					TargetActor->GetActorLocation().Y,
+					TargetActor->GetActorLocation().Z - TargetActor->GetSimpleCollisionHalfHeight()
+				),
+				FRotator3d(0.0, 0.0, 0.0)
+			)
+		);
 
-	UGameplayStatics::PlaySound2D(
-		GetWorld(),
-		mSound->GetSound(),
-		0.3f
-	);
+		UGameplayStatics::PlaySound2D(
+			GetWorld(),
+			mSound->GetSound(),
+			0.3f
+		);
 
-	UGameplayStatics::ApplyDamage(
-		TargetActor,
-		mSpellPower * mDamageRate,
-		mCharacter->GetController(),
-		this,
-		nullptr
-	);
+		UGameplayStatics::ApplyDamage(
+			TargetActor,
+			mSpellPower * mDamageRate,
+			mCharacter->GetController(),
+			this,
+			nullptr
+		);
+	}
 }

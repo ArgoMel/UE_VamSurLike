@@ -34,32 +34,36 @@ void AMagic_AquaExplosion::Tick(float DeltaTime)
 void AMagic_AquaExplosion::Attack()
 {
 	for (int i = 0; i < TargetMultiActor.Num(); i++) {
-		UGameplayStatics::SpawnEmitterAtLocation(
-			GetWorld(),
-			mParticle->Template,
-			UKismetMathLibrary::MakeTransform(
-				FVector3d(
-					TargetMultiActor[i]->GetActorLocation().X,
-					TargetMultiActor[i]->GetActorLocation().Y,
-					TargetMultiActor[i]->GetActorLocation().Z - TargetMultiActor[i]->GetSimpleCollisionHalfHeight()
-				),
-				FRotator3d(0.0, 0.0, 0.0),
-				FVector3d(0.5, 0.5, 1.0)
-			)
-		);
+		
+		if (IsValid(TargetMultiActor[i]))
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(
+				GetWorld(),
+				mParticle->Template,
+				UKismetMathLibrary::MakeTransform(
+					FVector3d(
+						TargetMultiActor[i]->GetActorLocation().X,
+						TargetMultiActor[i]->GetActorLocation().Y,
+						TargetMultiActor[i]->GetActorLocation().Z - TargetMultiActor[i]->GetSimpleCollisionHalfHeight()
+					),
+					FRotator3d(0.0, 0.0, 0.0),
+					FVector3d(0.5, 0.5, 1.0)
+				)
+			);
 
-		UGameplayStatics::PlaySound2D(
-			GetWorld(),
-			mSound->GetSound(),
-			0.07f
-		);
+			UGameplayStatics::PlaySound2D(
+				GetWorld(),
+				mSound->GetSound(),
+				0.07f
+			);
 
-		UGameplayStatics::ApplyDamage(
-			TargetMultiActor[i],
-			mSpellPower * mDamageRate,
-			mCharacter->GetController(),
-			this,
-			nullptr
-		);
+			UGameplayStatics::ApplyDamage(
+				TargetMultiActor[i],
+				mSpellPower * mDamageRate,
+				mCharacter->GetController(),
+				this,
+				nullptr
+			);
+		}
 	}
 }
