@@ -34,7 +34,8 @@ void AMagic_LightningStrike::Tick(float DeltaTime)
 
 void AMagic_LightningStrike::Attack()
 {
-	for (int i = 0; i < TargetMultiActor.Num(); i++) {
+	for (int i = 0; i < TargetMultiActor.Num(); i++)
+	{
 		if (IsValid(TargetMultiActor[i]))
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(

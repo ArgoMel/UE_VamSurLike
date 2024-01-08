@@ -7,8 +7,7 @@ AMagic_AquaExplosion::AMagic_AquaExplosion()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	SetTargetMethod = ESetTargetMethod::Random;
-	RandomTargetNum = 4.f;
+	SetTargetMethod = ESetTargetMethod::All;
 	Init("AquaExplosion");
 }
 
@@ -33,7 +32,8 @@ void AMagic_AquaExplosion::Tick(float DeltaTime)
 
 void AMagic_AquaExplosion::Attack()
 {
-	for (int i = 0; i < TargetMultiActor.Num(); i++) {
+	for (int i = 0; i < TargetMultiActor.Num(); i++)
+	{
 		
 		if (IsValid(TargetMultiActor[i]))
 		{
