@@ -20,11 +20,6 @@ public:
 	AMonsterDamage();
 
 protected:
-	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UCapsuleComponent>	mBody;
-
-	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMeshComponent>	mMesh;
 	
 	EElement mElemenet;
 

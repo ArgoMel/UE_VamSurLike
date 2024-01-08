@@ -11,12 +11,6 @@ AMonsterDamage::AMonsterDamage()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-
-	mMesh->bRenderCustomDepth = true;
-
-	mMesh->SetCustomDepthStencilValue(0);
-
 
 	AbnormalState.Init(false, (int32)EAbnormalTable::None);
 
