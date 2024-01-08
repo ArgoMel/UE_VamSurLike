@@ -537,8 +537,6 @@ enum class ESetTargetMethod : uint8
 {
 	Near,
 	Random,
-	Scope,
-	Line,
 	All
 };
 

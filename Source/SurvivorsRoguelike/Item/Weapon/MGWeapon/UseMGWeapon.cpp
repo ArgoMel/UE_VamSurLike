@@ -4,11 +4,11 @@
 #include "UseMGWeapon.h"
 
 // ---------- For Magic Test include ----------
-//#include "Magic_FireExplosion.h"
-//#include "Magic_LightningStrike.h"
-//#include "Magic_EarthImpact.h"
-//#include "Magic_AquaExplosion.h"
-//#include "Magic_WindExplosion.h"
+#include "Magic_FireExplosion.h"
+#include "Magic_LightningStrike.h"
+#include "Magic_EarthImpact.h"
+#include "Magic_AquaExplosion.h"
+#include "Magic_WindExplosion.h"
 
 TObjectPtr<UDataTable>	UUseMGWeapon::mWeaponDataTable;
 
@@ -74,6 +74,31 @@ void UUseMGWeapon::Init(const FString& Name)
 	//mWeapon->AddMagic(AMagic_EarthImpact::StaticClass());
 	//mWeapon->AddMagic(AMagic_AquaExplosion::StaticClass());
 	//mWeapon->AddMagic(AMagic_WindExplosion::StaticClass());
+}
+
+void UUseMGWeapon::SetWaterMagic()
+{
+	mWeapon->AddMagic(AMagic_AquaExplosion::StaticClass());
+}
+
+void UUseMGWeapon::SetEarthMagic()
+{
+	mWeapon->AddMagic(AMagic_EarthImpact::StaticClass());
+}
+
+void UUseMGWeapon::SetFireMagic()
+{
+	mWeapon->AddMagic(AMagic_FireExplosion::StaticClass());
+}
+
+void UUseMGWeapon::SetLightningMagic()
+{
+	mWeapon->AddMagic(AMagic_LightningStrike::StaticClass());
+}
+
+void UUseMGWeapon::SetWindMagic()
+{
+	mWeapon->AddMagic(AMagic_WindExplosion::StaticClass());
 }
 
 const FMGWeaponData* UUseMGWeapon::FindWeaponData(const FName& Name)

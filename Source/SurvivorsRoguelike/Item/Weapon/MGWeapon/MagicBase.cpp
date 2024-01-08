@@ -18,7 +18,7 @@ AMagicBase::AMagicBase()
 	mParticle->bAutoActivate = false;
 	mSound->bAutoActivate = false;
 
-	RandomTargetNum = 3.f;
+	RandomTargetNum = 0.f;
 	LoadMagicData();
 }
 
@@ -49,14 +49,9 @@ void AMagicBase::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)
 		}
 	}
 		return;
-	case ESetTargetMethod::Scope:
-		break;
-	case ESetTargetMethod::Line:
-		break;
 	case ESetTargetMethod::All:
-		break;
-	default:
-		break;
+		TargetMultiActor = TargetEnemy;
+		return;
 	}
 
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, TEXT("Switch is not WORK!!!!!"));
