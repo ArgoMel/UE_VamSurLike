@@ -95,7 +95,34 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 	bool bFromSweep, const FHitResult& SweepResult)
 {
+
+	int32 StencilVal;
+
+	switch (mBulletStat.Element)
+	{
+	case EElement::Fire:
+		StencilVal = 11;
+		break;
+
+	case EElement::Wind:
+		StencilVal = 15;
+		break;
+
+	case EElement::Ground:
+		StencilVal = 17;
+		break;
+
+	case EElement::Eletric:
+		StencilVal = 14;
+		break;
+
+	case EElement::Water:
+		StencilVal = 13;
+		break;
+	}
+
 	FDamageEvent DmgEvent;
+
 	float PenetratingPerArmor = 100 / (100 - mBulletStat.Penetrating);
 	if (PenetratingPerArmor >= 100)
 	{
@@ -106,6 +133,7 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	if (OtherActor)
 	{
 		OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
+		Cast<AMonsterDamage>(OtherActor)->SetStencil(StencilVal);
 	}
 }
 

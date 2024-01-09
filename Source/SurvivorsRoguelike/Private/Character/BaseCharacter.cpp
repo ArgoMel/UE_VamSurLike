@@ -99,6 +99,14 @@ void ABaseCharacter::SetWeaponActorComponent(const FString& MLWeaponName,
 	
 }
 
+void ABaseCharacter::SetElement(EElement Element)
+{
+	mElement = Element;
+
+	mUseLRWeapon->GetWeapon()->SetElement(Element);
+	mUseMLWeapon->GetWeapon()->SetElement(Element);
+}
+
 void ABaseCharacter::ChangeUseMLWeapon(FString MLWeaponName)
 {
 	mMLWeaponName = MLWeaponName;
@@ -135,9 +143,9 @@ void ABaseCharacter::ResetCharacterStat()
 	mDamage = 1 + 0.1f * mEnhanceRate.DamageEnhanceRate;
 	mRange = mUseLRWeapon->GetRange() * (1 + 0.1f * mEnhanceRate.LRRangeEnhanceRate);
 
-	mUseMLWeapon->GetWeapon()->SetMLWeaponStat(mOffensePower, mMLAttackSpeed, mElement, mDamage);
+	mUseMLWeapon->GetWeapon()->SetMLWeaponStat(mOffensePower, mMLAttackSpeed, mDamage);
 	mUseMGWeapon->GetWeapon()->SetMGWeaponStat(mSpellPower, mMGAttackSpeed, mDamage);
-	mUseLRWeapon->GetWeapon()->SetLRWeaponStat(mPenetratingPower, mLRAttackSpeed, mRange, mElement, mDamage);
+	mUseLRWeapon->GetWeapon()->SetLRWeaponStat(mPenetratingPower, mLRAttackSpeed, mRange, mDamage);
 }
  
 void ABaseCharacter::SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate)

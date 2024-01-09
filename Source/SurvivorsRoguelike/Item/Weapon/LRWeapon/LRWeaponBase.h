@@ -62,14 +62,15 @@ public:
 		mBulletStat.Damage = mDamage;
 	}
 
-	void SetLRWeaponStat(float Penetrating, float AttackSpeed, float Range, EElement Element, float Damage)
+	void SetLRWeaponStat(float Penetrating, float AttackSpeed, float Range, float Damage)
 	{
 		mPenetrating = Penetrating;
 		mAttackSpeed = AttackSpeed;
 		mRange = Range;
-		mElement = Element;
 		mDamage = Damage;
 	}
+
+	void SetElement(EElement Element);
 
 protected:
 	// Called when the game starts or when spawned

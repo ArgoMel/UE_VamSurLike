@@ -82,6 +82,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void WindKnockback();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetStencil(int32 Stencil);
+
 
 	EElement GetElement()
 	{

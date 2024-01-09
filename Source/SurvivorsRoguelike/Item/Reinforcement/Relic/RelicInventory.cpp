@@ -142,6 +142,8 @@ void URelicInventory::GetMagic()
 
 void URelicInventory::GetElementEnhance()
 {
+
+	mPlayer->SetElement(mElement);
 }
 
 
