@@ -29,6 +29,7 @@ private:
 protected:
 	TObjectPtr<UUseMLWeapon> mUseMLWeapon;
 	TObjectPtr<UUseLRWeapon> mUseLRWeapon;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UUseMGWeapon> mUseMGWeapon;
 	TObjectPtr<URelicInventory> mRelicInventory;
 	TObjectPtr<UPlayerHudWidget> mPlayerHubWidget;
