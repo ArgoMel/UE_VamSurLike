@@ -79,6 +79,9 @@ public:
 	void Burning();
 	void Burning_Implementation();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void WindKnockback();
+
 
 	EElement GetElement()
 	{

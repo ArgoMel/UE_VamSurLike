@@ -2,13 +2,14 @@
 
 
 #include "Magic_WindExplosion.h"
+#include "../../../Public/AI/MonsterDamage.h"
 
 AMagic_WindExplosion::AMagic_WindExplosion()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
 	SetTargetMethod = ESetTargetMethod::All;
-	mImpactRange = 500.f;
+	mImpactRange = 1000.f;
 	Init("WindExplosion");
 }
 
@@ -28,6 +29,7 @@ void AMagic_WindExplosion::Tick(float DeltaTime)
 			Attack();
 			mTime = 0.f;
 		}
+
 	}
 }
 
@@ -35,7 +37,6 @@ void AMagic_WindExplosion::Attack()
 {
 	for (int i = 0; i < TargetMultiActor.Num(); i++)
 	{
-
 		if (IsValid(TargetMultiActor[i]))
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(
@@ -43,40 +44,32 @@ void AMagic_WindExplosion::Attack()
 				mParticle->Template,
 				UKismetMathLibrary::MakeTransform(
 					FVector3d(
-						TargetMultiActor[i]->GetActorLocation().X,
-						TargetMultiActor[i]->GetActorLocation().Y,
-						TargetMultiActor[i]->GetActorLocation().Z - TargetMultiActor[i]->GetSimpleCollisionHalfHeight()
+						mCharacter->GetActorLocation().X,
+						mCharacter->GetActorLocation().Y,
+						mCharacter->GetActorLocation().Z - mCharacter->GetSimpleCollisionHalfHeight()
 					),
-					FRotator3d(0.0, 0.0, 0.0)
+					FRotator3d(0.0, 0.0, 0.0),
+					FVector3d(4.0, 4.0, 1.0)
 				)
 			);
 
 			UGameplayStatics::PlaySound2D(
 				GetWorld(),
 				mSound->GetSound(),
-				0.3f
+				0.05f
 			);
 
-			//FRotator RotateToTarget =
-			//	UKismetMathLibrary::FindLookAtRotation(mCharacter->GetActorLocation(), TargetMultiActor[i]->GetActorLocation());
-			//FVector HitVector = RotateToTarget.Vector() * 1000.f;
-			//
-			////Cast<ACharacter>(TargetMultiActor[i])->GetMesh()->AddForce(FVector(1000.0, 1000.0, 1000.0));
+			Cast<AMonsterDamage>(TargetMultiActor[i])->WindKnockback();
 
-			//float OriginEnemySpeed = Cast<ACharacter>(TargetMultiActor[i])->GetCharacterMovement()->MaxWalkSpeed;
-			//Cast<ACharacter>(TargetMultiActor[i])->GetCharacterMovement()->MaxWalkSpeed = 0;
+			FVector3d ImpulseTarget =
+				(TargetMultiActor[i]->GetActorLocation() - mCharacter->GetActorLocation()).GetSafeNormal2D() * mImpactRange;
+			ImpulseTarget.Z = 300.f;
 
-			//// Need Timer to reset Enemy MaxWalkSpeed
-
-			//FVector3d ImpulseTarget =
-			//	(TargetMultiActor[i]->GetActorLocation() - mCharacter->GetActorLocation()).GetSafeNormal2D() * mImpactRange;
-			//ImpulseTarget.Z = 500.f;
-
-			//Cast<ACharacter>(TargetMultiActor[i])->LaunchCharacter(
-			//	ImpulseTarget,
-			//	false,
-			//	false
-			//);
+			Cast<ACharacter>(TargetMultiActor[i])->LaunchCharacter(
+				ImpulseTarget,
+				false,
+				false
+			);
 
 			UGameplayStatics::ApplyDamage(
 				TargetMultiActor[i],

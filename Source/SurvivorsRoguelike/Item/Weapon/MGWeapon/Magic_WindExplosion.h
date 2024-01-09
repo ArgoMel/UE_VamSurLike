@@ -10,7 +10,7 @@ UCLASS()
 class SURVIVORSROGUELIKE_API AMagic_WindExplosion : public AMagicBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	AMagic_WindExplosion();
 
