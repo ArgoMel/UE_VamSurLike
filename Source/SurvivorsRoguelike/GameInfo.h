@@ -271,9 +271,25 @@ enum class EItemType : uint8
 UENUM(BlueprintType)
 enum class ERelicType : uint8
 {
-	Inhance,
+	Enhance,
 	Magic,
 	ElementEnhance
+};
+
+UENUM(BlueprintType)
+enum class ERelicTable : uint8
+{
+	GetMagic,
+	GetElementEnhance,
+	LRAttackSpeedEnhance,
+	LRAttackRangeEnhance,
+	MGAttackSpeedEnhance,
+	PenetratingEnhance,
+	MLAttackSpeedEnhance,
+	MLOffensePowerEnhance,
+	DamageEnhance,
+	RestoreHP,
+	MaxHPEnhance
 };
 
 UENUM(BlueprintType)
@@ -283,7 +299,7 @@ enum class EElement : uint8
 	Fire,
 	Water,
 	Eletric,
-	Glass,
+	Wind,
 	Ground
 };
 
@@ -494,42 +510,51 @@ public:
 	ERelicType Type;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class ARelicBase> RelicClass;
+	ERelicTable AddedRelic;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<class AMagicBase> AddedMagic;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EElement AddedElement;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FText mName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FText mEffectDescription;
 };
 
 USTRUCT(BlueprintType)
-struct FCharacterInhanceRate :
+struct FCharacterEnhanceRate :
 	public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float OffensePowerInhanceRate;
+	float OffensePowerEnhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MLAttackSpeedInhanceRate;
+	float MLAttackSpeedEnhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float PenetratingPowerInhanceRate;
+	float PenetratingPowerEnhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float LRAttackSpeedInhanceRate;
+	float LRAttackSpeedEnhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float SpellPowerInhanceRate;
+	float SpellPowerEnhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MGAttackSpeedInhanceRate;
+	float MGAttackSpeedEnhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float DamageInhanceRate;
+	float DamageEnhanceRate;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float LRRangeInhanceRate;
+	float LRRangeEnhanceRate;
 };
 
 UENUM(BlueprintType)

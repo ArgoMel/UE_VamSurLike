@@ -20,6 +20,8 @@ AMagicBase::AMagicBase()
 
 	RandomTargetNum = 0.f;
 	LoadMagicData();
+
+	mTime = 100.f;
 }
 
 void AMagicBase::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)

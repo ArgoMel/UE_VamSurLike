@@ -19,7 +19,7 @@ public :
 	ARelicBase();
 
 protected :
-	FCharacterInhanceRate mInhanceRate;
+	FCharacterEnhanceRate mEnhanceRate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ABaseCharacter> mPlayer;

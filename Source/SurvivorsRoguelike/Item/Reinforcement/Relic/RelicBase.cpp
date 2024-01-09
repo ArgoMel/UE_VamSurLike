@@ -6,17 +6,18 @@
 
 ARelicBase::ARelicBase()
 {
-	mInhanceRate.OffensePowerInhanceRate = 0;
-	mInhanceRate.MLAttackSpeedInhanceRate = 0;
-	mInhanceRate.PenetratingPowerInhanceRate = 0;
-	mInhanceRate.LRAttackSpeedInhanceRate = 0;
-	mInhanceRate.SpellPowerInhanceRate = 0;
-	mInhanceRate.MGAttackSpeedInhanceRate = 0;
-	mInhanceRate.DamageInhanceRate = 0;
+	mEnhanceRate.OffensePowerEnhanceRate = 0;
+	mEnhanceRate.MLAttackSpeedEnhanceRate = 0;
+	mEnhanceRate.PenetratingPowerEnhanceRate = 0;
+	mEnhanceRate.LRAttackSpeedEnhanceRate = 0;
+	mEnhanceRate.SpellPowerEnhanceRate = 0;
+	mEnhanceRate.MGAttackSpeedEnhanceRate = 0;
+	mEnhanceRate.DamageEnhanceRate = 0;
 }
 
 void ARelicBase::Act()
 {
 	if (!mPlayer)
 		return;
+
 }
