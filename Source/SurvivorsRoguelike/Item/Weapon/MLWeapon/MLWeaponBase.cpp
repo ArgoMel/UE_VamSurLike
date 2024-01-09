@@ -65,6 +65,7 @@ void AMLWeaponBase::Attack()
 
 		mWeapon->SetAttackStat(mAttackStat);
 		mWeapon->AttachToComponent(GetRootComponent(), AttachRule);
+		mWeapon->SetActorRelativeLocation(FVector(-40.f, 0.f, -0.f));
 		mWeapon->SetActorRelativeRotation(FRotator(0.f, 0.f, 90.f));
 	}
 }

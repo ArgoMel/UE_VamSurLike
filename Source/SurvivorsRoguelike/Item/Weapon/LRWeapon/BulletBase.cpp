@@ -10,6 +10,8 @@ ABulletBase::ABulletBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	
 	
 	mProjectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile"));
 	mProjectile->ProjectileGravityScale = 0.f;
@@ -25,12 +27,14 @@ ABulletBase::ABulletBase()
 		TEXT("/Script/Engine.StaticMesh'/Game/00_Weapon/WeaponAsset/LRWeapon/Rifle/Sphere.Sphere'"));
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	mMesh->bRenderCustomDepth = true;
+	mMesh->SetCustomDepthStencilValue(11);
 	if (MESH.Succeeded())
 		mMesh->SetStaticMesh(MESH.Object);
-
+	
 	SetRootComponent(mCollision);
 	mMesh->SetupAttachment(mCollision);
-
+	
 }
 
 void ABulletBase::SetProjectileRot(const FVector& Vector)
