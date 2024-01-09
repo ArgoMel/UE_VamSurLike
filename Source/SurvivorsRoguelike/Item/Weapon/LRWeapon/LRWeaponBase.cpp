@@ -38,7 +38,7 @@ void ALRWeaponBase::Fire()
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	mBullet = GetWorld()->SpawnActor<ABulletBase>(mBulletClass,
-		mMesh->GetSocketLocation(TEXT("MuzzleFlash")),
+		mMesh->GetSocketLocation(TEXT("MuzzleFlash")) + FVector(0.f,0.f,-50.f),
 		FRotator::ZeroRotator,
 		ActorParam);
 
