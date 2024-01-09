@@ -9,6 +9,7 @@ ALRWeaponBase::ALRWeaponBase()
 
 	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	mMesh->bRenderCustomDepth = true;
 
 	mBulletClass = ABulletBase::StaticClass();
 }
@@ -46,6 +47,34 @@ void ALRWeaponBase::Fire()
 
 	mBullet->SetProjectileRot(GetActorRightVector());
 	mBullet->SetBulletStat(mBulletStat);
+}
+
+void ALRWeaponBase::SetElement(EElement Element)
+{
+	mElement = Element;
+
+	switch (mElement)
+	{
+	case EElement::Fire:
+		mMesh->SetCustomDepthStencilValue(11);
+		break;
+
+	case EElement::Wind:
+		mMesh->SetCustomDepthStencilValue(15);
+		break;
+
+	case EElement::Ground:
+		mMesh->SetCustomDepthStencilValue(17);
+		break;
+
+	case EElement::Eletric:
+		mMesh->SetCustomDepthStencilValue(14);
+		break;
+
+	case EElement::Water:
+		mMesh->SetCustomDepthStencilValue(13);
+		break;
+	}
 }
 
 void ALRWeaponBase::BeginPlay()

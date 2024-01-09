@@ -121,7 +121,7 @@ public:
 	void SetLRAttackSpeed(float LRAttackSpeed) { mLRAttackSpeed = LRAttackSpeed; }
 	void SetSpellPower(float SpellPower) { mSpellPower = SpellPower; }
 	void SetMGAttackSpeed(float MGAttackSpeed) { mMGAttackSpeed = MGAttackSpeed; }
-	void SetElement(EElement Element) { mElement = Element; }
+	void SetElement(EElement Element);
 	void SetDamage(float Damage) { mDamage = mDamage; }
 	void SetPlayerHubWidget(TObjectPtr<UPlayerHudWidget> PlayerHubWidget) { mPlayerHubWidget = PlayerHubWidget; }
 

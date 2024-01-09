@@ -85,6 +85,7 @@ void AMonsterDamage::Burning_Implementation()
 {
 }
 
+
 void AMonsterDamage::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);

@@ -18,6 +18,11 @@ AMLWeaponBase::~AMLWeaponBase()
 }
 
 
+void AMLWeaponBase::SetElement(EElement Element)
+{
+	mElement = Element;
+}
+
 void AMLWeaponBase::Init(int32 num, EItemType ItemType, FString name,
 	float AttackSpeed, float OffensePower, FVector CollisionScale, FVector CollisionLoc, 
 	EMLWeaponType WeaponType, UStaticMesh* Mesh, EElement Element, TObjectPtr<ACharacter> Character)

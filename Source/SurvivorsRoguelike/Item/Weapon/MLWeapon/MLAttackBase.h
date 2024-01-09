@@ -4,6 +4,7 @@
 
 #include "../../../GameInfo.h"
 #include "GameFramework/Actor.h"
+#include "../../../Public/AI/MonsterDamage.h"
 #include "MLAttackBase.generated.h"
 
 UCLASS()

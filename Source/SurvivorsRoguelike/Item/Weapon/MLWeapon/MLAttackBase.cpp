@@ -22,6 +22,7 @@ AMLAttackBase::AMLAttackBase()
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mMesh->SetAbsolute(false, true, false); //부모회전 영향x
 	mMesh->CastShadow = false;
+	mMesh->bRenderCustomDepth = true;
 
 	SetRootComponent(mMesh);
 	mCollision->SetupAttachment(mMesh);
@@ -38,6 +39,29 @@ void AMLAttackBase::SetAttackStat(const FMLAttackStat& Stat)
 		mMesh->SetStaticMesh(Stat.Mesh);
 	mCollision->SetRelativeLocation(Stat.CollisionLoc);
 	mCollision->SetRelativeScale3D(Stat.CollisionScale);
+
+	switch (Stat.Element)
+	{
+	case EElement::Fire:
+		mMesh->SetCustomDepthStencilValue(11);
+		break;
+
+	case EElement::Wind:
+		mMesh->SetCustomDepthStencilValue(15);
+		break;
+
+	case EElement::Ground:
+		mMesh->SetCustomDepthStencilValue(17);
+		break;
+
+	case EElement::Eletric:
+		mMesh->SetCustomDepthStencilValue(14);
+		break;
+
+	case EElement::Water:
+		mMesh->SetCustomDepthStencilValue(13);
+		break;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -65,12 +89,39 @@ void AMLAttackBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+
+	int32 StencilVal;
+
+	switch (mAttackStat.Element)
+	{
+	case EElement::Fire:
+		StencilVal = 11;
+		break;
+
+	case EElement::Wind:
+		StencilVal = 15;
+		break;
+
+	case EElement::Ground:
+		StencilVal = 17;
+		break;
+
+	case EElement::Eletric:
+		StencilVal = 14;
+		break;
+
+	case EElement::Water:
+		StencilVal = 13;
+		break;
+	}
+
 	FDamageEvent DmgEvent;
 	float Dmg = mAttackStat.OffensePower * mAttackStat.Damage;
 
 	if (OtherActor)
 	{
 		OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
+		Cast<AMonsterDamage>(OtherActor)->SetStencil(StencilVal);
 	}
 }
 

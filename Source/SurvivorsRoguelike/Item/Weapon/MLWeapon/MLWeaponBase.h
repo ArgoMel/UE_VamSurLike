@@ -69,13 +69,14 @@ public :
 		mAttackStat.Damage = mDamage;
 	}
 
-	void SetMLWeaponStat(float OffensePower, float AttackSpeed, EElement Element, float Damage)
+	void SetMLWeaponStat(float OffensePower, float AttackSpeed, float Damage)
 	{
 		mOffensePower = OffensePower;
 		mAttackSpeed = AttackSpeed;
-		mElement = Element;
 		mDamage = Damage;
 	}
+
+	void SetElement(EElement Element);
 
 public :
 	void Init(int32 num, EItemType ItemType, FString name, float AttackSpeed, 
