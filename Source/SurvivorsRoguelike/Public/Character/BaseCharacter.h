@@ -31,11 +31,12 @@ protected:
 	TObjectPtr<UUseLRWeapon> mUseLRWeapon;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UUseMGWeapon> mUseMGWeapon;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<URelicInventory> mRelicInventory;
 	TObjectPtr<UPlayerHudWidget> mPlayerHubWidget;
 
 protected:
-	FCharacterInhanceRate mInhanceRate;
+	FCharacterEnhanceRate mEnhanceRate;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	float MaxHealth;
@@ -109,6 +110,7 @@ public:
 	TObjectPtr<UUseMLWeapon> GetMLWeaponComponent() { return mUseMLWeapon; }
 	TObjectPtr<UUseLRWeapon> GetLRWeaponComponent() { return mUseLRWeapon; }
 	TObjectPtr<UUseMGWeapon> GetMGWeaponComponent() { return mUseMGWeapon; }
+	TObjectPtr<URelicInventory> GetRelicInventory() { return mRelicInventory; }
 
 	FString GetElementName();
 
@@ -131,10 +133,10 @@ public:
 
 	void ResetCharacterStat();
 
-	FCharacterInhanceRate& GetInhanceRate()
+	FCharacterEnhanceRate& GetEnhanceRate()
 	{
-		return mInhanceRate;
+		return mEnhanceRate;
 	}
 
-	void SetInhanceRate(FCharacterInhanceRate& InhanceRate);
+	void SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate);
 };

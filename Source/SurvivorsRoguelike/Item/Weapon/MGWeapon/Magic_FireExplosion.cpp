@@ -8,7 +8,7 @@ AMagic_FireExplosion::AMagic_FireExplosion()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SetTargetMethod = ESetTargetMethod::Near;
-	mImpactRange = 400.f;
+	mImpactRange = 700.f;
 	Init("FireExplosion");
 }
 
@@ -26,8 +26,8 @@ void AMagic_FireExplosion::Tick(float DeltaTime)
 	{
 		if (IsValid(TargetActor)) {
 			Attack();
+			mTime = 0.f;
 		}
-		mTime = 0.f;
 	}
 }
 
@@ -41,7 +41,7 @@ void AMagic_FireExplosion::Attack()
 			UKismetMathLibrary::MakeTransform(
 				TargetActor->GetActorLocation(),
 				FRotator3d(0.0, 0.0, 0.0),
-				FVector3d(1.5, 1.5, 1.5)
+				FVector3d(5.f, 5.f, 5.f)
 			)
 		);
 

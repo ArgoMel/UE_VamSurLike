@@ -25,8 +25,8 @@ void AMagic_EarthImpact::Tick(float DeltaTime)
 	{
 		if (IsValid(TargetActor)) {
 			Attack();
+			mTime = 0.f;
 		}
-		mTime = 0.f;
 	}
 }
 

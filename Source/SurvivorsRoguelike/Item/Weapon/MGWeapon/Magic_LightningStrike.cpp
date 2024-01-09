@@ -27,8 +27,8 @@ void AMagic_LightningStrike::Tick(float DeltaTime)
 	{
 		if (!TargetMultiActor.IsEmpty()) {
 			Attack();
+			mTime = 0.f;
 		}
-		mTime = 0.f;
 	}
 }
 

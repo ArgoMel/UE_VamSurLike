@@ -4,8 +4,9 @@
 
 #include "../../../GameInfo.h"
 #include "Components/ActorComponent.h"
-#include "RelicBase.h"
+#include "../../Weapon/MGWeapon/MagicBase.h"
 #include "../../../Public/Character/BaseCharacter.h"
+#include "../../Weapon/MGWeapon/UseMGWeapon.h"
 #include "RelicInventory.generated.h"
 
 
@@ -18,12 +19,20 @@ public:
 	// Sets default values for this component's properties
 	URelicInventory();
 
+private :
+	TObjectPtr<ABaseCharacter> mPlayer;
+	FCharacterEnhanceRate mEnhanceRate;
+	ERelicTable mRelicTable;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<AMagicBase> mMagicClass;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EElement mElement;
+
 public :
-	void ActRelic(TSubclassOf<ARelicBase> RelicClass);
-	void Hello() {
-		GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red,
-			TEXT("¤±¤¤¤·"));
-	}
+	UFUNCTION(BlueprintCallable)
+	void ActRelic(ERelicTable AddedRelic);
 
 protected:
 	// Called when the game starts
@@ -31,7 +40,20 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, 
+		FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+private :
+	void LRAttackSpeedEnhance();
+	void LRAttackRangeEnhance();
+	void MGAttackSpeedEnhance();
+	void PenetratingEnhance();
+	void MLAttackSpeedEnhance();
+	void MLOffensePowerEnhance();
+	void DamageEnhance();
+	void RestoreHP();
+	void MaxHPEnhance();
+
+	void GetMagic();
+	void GetElementEnhance();
 };

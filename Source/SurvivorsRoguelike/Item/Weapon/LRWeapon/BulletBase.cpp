@@ -28,7 +28,7 @@ ABulletBase::ABulletBase()
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mMesh->bRenderCustomDepth = true;
-	mMesh->SetCustomDepthStencilValue(11);
+	
 	if (MESH.Succeeded())
 		mMesh->SetStaticMesh(MESH.Object);
 	
@@ -45,6 +45,30 @@ void ABulletBase::SetProjectileRot(const FVector& Vector)
 void ABulletBase::SetBulletStat(const FBulletStat& Stat)
 {
 	mBulletStat = Stat;
+
+	switch(Stat.Element)
+	{
+		case EElement::Fire :
+			mMesh->SetCustomDepthStencilValue(11);
+			break;
+
+		case EElement::Wind :
+			mMesh->SetCustomDepthStencilValue(15);
+			break;
+
+		case EElement::Ground:
+			mMesh->SetCustomDepthStencilValue(17);
+			break;
+
+		case EElement::Eletric:
+			mMesh->SetCustomDepthStencilValue(14);
+			break;
+
+		case EElement::Water:
+			mMesh->SetCustomDepthStencilValue(13);
+			break;
+	}
+	
 }
 
 // Called when the game starts or when spawned
