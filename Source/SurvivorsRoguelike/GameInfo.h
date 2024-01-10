@@ -261,6 +261,7 @@ enum class EItemRank : uint8
 UENUM(BlueprintType)
 enum class EItemType : uint8
 {
+	None,
 	MLWeapon,
 	LRWeapon,
 	MGWeapon,
@@ -327,196 +328,193 @@ enum class EMGWeaponType : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FBulletStat :
-	public FTableRowBase
+struct FBulletStat : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public :
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		OffensePower;
+	float		OffensePower = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		Penetrating;
+	float		Penetrating = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		Range;
+	float		Range = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	Damage;
+	float	Damage = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EElement	Element;
+	EElement	Element = EElement::None;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ACharacter>	Character;
+	TObjectPtr<ACharacter>	Character = nullptr;
 };
 
 USTRUCT(BlueprintType)
-struct FMLAttackStat :
-	public FTableRowBase
+struct FMLAttackStat : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		OffensePower;
+	float		OffensePower = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	Damage;
+	float	Damage = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EElement	Element;
+	EElement	Element = EElement::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FVector		CollisionScale;
+	FVector		CollisionScale = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FVector		CollisionLoc;
+	FVector		CollisionLoc = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UStaticMesh>	Mesh;
+	TObjectPtr<UStaticMesh>	Mesh = nullptr;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<ACharacter>	Character;
+	TObjectPtr<ACharacter>	Character = nullptr;
 };
 
 USTRUCT(BlueprintType)
-struct FMLWeaponData :
-	public FTableRowBase
+struct FMLWeaponData : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32		Num;
+	int32		Num = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EItemType	ItemType;
+	EItemType	ItemType = EItemType::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EMLWeaponType	WeaponType;
+	EMLWeaponType	WeaponType = EMLWeaponType::Sword;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EItemRank	Rank;
+	EItemRank	Rank = EItemRank::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UTexture2D*	Icon;
+	UTexture2D*	Icon = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		OffensePower;
+	float		OffensePower = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		AttackSpeed;
+	float		AttackSpeed = 0.f;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		Weight;
+	float		Weight = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FVector		CollisionScale;
+	FVector		CollisionScale = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FVector		CollisionLoc;
+	FVector		CollisionLoc = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UStaticMesh>		Mesh;
+	TObjectPtr<UStaticMesh>		Mesh = nullptr;
 };
 
 
 USTRUCT(BlueprintType)
-struct FLRWeaponData :
-	public FTableRowBase
+struct FLRWeaponData : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32		Num;
+	int32		Num = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EItemType	ItemType;
+	EItemType	ItemType = EItemType::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	ELRWeaponType	WeaponType;
+	ELRWeaponType	WeaponType = ELRWeaponType::Rifle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EItemRank	Rank;
+	EItemRank	Rank = EItemRank::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UTexture2D* Icon;
+	UTexture2D* Icon = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		OffensePower;
+	float		OffensePower = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		Penetrating;
+	float		Penetrating = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		AttackSpeed;
+	float		AttackSpeed = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		Range;
+	float		Range = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USkeletalMesh>		Mesh;
+	TObjectPtr<UAudioComponent> FireSound = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USkeletalMesh>	Mesh = nullptr;
 };
 
 USTRUCT(BlueprintType)
-struct FMGWeaponData :
-	public FTableRowBase
+struct FMGWeaponData : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32		Num;
+	int32		Num = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EItemType	ItemType;
+	EItemType	ItemType = EItemType::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EMGWeaponType	WeaponType;
+	EMGWeaponType	WeaponType = EMGWeaponType::MagicBook;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EItemRank	Rank;
+	EItemRank	Rank = EItemRank::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UTexture2D* Icon;
+	UTexture2D* Icon = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		SpellPower;
+	float		SpellPower = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float		AttackSpeed;
+	float		AttackSpeed = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	float		Range;
+	float		Range = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UStaticMesh>		Mesh;
+	TObjectPtr<UStaticMesh>		Mesh = nullptr;
 };
 
 USTRUCT(BlueprintType)
-struct FRelicData :
-	public FTableRowBase
+struct FRelicData : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UTexture2D* Icon;
+	UTexture2D* Icon  = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	ERelicType Type;
+	ERelicType Type = ERelicType::Enhance;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	ERelicTable AddedRelic;
+	ERelicTable AddedRelic = ERelicTable::GetMagic;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class AMagicBase> AddedMagic;
+	TSubclassOf<class AMagicBase> AddedMagic = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EElement AddedElement;
+	EElement AddedElement = EElement::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FText mName;
@@ -526,35 +524,34 @@ public:
 };
 
 USTRUCT(BlueprintType)
-struct FCharacterEnhanceRate :
-	public FTableRowBase
+struct FCharacterEnhanceRate : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float OffensePowerEnhanceRate;
+	float OffensePowerEnhanceRate = 0.f;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MLAttackSpeedEnhanceRate;
+	float MLAttackSpeedEnhanceRate = 0.f;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float PenetratingPowerEnhanceRate;
+	float PenetratingPowerEnhanceRate = 0.f;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float LRAttackSpeedEnhanceRate;
+	float LRAttackSpeedEnhanceRate = 0.f;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float SpellPowerEnhanceRate;
+	float SpellPowerEnhanceRate = 0.f;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float MGAttackSpeedEnhanceRate;
+	float MGAttackSpeedEnhanceRate = 0.f;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float DamageEnhanceRate;
+	float DamageEnhanceRate = 0.f;
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float LRRangeEnhanceRate;
+	float LRRangeEnhanceRate = 0.f;
 };
 
 UENUM(BlueprintType)
@@ -566,21 +563,20 @@ enum class ESetTargetMethod : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FMagicData :
-	public FTableRowBase
+struct FMagicData : public FTableRowBase
 {
 	GENERATED_USTRUCT_BODY()
 
 public:	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float DamageRate;
+	float DamageRate = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float AttackDelay;
+	float AttackDelay = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UParticleSystem> MagicParticle;
+	TObjectPtr<UParticleSystem> MagicParticle = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USoundBase> MagicSound;
+	TObjectPtr<USoundBase> MagicSound = nullptr;
 };
