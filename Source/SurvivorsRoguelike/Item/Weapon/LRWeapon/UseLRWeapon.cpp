@@ -16,6 +16,13 @@ UUseLRWeapon::UUseLRWeapon()
 	// ...
 
 	mWeaponClass = ALRWeaponBase::StaticClass();
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> LRWeaponData(TEXT(
+		"/Script/Engine.DataTable'/Game/00_Weapon/DataTable/LRWeaponData.LRWeaponData'"));
+	if (LRWeaponData.Succeeded())
+	{
+		mWeaponDataTable = LRWeaponData.Object;
+	}
 }
 
 
@@ -79,8 +86,6 @@ const FLRWeaponData* UUseLRWeapon::FindWeaponData(const FName& Name)
 void UUseLRWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	LoadWeaponData();
 }
 
 void UUseLRWeapon::TickComponent(float DeltaTime, ELevelTick TickType, 

@@ -12,8 +12,19 @@ AMagicBase::AMagicBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//kbj
+	mRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SetRootComponent(mRoot);
+	//kbj end
+
+
 	mParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle"));
 	mSound = CreateDefaultSubobject<UAudioComponent>(TEXT("Sound"));
+
+	//kbj
+	mParticle->SetupAttachment(mRoot);
+	mSound->SetupAttachment(mRoot);
+	//kbj end
 
 	mParticle->bAutoActivate = false;
 	mSound->bAutoActivate = false;

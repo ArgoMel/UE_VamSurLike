@@ -19,6 +19,11 @@ protected :
 	TObjectPtr<AActor> TargetActor;
 	TArray<TObjectPtr<AActor>> TargetMultiActor;
 
+	//kbj
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<USceneComponent> mRoot;
+	//kbj end
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UParticleSystemComponent> mParticle;
 
