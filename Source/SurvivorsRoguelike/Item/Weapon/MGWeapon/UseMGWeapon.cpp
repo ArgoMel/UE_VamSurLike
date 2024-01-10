@@ -21,6 +21,13 @@ UUseMGWeapon::UUseMGWeapon()
 	// ...
 	mWeaponClass = AMGWeaponBase::StaticClass();
 	mTime = 0.f;
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> MGWeaponData(TEXT(
+		"/Script/Engine.DataTable'/Game/00_Weapon/DataTable/MGWeaponData.MGWeaponData'"));
+	if (MGWeaponData.Succeeded())
+	{
+		mWeaponDataTable = MGWeaponData.Object;
+	}
 }
 
 void UUseMGWeapon::LoadWeaponData()
@@ -40,7 +47,10 @@ void UUseMGWeapon::ClearWeapon()
 void UUseMGWeapon::Init(const FString& Name)
 {
 	mName = FName(Name);
-
+	if (!IsValid(mWeaponDataTable))
+	{
+		LoadWeaponData();
+	}
 	if (IsValid(mWeaponDataTable))
 	{
 		const FMGWeaponData* Data = FindWeaponData(mName);
@@ -110,8 +120,6 @@ const FMGWeaponData* UUseMGWeapon::FindWeaponData(const FName& Name)
 void UUseMGWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-
-	LoadWeaponData();
 }
 
 

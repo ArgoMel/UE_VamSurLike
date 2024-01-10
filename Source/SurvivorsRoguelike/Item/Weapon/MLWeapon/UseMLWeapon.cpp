@@ -1,17 +1,20 @@
 #include "UseMLWeapon.h"
-#include "../../../Public/Character/BaseCharacter.h"
+#include "Character/BaseCharacter.h"
 
-// Sets default values for this component's properties
 TObjectPtr<UDataTable>	UUseMLWeapon::mWeaponDataTable;
 
 UUseMLWeapon::UUseMLWeapon()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
 	mWeaponClass = AMLWeaponBase::StaticClass();
-	// ...
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> MLWeaponData(TEXT(
+		"/Script/Engine.DataTable'/Game/00_Weapon/DataTable/MLWeaponData.MLWeaponData'"));
+	if (MLWeaponData.Succeeded())
+	{
+		mWeaponDataTable = MLWeaponData.Object;
+	}
 }
 
 void UUseMLWeapon::LoadWeaponData()
@@ -28,7 +31,6 @@ void UUseMLWeapon::ClearWeapon()
 
 void UUseMLWeapon::Init(const FString& Name)
 {
-
 	mName = FName(Name);
 
 	if (IsValid(mWeaponDataTable))
@@ -75,13 +77,9 @@ const FMLWeaponData* UUseMLWeapon::FindWeaponData(const FName& Name)
 	return mWeaponDataTable->FindRow<FMLWeaponData>(Name, TEXT(""));
 }
 
-
-// Called when the game starts
 void UUseMLWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-
-	LoadWeaponData();
 }
 
 // Called every frame
