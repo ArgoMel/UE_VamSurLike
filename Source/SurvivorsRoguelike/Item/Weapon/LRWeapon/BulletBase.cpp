@@ -60,7 +60,7 @@ void ABulletBase::SetBulletStat(const FBulletStat& Stat)
 			mMesh->SetCustomDepthStencilValue(17);
 			break;
 
-		case EElement::Eletric:
+		case EElement::Electric:
 			mMesh->SetCustomDepthStencilValue(14);
 			break;
 
@@ -112,7 +112,7 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 		StencilVal = 17;
 		break;
 
-	case EElement::Eletric:
+	case EElement::Electric:
 		StencilVal = 14;
 		break;
 

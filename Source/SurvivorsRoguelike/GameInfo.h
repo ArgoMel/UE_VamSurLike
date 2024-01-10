@@ -285,12 +285,22 @@ enum class ERelicTable : uint8
 	LRAttackSpeedEnhance,
 	LRAttackRangeEnhance,
 	MGAttackSpeedEnhance,
+	SpellPowerEnhance,
 	PenetratingEnhance,
 	MLAttackSpeedEnhance,
 	MLOffensePowerEnhance,
 	DamageEnhance,
 	RestoreHP,
-	MaxHPEnhance
+	MaxHPEnhance,
+	WlakSpeedEnhance,
+	AgileBodyMovement,
+	Poweroverwhelming,
+	ScopeAttachment,
+	KnowledgeIsPower,
+	FirearmUpgrade,
+	HealthAndMoreHealth,
+	ReadyToDie,
+	OverPreparation
 };
 
 UENUM(BlueprintType)
@@ -299,7 +309,7 @@ enum class EElement : uint8
 	None,
 	Fire,
 	Water,
-	Eletric,
+	Electric,
 	Wind,
 	Ground
 };
@@ -455,9 +465,6 @@ public:
 	float		Range = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USoundBase> FireSound = nullptr;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMesh>	Mesh = nullptr;
 };
 
@@ -555,6 +562,53 @@ public:
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float WalkSpeedEnhanceRate = 0.f;
+};
+
+
+USTRUCT(BlueprintType)
+struct FCharacterStat : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float OffensePower = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MLAttackSpeed = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float PenetratingPower = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float LRAttackSpeed = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float LROffensePower = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float Range = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float SpellPower = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MGAttackSpeed = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float Damage = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float WalkSpeed = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EElement Element = EElement::None;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float HP = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float MaxHP = 0.f;
 };
 
 UENUM(BlueprintType)

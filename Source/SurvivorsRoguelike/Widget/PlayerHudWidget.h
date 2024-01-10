@@ -21,5 +21,5 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void UpdateCharacterStat();
+	void UpdateCharacterStat(const FCharacterStat& Stat);
 };

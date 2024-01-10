@@ -54,6 +54,7 @@ private :
 	void DamageEnhance();
 	void RestoreHP();
 	void MaxHPEnhance();
+	void WalkSpeedEnhance();
 
 	void AgileBodyMovement();
 	void Poweroverwhelming();
@@ -62,6 +63,7 @@ private :
 	void FirearmUpgrade();
 	void HealthAndMoreHealth();
 	void ReadyToDie();
+	void OverPreparation();
 
 	void GetMagic();
 	void GetElementEnhance();

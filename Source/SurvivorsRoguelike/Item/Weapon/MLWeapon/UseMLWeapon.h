@@ -57,7 +57,6 @@ private:
 	EElement mElement = EElement::None;
 
 public:
-	static void LoadWeaponData();
 
 	void SetItemName(const FName& name)
 	{

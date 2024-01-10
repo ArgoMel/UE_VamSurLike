@@ -15,7 +15,9 @@ AMLWeaponBase::AMLWeaponBase()
 	static ConstructorHelpers::FObjectFinder<USoundBase> SOUND(
 		TEXT("/Script/Engine.SoundWave'/Game/SurvivorsTemplate/Demo/Sounds/Weapons/Hammer/A_Hammer_Swing01.A_Hammer_Swing01'"));
 	mAttackSound = CreateDefaultSubobject<UAudioComponent>(TEXT("AttackSound"));
-	mAttackSound->SetSound(SOUND.Object);
+
+	if(SOUND.Succeeded())
+		mAttackSound->SetSound(SOUND.Object);
 }
 
 AMLWeaponBase::~AMLWeaponBase()

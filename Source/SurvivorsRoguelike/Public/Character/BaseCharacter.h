@@ -27,16 +27,21 @@ private:
 	FTimerHandle mPercentDamageHandle;
 
 protected:
+	FCharacterEnhanceRate mEnhanceRate;
+	FCharacterStat mCharacterStat;
+
 	TObjectPtr<UUseMLWeapon> mUseMLWeapon;
 	TObjectPtr<UUseLRWeapon> mUseLRWeapon;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UUseMGWeapon> mUseMGWeapon;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<URelicInventory> mRelicInventory;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite ,meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPlayerHudWidget> mPlayerHubWidget;
 
-protected:
-	FCharacterEnhanceRate mEnhanceRate;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Character")
 	float MaxHealth;
@@ -50,41 +55,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FString mLRWeaponName;
 
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mOffensePower;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mMLAttackSpeed;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mPenetratingPower;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mLRAttackSpeed;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mSpellPower;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mMGAttackSpeed;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EElement mElement;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mDamage;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mRange;
-
-	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float mWalkSpeed;
-
-
 
 public:
 	UFUNCTION(BlueprintCallable)
 	void StartPercentDamage();
+
+	UFUNCTION(BlueprintCallable)
+	void InitStatWidget();
 
 	UFUNCTION(BlueprintCallable)
 	void SetWeaponActorComponent(const FString& MLWeaponName, 
@@ -99,48 +76,27 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetWalkSpeed(float Speed);
 
+
 	FString GetMLWeaponName() { return mMLWeaponName; }
 	FString GetLRWeaponName() { return mLRWeaponName; }
 	FString GetMGWeaponName() {	return mMGWeaponName; }
 
-	float GetOffensePower() { return mOffensePower; }
-	float GetMLAttackSpeed() { return mMLAttackSpeed; }
-	float GetPenetraitngPower() { return mPenetratingPower; }
-	float GetLRAttackSpeed() { return mLRAttackSpeed; }
-	float GetSpellPower() { return mSpellPower; }
-	float GetMGAttackSpeed() { return mMGAttackSpeed; }
-	EElement GetElement() { return mElement; }
-	float GetDamage() { return mDamage; }
 	TObjectPtr<UUseMLWeapon> GetMLWeaponComponent() { return mUseMLWeapon; }
 	TObjectPtr<UUseLRWeapon> GetLRWeaponComponent() { return mUseLRWeapon; }
 	TObjectPtr<UUseMGWeapon> GetMGWeaponComponent() { return mUseMGWeapon; }
 	TObjectPtr<URelicInventory> GetRelicInventory() { return mRelicInventory; }
 
-	FString GetElementName();
-
-	
-	void SetOffensePower(float OffensePower) { mOffensePower = OffensePower; }
-	void SetMLAttackSpeed(float MLAttackSpeed) { mMLAttackSpeed = MLAttackSpeed; }
-	void SetPenetraitngPower(float PenetraitngPower) { mPenetratingPower = PenetraitngPower; }
-	void SetLRAttackSpeed(float LRAttackSpeed) { mLRAttackSpeed = LRAttackSpeed; }
-	void SetSpellPower(float SpellPower) { mSpellPower = SpellPower; }
-	void SetMGAttackSpeed(float MGAttackSpeed) { mMGAttackSpeed = MGAttackSpeed; }
 	void SetElement(EElement Element);
-	void SetDamage(float Damage) { mDamage = mDamage; }
-	void SetPlayerHubWidget(TObjectPtr<UPlayerHudWidget> PlayerHubWidget) { mPlayerHubWidget = PlayerHubWidget; }
-
-	
-	void SetRelicInvent(URelicInventory* RelicInventory) { mRelicInventory = RelicInventory; }
 	void ChangeUseMLWeapon(FString MLWeaponName);
 	void ChangeUseLRWeapon(FString LRWeaponName);
 	void ChangeUseMGWeapon(FString MGWeaponName);
-
 	void ResetCharacterStat();
+	void SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate);
 
+	
 	FCharacterEnhanceRate& GetEnhanceRate()
 	{
 		return mEnhanceRate;
 	}
 
-	void SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate);
 };

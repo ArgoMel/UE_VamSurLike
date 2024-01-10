@@ -25,13 +25,6 @@ UUseLRWeapon::UUseLRWeapon()
 	}
 }
 
-
-void UUseLRWeapon::LoadWeaponData()
-{
-	mWeaponDataTable = LoadObject<UDataTable>(nullptr,
-		TEXT("/Script/Engine.DataTable'/Game/SurvivorsTemplate/Blueprints/DataTables/LRWeaponData.LRWeaponData'"));
-}
-
 void UUseLRWeapon::ClearWeapon()
 {
 }

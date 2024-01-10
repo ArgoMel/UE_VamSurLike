@@ -39,6 +39,9 @@ void URelicInventory::ActRelic(ERelicTable AddedRelic)
 	case ERelicTable::MGAttackSpeedEnhance:
 		MGAttackSpeedEnhance();
 		break;
+	case ERelicTable::SpellPowerEnhance:
+		SpellPowerEnhance();
+		break;
 	case ERelicTable::PenetratingEnhance:
 		PenetratingEnhance();
 		break;
@@ -57,11 +60,39 @@ void URelicInventory::ActRelic(ERelicTable AddedRelic)
 	case ERelicTable::MaxHPEnhance:
 		MaxHPEnhance();
 		break;
+	case ERelicTable::WlakSpeedEnhance:
+		WalkSpeedEnhance();
+		break;
+	case ERelicTable::AgileBodyMovement:
+		AgileBodyMovement();
+		break;
+	case ERelicTable::Poweroverwhelming:
+		Poweroverwhelming();
+		break;
+	case ERelicTable::ScopeAttachment:
+		ScopeAttachment();
+		break;
+	case ERelicTable::KnowledgeIsPower:
+		KnowledgeIsPower();
+		break;
+	case ERelicTable::FirearmUpgrade:
+		FirearmUpgrade();
+		break;
+	case ERelicTable::HealthAndMoreHealth:
+		HealthAndMoreHealth();
+		break;
+	case ERelicTable::ReadyToDie:
+		ReadyToDie();
+		break;
+	case ERelicTable::OverPreparation:
+		OverPreparation();
+		break;
 
 	default :
 		break;
 	}
 
+	mPlayer->SetEnhanceRate(mEnhanceRate);
 }
 
 // Called when the game starts
@@ -82,54 +113,115 @@ void URelicInventory::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void URelicInventory::LRAttackSpeedEnhance()
 {
-	mEnhanceRate.LRAttackSpeedEnhanceRate += 2.f;
-	mPlayer->SetEnhanceRate(mEnhanceRate);
+	mEnhanceRate.LRAttackSpeedEnhanceRate += 3.f;
 }
 
 void URelicInventory::LRAttackRangeEnhance()
 {
 	mEnhanceRate.LRRangeEnhanceRate += 3.f;
-	mPlayer->SetEnhanceRate(mEnhanceRate);
 }
 
 void URelicInventory::MGAttackSpeedEnhance()
 {
 	mEnhanceRate.MGAttackSpeedEnhanceRate += 2.f;
-	mPlayer->SetEnhanceRate(mEnhanceRate);
+}
+
+void URelicInventory::SpellPowerEnhance()
+{
+	mEnhanceRate.SpellPowerEnhanceRate += 2.f;
 }
 
 void URelicInventory::PenetratingEnhance()
 {
-	mEnhanceRate.PenetratingPowerEnhanceRate += 5.f;
-	mPlayer->SetEnhanceRate(mEnhanceRate);
+	mEnhanceRate.PenetratingPowerEnhanceRate += 7.f;
 }
 
 void URelicInventory::MLAttackSpeedEnhance()
 {
-	mEnhanceRate.MLAttackSpeedEnhanceRate += 2.f;
-	mPlayer->SetEnhanceRate(mEnhanceRate);
+	mEnhanceRate.MLAttackSpeedEnhanceRate += 3.f;
 }
 
 void URelicInventory::MLOffensePowerEnhance()
 {
-	mEnhanceRate.OffensePowerEnhanceRate += 2.f;
-	mPlayer->SetEnhanceRate(mEnhanceRate);
+	mEnhanceRate.OffensePowerEnhanceRate += 3.f;
 }
 
 void URelicInventory::DamageEnhance()
 {
 	mEnhanceRate.DamageEnhanceRate += 1.f;
-	mPlayer->SetEnhanceRate(mEnhanceRate);
 }
 
 void URelicInventory::RestoreHP()
 {
-	mPlayer->AddHP(100.f);
+	mPlayer->AddHP(80.f);
 }
 
 void URelicInventory::MaxHPEnhance()
 {
+	mPlayer->AddMaxHP(50.f);
+}
+
+void URelicInventory::WalkSpeedEnhance()
+{
+	mEnhanceRate.WalkSpeedEnhanceRate += 3.5f;
+}
+
+void URelicInventory::AgileBodyMovement()
+{
+	mEnhanceRate.WalkSpeedEnhanceRate += 2.f;
+	mEnhanceRate.MLAttackSpeedEnhanceRate += 1.f;
+	mEnhanceRate.LRAttackSpeedEnhanceRate += 1.f;
+}
+
+void URelicInventory::Poweroverwhelming()
+{
+	mEnhanceRate.OffensePowerEnhanceRate += 2.f;
+	mEnhanceRate.MLAttackSpeedEnhanceRate += 2.f;
+}
+
+void URelicInventory::ScopeAttachment()
+{
+	mEnhanceRate.LRRangeEnhanceRate += 2.f;
+	mEnhanceRate.PenetratingPowerEnhanceRate += 4.f;
+}
+
+void URelicInventory::KnowledgeIsPower()
+{
+	mEnhanceRate.SpellPowerEnhanceRate += 1.f;
+	mEnhanceRate.MGAttackSpeedEnhanceRate += 1.f;
+}
+
+void URelicInventory::FirearmUpgrade()
+{
+	mEnhanceRate.LRAttackSpeedEnhanceRate += 2.f;
+	mEnhanceRate.LRRangeEnhanceRate += 1.f;
+	mEnhanceRate.PenetratingPowerEnhanceRate += 2.f;
+}
+
+void URelicInventory::HealthAndMoreHealth()
+{
 	mPlayer->AddMaxHP(20.f);
+	mEnhanceRate.OffensePowerEnhanceRate += 1.f;
+	mEnhanceRate.MLAttackSpeedEnhanceRate += 1.f;
+}
+
+void URelicInventory::ReadyToDie()
+{
+	UGameplayStatics::ApplyDamage(
+		mPlayer,
+		70.f,
+		nullptr,
+		nullptr,
+		nullptr
+	);
+
+	mEnhanceRate.DamageEnhanceRate += 3.f;
+}
+
+void URelicInventory::OverPreparation()
+{
+	mEnhanceRate.WalkSpeedEnhanceRate -= 2.5f;
+	mEnhanceRate.DamageEnhanceRate += 2.f;
 }
 
 void URelicInventory::GetMagic()

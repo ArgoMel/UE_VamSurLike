@@ -17,12 +17,6 @@ UUseMLWeapon::UUseMLWeapon()
 	}
 }
 
-void UUseMLWeapon::LoadWeaponData()
-{
-	mWeaponDataTable = LoadObject<UDataTable>(nullptr,
-		TEXT("/Script/Engine.DataTable'/Game/SurvivorsTemplate/Blueprints/DataTables/MLWeaponData.MLWeaponData'"));
-}
-
 
 void UUseMLWeapon::ClearWeapon()
 {

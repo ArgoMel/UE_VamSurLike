@@ -51,7 +51,6 @@ private:
 
 
 public:
-	static void LoadWeaponData();
 
 	void SetItemName(const FName& name)
 	{

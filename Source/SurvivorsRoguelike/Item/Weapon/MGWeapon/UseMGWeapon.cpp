@@ -30,12 +30,6 @@ UUseMGWeapon::UUseMGWeapon()
 	}
 }
 
-void UUseMGWeapon::LoadWeaponData()
-{
-	mWeaponDataTable = LoadObject<UDataTable>(nullptr,
-		TEXT("/Script/Engine.DataTable'/Game/SurvivorsTemplate/Blueprints/DataTables/MGWeaponData.MGWeaponData'"));
-}
-
 void UUseMGWeapon::Attack()
 {
 }
@@ -47,10 +41,7 @@ void UUseMGWeapon::ClearWeapon()
 void UUseMGWeapon::Init(const FString& Name)
 {
 	mName = FName(Name);
-	if (!IsValid(mWeaponDataTable))
-	{
-		LoadWeaponData();
-	}
+
 	if (IsValid(mWeaponDataTable))
 	{
 		const FMGWeaponData* Data = FindWeaponData(mName);

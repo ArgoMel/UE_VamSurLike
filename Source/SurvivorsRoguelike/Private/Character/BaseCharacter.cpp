@@ -21,8 +21,6 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	Cast<AInGamePlayerController>(GetController())->SetBaseCharacter(this);
-
-	mPlayerHubWidget->UpdateCharacterStat();
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
@@ -46,26 +44,6 @@ void ABaseCharacter::StartPercentDamage()
 	TakeDamage(MaxHealth*0.1f, dmgEvent, GetController(),this);
 }
 
-FString ABaseCharacter::GetElementName()
-{
-	switch (mElement)
-	{
-	case EElement::None:
-		return TEXT("None");
-	case EElement::Fire:
-		return TEXT("Fire");
-	case EElement::Water:
-		return TEXT("Water");
-	case EElement::Eletric:
-		return TEXT("Eletric");
-	case EElement::Wind:
-		return TEXT("Wind");
-	case EElement::Ground:
-		return TEXT("Ground");
-	}
-	
-	return TEXT("ERROR");
-}
 
 void ABaseCharacter::SetWeaponActorComponent(const FString& MLWeaponName, 
 	const FString& LRWeaponName, const FString& MGWeaponName)
@@ -78,67 +56,80 @@ void ABaseCharacter::SetWeaponActorComponent(const FString& MLWeaponName,
 	mUseLRWeapon->Init(mLRWeaponName);
 	mUseMGWeapon->Init(mMGWeaponName);
 
-	mOffensePower = mUseMLWeapon->GetOffensePower();
-	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
-	mPenetratingPower = mUseLRWeapon->GetPenetrating();
-	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
-	mRange = mUseLRWeapon->GetRange();
-	mSpellPower = mUseMGWeapon->GetSpellPower();
-	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
-	mElement = EElement::None;
-	mDamage = 1;
-	mWalkSpeed = 600.f;
-	
+	mCharacterStat.OffensePower = mUseMLWeapon->GetOffensePower();
+	mCharacterStat.MLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
+	mCharacterStat.PenetratingPower = mUseLRWeapon->GetPenetrating();
+	mCharacterStat.LRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
+	mCharacterStat.LROffensePower = mUseLRWeapon->GetOffensePower();
+	mCharacterStat.Range = mUseLRWeapon->GetRange();
+	mCharacterStat.SpellPower = mUseMGWeapon->GetSpellPower();
+	mCharacterStat.MGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
+	mCharacterStat.Element = EElement::None;
+	mCharacterStat.Damage = 1;
+	mCharacterStat.WalkSpeed = 600.f;
+	mCharacterStat.HP = 100.f;
+	mCharacterStat.MaxHP = 100.f;
+
+
+	InitStatWidget();
 }
 
 void ABaseCharacter::SetElement(EElement Element)
 {
-	mElement = Element;
+	mCharacterStat.Element = Element;
 
 	mUseLRWeapon->GetWeapon()->SetElement(Element);
 	mUseMLWeapon->GetWeapon()->SetElement(Element);
+
+	if (mPlayerHubWidget)
+		mPlayerHubWidget->UpdateCharacterStat(mCharacterStat);
 }
 
 void ABaseCharacter::ChangeUseMLWeapon(FString MLWeaponName)
 {
 	mMLWeaponName = MLWeaponName;
 	mUseMLWeapon->Init(mMLWeaponName);
-	mOffensePower = mUseMLWeapon->GetOffensePower();
-	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
+	mCharacterStat.OffensePower = mUseMLWeapon->GetOffensePower();
+	mCharacterStat.MLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
 }
 
 void ABaseCharacter::ChangeUseLRWeapon(FString LRWeaponName)
 {
 	mLRWeaponName = LRWeaponName;
 	mUseLRWeapon->Init(mLRWeaponName);
-	mPenetratingPower = mUseLRWeapon->GetPenetrating();
-	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
-	mRange = mUseLRWeapon->GetRange();
+	mCharacterStat.PenetratingPower = mUseLRWeapon->GetPenetrating();
+	mCharacterStat.LRAttackSpeed = mUseLRWeapon->GetAttackSpeed();
+	mCharacterStat.Range = mUseLRWeapon->GetRange();
 }
 
 void ABaseCharacter::ChangeUseMGWeapon(FString MGWeaponName)
 {
 	mMGWeaponName = MGWeaponName;
 	mUseMGWeapon->Init(mMGWeaponName);
-	mSpellPower = mUseMGWeapon->GetSpellPower();
-	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
+	mCharacterStat.SpellPower = mUseMGWeapon->GetSpellPower();
+	mCharacterStat.MGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 }
 
 void ABaseCharacter::ResetCharacterStat()
 {
-	mOffensePower = mUseMLWeapon->GetOffensePower() * (1 + 0.1f * mEnhanceRate.OffensePowerEnhanceRate);
-	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.MLAttackSpeedEnhanceRate);
-	mPenetratingPower = mUseLRWeapon->GetPenetrating() * (1 + 0.1f * mEnhanceRate.PenetratingPowerEnhanceRate);
-	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.LRAttackSpeedEnhanceRate);
-	mSpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mEnhanceRate.SpellPowerEnhanceRate);
-	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.MGAttackSpeedEnhanceRate);
-	mRange = mUseLRWeapon->GetRange() * (1 + 0.1f * mEnhanceRate.LRRangeEnhanceRate);
-	mDamage = 1 + 0.1f * mEnhanceRate.DamageEnhanceRate;
-	mWalkSpeed = 600 * (1 + mEnhanceRate.WalkSpeedEnhanceRate);
+	mCharacterStat.OffensePower = mUseMLWeapon->GetOffensePower() * (1 + 0.1f * mEnhanceRate.OffensePowerEnhanceRate);
+	mCharacterStat.MLAttackSpeed = mUseMLWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.MLAttackSpeedEnhanceRate);
+	mCharacterStat.PenetratingPower = mUseLRWeapon->GetPenetrating() * (1 + 0.1f * mEnhanceRate.PenetratingPowerEnhanceRate);
+	mCharacterStat.LRAttackSpeed = mUseLRWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.LRAttackSpeedEnhanceRate);
+	mCharacterStat.SpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mEnhanceRate.SpellPowerEnhanceRate);
+	mCharacterStat.MGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.MGAttackSpeedEnhanceRate);
+	mCharacterStat.Range = mUseLRWeapon->GetRange() * (1 + 0.1f * mEnhanceRate.LRRangeEnhanceRate);
+	mCharacterStat.Damage = 1 + 0.1f * mEnhanceRate.DamageEnhanceRate;
+	mCharacterStat.WalkSpeed = 600 * (1 + 0.1f * mEnhanceRate.WalkSpeedEnhanceRate);
+	SetWalkSpeed(mCharacterStat.WalkSpeed);
 
-	mUseMLWeapon->GetWeapon()->SetMLWeaponStat(mOffensePower, mMLAttackSpeed, mDamage);
-	mUseMGWeapon->GetWeapon()->SetMGWeaponStat(mSpellPower, mMGAttackSpeed, mDamage);
-	mUseLRWeapon->GetWeapon()->SetLRWeaponStat(mPenetratingPower, mLRAttackSpeed, mRange, mDamage);
+	if (!mUseMLWeapon || !mUseLRWeapon || !mUseMGWeapon)
+		return;
+	mUseMLWeapon->GetWeapon()->SetMLWeaponStat(mCharacterStat.OffensePower, mCharacterStat.MLAttackSpeed, mCharacterStat.Damage);
+	mUseMGWeapon->GetWeapon()->SetMGWeaponStat(mCharacterStat.SpellPower, mCharacterStat.MGAttackSpeed, mCharacterStat.Damage);
+	mUseLRWeapon->GetWeapon()->SetLRWeaponStat(mCharacterStat.PenetratingPower, mCharacterStat.LRAttackSpeed, mCharacterStat.Range, mCharacterStat.Damage);
+
+	
 }
  
 void ABaseCharacter::SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate)
@@ -146,6 +137,14 @@ void ABaseCharacter::SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate)
 	mEnhanceRate = EnhanceRate;
 
 	ResetCharacterStat();
-	mPlayerHubWidget->UpdateCharacterStat();
+
+	if (mPlayerHubWidget)
+		mPlayerHubWidget->UpdateCharacterStat(mCharacterStat);
+}
+
+void ABaseCharacter::InitStatWidget()
+{
+	if (mPlayerHubWidget)
+		mPlayerHubWidget->UpdateCharacterStat(mCharacterStat);
 }
 
