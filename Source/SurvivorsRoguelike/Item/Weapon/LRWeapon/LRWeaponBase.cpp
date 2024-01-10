@@ -10,6 +10,7 @@ ALRWeaponBase::ALRWeaponBase()
 	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mMesh->bRenderCustomDepth = true;
+	SetRootComponent(mMesh);
 
 	mBulletClass = ABulletBase::StaticClass();
 }
