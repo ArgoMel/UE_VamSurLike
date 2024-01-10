@@ -53,8 +53,6 @@ private:
 
 
 public:
-	static void LoadWeaponData();
-
 	void SetItemName(const FName& name)
 	{
 		mName = name;
@@ -88,6 +86,7 @@ public:
 	float GetPenetrating() { return mPenetrating; }
 	float GetAttackSpeed() { return mAttackSpeed; }
 	float GetRange() { return mRange; }
+	float GetOffensePower() { return mOffensePower; }
 
 protected:
 	static const FLRWeaponData* FindWeaponData(const FName& Name);

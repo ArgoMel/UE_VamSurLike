@@ -11,6 +11,13 @@ AMLWeaponBase::AMLWeaponBase()
 	SetRootComponent(mRoot);
 
 	mWeaponClass = AMLAttackBase::StaticClass();
+
+	static ConstructorHelpers::FObjectFinder<USoundBase> SOUND(
+		TEXT("/Script/Engine.SoundWave'/Game/SurvivorsTemplate/Demo/Sounds/Weapons/Hammer/A_Hammer_Swing01.A_Hammer_Swing01'"));
+	mAttackSound = CreateDefaultSubobject<UAudioComponent>(TEXT("AttackSound"));
+
+	if(SOUND.Succeeded())
+		mAttackSound->SetSound(SOUND.Object);
 }
 
 AMLWeaponBase::~AMLWeaponBase()
@@ -72,6 +79,8 @@ void AMLWeaponBase::Attack()
 		mWeapon->AttachToComponent(GetRootComponent(), AttachRule);
 		mWeapon->SetActorRelativeLocation(FVector(-40.f, 0.f, -0.f));
 		mWeapon->SetActorRelativeRotation(FRotator(0.f, 0.f, 90.f));
+
+		mAttackSound->Play();
 	}
 }
 

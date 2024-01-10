@@ -3,28 +3,20 @@
 
 #include "PlayerHudWidget.h"
 #include "CharacterStatWidget.h"
-#include "../Public/Character/BaseCharacter.h"
 
 void UPlayerHudWidget::NativeConstruct()
 {
 	mCharacterStat = Cast<UCharacterStatWidget>(GetWidgetFromName(TEXT("WB_CharacterStat")));
 }
 
-void UPlayerHudWidget::UpdateCharacterStat()
+void UPlayerHudWidget::UpdateCharacterStat(const FCharacterStat& Stat)
 {
-	ABaseCharacter* BaseCharacter =
-		Cast<ABaseCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
-	if (IsValid(BaseCharacter))
+	if (!mCharacterStat)
 	{
-		BaseCharacter->SetPlayerHubWidget(this);
-		mCharacterStat->SetMLText(BaseCharacter->GetOffensePower());
-		mCharacterStat->SetMLSpeedText(BaseCharacter->GetMLAttackSpeed());
-		mCharacterStat->SetLRPenetratingText(BaseCharacter->GetPenetraitngPower());
-		mCharacterStat->SetLRSpeedText(BaseCharacter->GetLRAttackSpeed());
-		mCharacterStat->SetMGText(BaseCharacter->GetSpellPower());
-		mCharacterStat->SetMGSpeedText(BaseCharacter->GetMGAttackSpeed());
-		mCharacterStat->SetElementText(BaseCharacter->GetElementName());
-		mCharacterStat->SetDamageText(BaseCharacter->GetDamage());
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green,
+			FString::Printf(TEXT("CantFindCharacterStatWidget")));
+		return;
 	}
+
+	mCharacterStat->SetWidgetInfo(Stat);
 }

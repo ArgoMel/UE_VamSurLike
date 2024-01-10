@@ -47,12 +47,23 @@ private :
 	void LRAttackSpeedEnhance();
 	void LRAttackRangeEnhance();
 	void MGAttackSpeedEnhance();
+	void SpellPowerEnhance();
 	void PenetratingEnhance();
 	void MLAttackSpeedEnhance();
 	void MLOffensePowerEnhance();
 	void DamageEnhance();
 	void RestoreHP();
 	void MaxHPEnhance();
+	void WalkSpeedEnhance();
+
+	void AgileBodyMovement();
+	void Poweroverwhelming();
+	void ScopeAttachment();
+	void KnowledgeIsPower();
+	void FirearmUpgrade();
+	void HealthAndMoreHealth();
+	void ReadyToDie();
+	void OverPreparation();
 
 	void GetMagic();
 	void GetElementEnhance();

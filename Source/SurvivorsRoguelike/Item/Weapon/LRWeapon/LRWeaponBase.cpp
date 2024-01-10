@@ -12,6 +12,13 @@ ALRWeaponBase::ALRWeaponBase()
 	mMesh->bRenderCustomDepth = true;
 	SetRootComponent(mMesh);
 
+	static ConstructorHelpers::FObjectFinder<USoundBase> SOUND(
+		TEXT("/Script/Engine.SoundWave'/Game/LRWeaponSound/RifleB_Fire_End_ST01.RifleB_Fire_End_ST01'"));
+
+	mAttackSound = CreateDefaultSubobject<UAudioComponent>(TEXT("AttackSound"));
+	if(SOUND.Succeeded())
+		mAttackSound->SetSound(SOUND.Object);
+
 	mBulletClass = ABulletBase::StaticClass();
 }
 
@@ -48,6 +55,7 @@ void ALRWeaponBase::Fire()
 
 	mBullet->SetProjectileRot(GetActorRightVector());
 	mBullet->SetBulletStat(mBulletStat);
+	//mAttackSound->Play();
 }
 
 void ALRWeaponBase::SetElement(EElement Element)
@@ -68,7 +76,7 @@ void ALRWeaponBase::SetElement(EElement Element)
 		mMesh->SetCustomDepthStencilValue(17);
 		break;
 
-	case EElement::Eletric:
+	case EElement::Electric:
 		mMesh->SetCustomDepthStencilValue(14);
 		break;
 

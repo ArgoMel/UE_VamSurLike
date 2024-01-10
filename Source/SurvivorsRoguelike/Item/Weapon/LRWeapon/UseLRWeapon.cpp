@@ -25,13 +25,6 @@ UUseLRWeapon::UUseLRWeapon()
 	}
 }
 
-
-void UUseLRWeapon::LoadWeaponData()
-{
-	mWeaponDataTable = LoadObject<UDataTable>(nullptr,
-		TEXT("/Script/Engine.DataTable'/Game/00_Weapon/DataTable/LRWeaponData.LRWeaponData'"));
-}
-
 void UUseLRWeapon::ClearWeapon()
 {
 }

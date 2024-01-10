@@ -27,12 +27,6 @@ protected:
 	TObjectPtr<UTextBlock> mDamageText;
 
 public:
-	void SetMLText(float val);
-	void SetMLSpeedText(float val);
-	void SetLRPenetratingText(float val);
-	void SetLRSpeedText(float val);
-	void SetMGText(float val);
-	void SetMGSpeedText(float val);
-	void SetElementText(FString str);
-	void SetDamageText(float val);
+	void SetWidgetInfo(const FCharacterStat& Stat);
+
 };

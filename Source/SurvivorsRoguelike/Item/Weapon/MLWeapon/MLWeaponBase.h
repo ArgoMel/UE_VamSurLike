@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> mRoot;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAudioComponent> mAttackSound;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float		mOffensePower;
 

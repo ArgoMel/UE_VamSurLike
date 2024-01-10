@@ -16,44 +16,42 @@ void UCharacterStatWidget::NativeConstruct()
 	mDamageText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_Damage")));
 }
 
-void UCharacterStatWidget::SetMLText(float val)
+void UCharacterStatWidget::SetWidgetInfo(const FCharacterStat& Stat)
 {
-	mMLText->SetText(FText::FromString(FString::SanitizeFloat(val)));
+	FString ElementType;
+	switch (Stat.Element)
+	{
+	case EElement::Fire:
+		ElementType = "Fire";
+		break;
+
+	case EElement::Wind:
+		ElementType = "Wind";
+		break;
+
+	case EElement::Ground:
+		ElementType = "Ground";
+		break;
+
+	case EElement::Electric:
+		ElementType = "Electric";
+		break;
+
+	case EElement::Water:
+		ElementType = "Water";
+		break;
+
+	default:
+		ElementType = "None";
+		break;
+	}
+
+	mMLText->SetText(FText::FromString(FString::SanitizeFloat(Stat.OffensePower)));
+	mMLSpeedText->SetText(FText::FromString(FString::SanitizeFloat(Stat.MLAttackSpeed)));
+	mLRPenetratingText->SetText(FText::FromString(FString::SanitizeFloat(Stat.PenetratingPower)));
+	mLRSpeedText->SetText(FText::FromString(FString::SanitizeFloat(Stat.LRAttackSpeed)));
+	mMGText->SetText(FText::FromString(FString::SanitizeFloat(Stat.SpellPower)));
+	mMGSpeedText->SetText(FText::FromString(FString::SanitizeFloat(Stat.MGAttackSpeed)));
+	mElementText->SetText(FText::FromString(ElementType));
+	mDamageText->SetText(FText::FromString(FString::SanitizeFloat(Stat.Damage)));
 }
-
-void UCharacterStatWidget::SetMLSpeedText(float val)
-{
-	mMLSpeedText->SetText(FText::FromString(FString::SanitizeFloat(val)));
-}
-
-void UCharacterStatWidget::SetLRPenetratingText(float val)
-{
-	mLRPenetratingText->SetText(FText::FromString(FString::SanitizeFloat(val)));
-}
-
-void UCharacterStatWidget::SetLRSpeedText(float val)
-{
-	mLRSpeedText->SetText(FText::FromString(FString::SanitizeFloat(val)));
-}
-
-void UCharacterStatWidget::SetMGText(float val)
-{
-	mMGText->SetText(FText::FromString(FString::SanitizeFloat(val)));
-}
-
-void UCharacterStatWidget::SetMGSpeedText(float val)
-{
-	mMGSpeedText->SetText(FText::FromString(FString::SanitizeFloat(val)));
-}
-
-void UCharacterStatWidget::SetElementText(FString str)
-{
-	mElementText->SetText(FText::FromString(str));
-}
-
-void UCharacterStatWidget::SetDamageText(float val)
-{
-	mDamageText->SetText(FText::FromString(FString::SanitizeFloat(val)));
-}
-
-

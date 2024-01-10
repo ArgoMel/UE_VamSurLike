@@ -16,15 +16,16 @@ public:
 	// Sets default values for this actor's properties
 	AMLAttackBase();
 
-public :
+private :
 	FMLAttackStat mAttackStat;
 	float mTime = 0.f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UBoxComponent> mCollision;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UStaticMeshComponent>	mMesh;
+
 
 
 public :
