@@ -78,14 +78,6 @@ void ABaseCharacter::SetWeaponActorComponent(const FString& MLWeaponName,
 	mUseLRWeapon->Init(mLRWeaponName);
 	mUseMGWeapon->Init(mMGWeaponName);
 
-	mEnhanceRate.OffensePowerEnhanceRate = 0;
-	mEnhanceRate.MLAttackSpeedEnhanceRate = 0;
-	mEnhanceRate.PenetratingPowerEnhanceRate = 0;
-	mEnhanceRate.LRAttackSpeedEnhanceRate = 0;
-	mEnhanceRate.SpellPowerEnhanceRate = 0;
-	mEnhanceRate.MGAttackSpeedEnhanceRate = 0;
-	mEnhanceRate.DamageEnhanceRate = 0;
-
 	mOffensePower = mUseMLWeapon->GetOffensePower();
 	mMLAttackSpeed = mUseMLWeapon->GetAttackSpeed();
 	mPenetratingPower = mUseLRWeapon->GetPenetrating();
@@ -95,7 +87,7 @@ void ABaseCharacter::SetWeaponActorComponent(const FString& MLWeaponName,
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed();
 	mElement = EElement::None;
 	mDamage = 1;
-
+	mWalkSpeed = 600.f;
 	
 }
 
@@ -140,8 +132,9 @@ void ABaseCharacter::ResetCharacterStat()
 	mLRAttackSpeed = mUseLRWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.LRAttackSpeedEnhanceRate);
 	mSpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mEnhanceRate.SpellPowerEnhanceRate);
 	mMGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.MGAttackSpeedEnhanceRate);
-	mDamage = 1 + 0.1f * mEnhanceRate.DamageEnhanceRate;
 	mRange = mUseLRWeapon->GetRange() * (1 + 0.1f * mEnhanceRate.LRRangeEnhanceRate);
+	mDamage = 1 + 0.1f * mEnhanceRate.DamageEnhanceRate;
+	mWalkSpeed = 600 * (1 + mEnhanceRate.WalkSpeedEnhanceRate);
 
 	mUseMLWeapon->GetWeapon()->SetMLWeaponStat(mOffensePower, mMLAttackSpeed, mDamage);
 	mUseMGWeapon->GetWeapon()->SetMGWeaponStat(mSpellPower, mMGAttackSpeed, mDamage);
@@ -150,14 +143,7 @@ void ABaseCharacter::ResetCharacterStat()
  
 void ABaseCharacter::SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate)
 {
-	mEnhanceRate.OffensePowerEnhanceRate += EnhanceRate.OffensePowerEnhanceRate;
-	mEnhanceRate.MLAttackSpeedEnhanceRate += EnhanceRate.MLAttackSpeedEnhanceRate;
-	mEnhanceRate.PenetratingPowerEnhanceRate += EnhanceRate.PenetratingPowerEnhanceRate;
-	mEnhanceRate.LRAttackSpeedEnhanceRate += EnhanceRate.LRAttackSpeedEnhanceRate;
-	mEnhanceRate.SpellPowerEnhanceRate+= EnhanceRate.SpellPowerEnhanceRate;
-	mEnhanceRate.MGAttackSpeedEnhanceRate += EnhanceRate.MGAttackSpeedEnhanceRate;
-	mEnhanceRate.DamageEnhanceRate += EnhanceRate.DamageEnhanceRate;
-	mEnhanceRate.LRRangeEnhanceRate += EnhanceRate.LRRangeEnhanceRate;
+	mEnhanceRate = EnhanceRate;
 
 	ResetCharacterStat();
 	mPlayerHubWidget->UpdateCharacterStat();

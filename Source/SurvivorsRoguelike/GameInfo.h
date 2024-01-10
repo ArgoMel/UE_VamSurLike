@@ -455,7 +455,7 @@ public:
 	float		Range = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UAudioComponent> FireSound = nullptr;
+	TObjectPtr<USoundBase> FireSound = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMesh>	Mesh = nullptr;
@@ -552,6 +552,9 @@ public:
 
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float LRRangeEnhanceRate = 0.f;
+
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float WalkSpeedEnhanceRate = 0.f;
 };
 
 UENUM(BlueprintType)

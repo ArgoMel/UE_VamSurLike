@@ -96,7 +96,7 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	int32 StencilVal;
+	int32 StencilVal = 0;
 
 	switch (mBulletStat.Element)
 	{

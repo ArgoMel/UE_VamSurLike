@@ -26,7 +26,7 @@ UUseMGWeapon::UUseMGWeapon()
 void UUseMGWeapon::LoadWeaponData()
 {
 	mWeaponDataTable = LoadObject<UDataTable>(nullptr,
-		TEXT("/Script/Engine.DataTable'/Game/00_Weapon/DataTable/MGWeaponData.MGWeaponData'"));
+		TEXT("/Script/Engine.DataTable'/Game/SurvivorsTemplate/Blueprints/DataTables/MGWeaponData.MGWeaponData'"));
 }
 
 void UUseMGWeapon::Attack()

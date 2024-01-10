@@ -77,7 +77,8 @@ protected:
 	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float mRange;
 
-
+	UPROPERTY(Category = "Character Stat", VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	float mWalkSpeed;
 
 
 
@@ -94,6 +95,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void AddHP(float HP);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetWalkSpeed(float Speed);
 
 	FString GetMLWeaponName() { return mMLWeaponName; }
 	FString GetLRWeaponName() { return mLRWeaponName; }

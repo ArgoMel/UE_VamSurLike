@@ -62,7 +62,7 @@ void AMagicBase::SetTarget(const TArray<TObjectPtr<AActor>>& TargetEnemy)
 void AMagicBase::LoadMagicData()
 {
 	mMagicDataTable = LoadObject<UDataTable>(nullptr,
-		TEXT("/Script/Engine.DataTable'/Game/00_Weapon/DataTable/MagicData.MagicData'"));
+		TEXT("/Script/Engine.DataTable'/Game/SurvivorsTemplate/Blueprints/DataTables/MagicData.MagicData'"));
 }
 
 void AMagicBase::Init(const FString& Name)

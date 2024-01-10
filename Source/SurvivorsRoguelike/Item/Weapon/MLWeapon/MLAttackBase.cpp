@@ -90,7 +90,7 @@ void AMLAttackBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 
-	int32 StencilVal;
+	int32 StencilVal = 0;
 
 	switch (mAttackStat.Element)
 	{

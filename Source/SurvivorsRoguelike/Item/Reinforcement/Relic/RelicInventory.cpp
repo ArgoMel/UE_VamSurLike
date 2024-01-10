@@ -124,7 +124,7 @@ void URelicInventory::DamageEnhance()
 
 void URelicInventory::RestoreHP()
 {
-	mPlayer->AddHP(30.f);
+	mPlayer->AddHP(100.f);
 }
 
 void URelicInventory::MaxHPEnhance()
@@ -145,5 +145,6 @@ void URelicInventory::GetElementEnhance()
 
 	mPlayer->SetElement(mElement);
 }
+
 
 
