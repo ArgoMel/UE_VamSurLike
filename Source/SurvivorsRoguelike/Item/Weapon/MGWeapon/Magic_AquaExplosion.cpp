@@ -32,6 +32,12 @@ void AMagic_AquaExplosion::Tick(float DeltaTime)
 
 void AMagic_AquaExplosion::Attack()
 {
+	UGameplayStatics::PlaySound2D(
+		GetWorld(),
+		mSound->GetSound(),
+		0.07f
+	);
+	
 	for (int i = 0; i < TargetMultiActor.Num(); i++)
 	{
 		
@@ -49,12 +55,6 @@ void AMagic_AquaExplosion::Attack()
 					FRotator3d(0.0, 0.0, 0.0),
 					FVector3d(0.5, 0.5, 1.0)
 				)
-			);
-
-			UGameplayStatics::PlaySound2D(
-				GetWorld(),
-				mSound->GetSound(),
-				0.07f
 			);
 
 			UGameplayStatics::ApplyDamage(
