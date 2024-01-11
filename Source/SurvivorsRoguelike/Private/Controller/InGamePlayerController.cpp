@@ -55,7 +55,7 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 
 	FHitResult Hit;
 	if (!GetWorld()->LineTraceSingleByChannel(Hit, CursorLoc, CursorLoc + CursorDir * 5000.f,
-		ECollisionChannel::ECC_Visibility)) {
+		ECollisionChannel::ECC_GameTraceChannel14)) {
 		return;
 	}
 

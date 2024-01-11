@@ -32,6 +32,12 @@ void AMagic_EarthImpact::Tick(float DeltaTime)
 
 void AMagic_EarthImpact::Attack()
 {
+	UGameplayStatics::PlaySound2D(
+		GetWorld(),
+		mSound->GetSound(),
+		0.3f
+	);
+	
 	if (IsValid(TargetActor))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(
@@ -49,12 +55,6 @@ void AMagic_EarthImpact::Attack()
 					0.0
 				)
 			)
-		);
-
-		UGameplayStatics::PlaySound2D(
-			GetWorld(),
-			mSound->GetSound(),
-			0.3f
 		);
 
 		UGameplayStatics::ApplyDamage(

@@ -35,6 +35,12 @@ void AMagic_WindExplosion::Tick(float DeltaTime)
 
 void AMagic_WindExplosion::Attack()
 {
+	UGameplayStatics::PlaySound2D(
+		GetWorld(),
+		mSound->GetSound(),
+		0.05f
+	);
+	
 	for (int i = 0; i < TargetMultiActor.Num(); i++)
 	{
 		if (IsValid(TargetMultiActor[i]))
@@ -51,12 +57,6 @@ void AMagic_WindExplosion::Attack()
 					FRotator3d(0.0, 0.0, 0.0),
 					FVector3d(4.0, 4.0, 1.0)
 				)
-			);
-
-			UGameplayStatics::PlaySound2D(
-				GetWorld(),
-				mSound->GetSound(),
-				0.05f
 			);
 
 			Cast<AMonsterDamage>(TargetMultiActor[i])->WindKnockback();
