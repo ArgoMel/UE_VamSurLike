@@ -2,7 +2,7 @@
 
 
 #include "Magic_WindExplosion.h"
-#include "../../../Public/AI/MonsterDamage.h"
+
 
 AMagic_WindExplosion::AMagic_WindExplosion()
 {

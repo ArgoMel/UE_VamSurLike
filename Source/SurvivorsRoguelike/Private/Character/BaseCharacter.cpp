@@ -139,6 +139,7 @@ void ABaseCharacter::SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate)
 
 	ResetCharacterStat();
 
+
 }
 
 void ABaseCharacter::InitStatWidget()

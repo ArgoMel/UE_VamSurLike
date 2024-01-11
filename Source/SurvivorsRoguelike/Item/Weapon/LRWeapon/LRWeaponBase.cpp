@@ -17,7 +17,7 @@ ALRWeaponBase::ALRWeaponBase()
 
 	mAttackSound = CreateDefaultSubobject<UAudioComponent>(TEXT("AttackSound"));
 	if(SOUND.Succeeded())
-		mAttackSound->SetSound(SOUND.Object);
+		//mAttackSound->SetSound(SOUND.Object);
 
 	mBulletClass = ABulletBase::StaticClass();
 }
