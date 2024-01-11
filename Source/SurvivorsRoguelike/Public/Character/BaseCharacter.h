@@ -28,6 +28,8 @@ private:
 
 protected:
 	FCharacterEnhanceRate mEnhanceRate;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FCharacterStat mCharacterStat;
 
 	TObjectPtr<UUseMLWeapon> mUseMLWeapon;
@@ -67,6 +69,9 @@ public:
 	void SetWeaponActorComponent(const FString& MLWeaponName, 
 		const FString& LRWeaponName, const FString& MGWeaponName);
 
+	UFUNCTION(BlueprintCallable)
+	void ResetCharacterStat();
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void AddMaxHP(float HP);
 
@@ -90,7 +95,6 @@ public:
 	void ChangeUseMLWeapon(FString MLWeaponName);
 	void ChangeUseLRWeapon(FString LRWeaponName);
 	void ChangeUseMGWeapon(FString MGWeaponName);
-	void ResetCharacterStat();
 	void SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate);
 
 	
