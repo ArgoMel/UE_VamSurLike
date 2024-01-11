@@ -8,12 +8,16 @@ void UCharacterStatWidget::NativeConstruct()
 {
 	mMLText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_ML")));
 	mMLSpeedText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_MLSpeed")));
-	mLRPenetratingText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_LRPenetrating")));
+	mLRText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_LR")));
 	mLRSpeedText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_LRSpeed")));
+	mLRPenetrateText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_LRPenetrate")));
+	mLRRangeText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_LRRange")));
 	mMGText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_MG")));
 	mMGSpeedText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_MGSpeed")));
 	mElementText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_Element")));
 	mDamageText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_Damage")));
+	mSpeedText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_Speed")));
+	mHPText = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_HP")));
 }
 
 void UCharacterStatWidget::SetWidgetInfo(const FCharacterStat& Stat)
@@ -46,12 +50,16 @@ void UCharacterStatWidget::SetWidgetInfo(const FCharacterStat& Stat)
 		break;
 	}
 
-	mMLText->SetText(FText::FromString(FString::SanitizeFloat(Stat.OffensePower)));
-	mMLSpeedText->SetText(FText::FromString(FString::SanitizeFloat(Stat.MLAttackSpeed)));
-	mLRPenetratingText->SetText(FText::FromString(FString::SanitizeFloat(Stat.PenetratingPower)));
-	mLRSpeedText->SetText(FText::FromString(FString::SanitizeFloat(Stat.LRAttackSpeed)));
-	mMGText->SetText(FText::FromString(FString::SanitizeFloat(Stat.SpellPower)));
-	mMGSpeedText->SetText(FText::FromString(FString::SanitizeFloat(Stat.MGAttackSpeed)));
+	mMLText->SetText(MakeFloatStatToText(Stat.OffensePower));
+	mMLSpeedText->SetText(MakeFloatStatToText(Stat.MLAttackSpeed));
+	mLRText->SetText(MakeFloatStatToText(Stat.LROffensePower));
+	mLRSpeedText->SetText(MakeFloatStatToText(Stat.LRAttackSpeed));
+	mLRPenetrateText->SetText(MakeFloatStatToText(Stat.PenetratingPower));
+	mLRRangeText->SetText(MakeFloatStatToText(Stat.Range));
+	mMGText->SetText(MakeFloatStatToText(Stat.SpellPower));
+	mMGSpeedText->SetText(MakeFloatStatToText(Stat.MGAttackSpeed));
 	mElementText->SetText(FText::FromString(ElementType));
-	mDamageText->SetText(FText::FromString(FString::SanitizeFloat(Stat.Damage)));
+	mDamageText->SetText(MakeFloatStatToText(Stat.Damage));
+	mSpeedText->SetText(MakeFloatStatToText(Stat.WalkSpeed));
+	mHPText->SetText(MakeFloatStatToText(Stat.HP, Stat.MaxHP));
 }
