@@ -33,6 +33,12 @@ void AMagic_FireExplosion::Tick(float DeltaTime)
 
 void AMagic_FireExplosion::Attack()
 {
+	UGameplayStatics::PlaySound2D(
+		GetWorld(),
+		mSound->GetSound(),
+		0.5f
+	);
+	
 	if (IsValid(TargetActor))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(
@@ -43,12 +49,6 @@ void AMagic_FireExplosion::Attack()
 				FRotator3d(0.0, 0.0, 0.0),
 				FVector3d(5.f, 5.f, 5.f)
 			)
-		);
-
-		UGameplayStatics::PlaySound2D(
-			GetWorld(),
-			mSound->GetSound(),
-			0.5f
 		);
 
 		UGameplayStatics::ApplyRadialDamage(
