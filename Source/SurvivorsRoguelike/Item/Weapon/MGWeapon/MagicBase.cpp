@@ -4,6 +4,7 @@
 #include "MagicBase.h"
 #include "Kismet/KismetArrayLibrary.h"
 
+
 TObjectPtr<UDataTable> AMagicBase::mMagicDataTable;
 
 // Sets default values

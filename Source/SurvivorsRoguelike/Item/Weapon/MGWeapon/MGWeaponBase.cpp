@@ -5,6 +5,7 @@
 
 AMGWeaponBase::AMGWeaponBase()
 {
+	mUseChainReaction = CreateDefaultSubobject<UUseChainReaction>(TEXT("ChainReaction"));
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
@@ -30,6 +31,9 @@ void AMGWeaponBase::Init(int32 num, EItemType ItemType, FString name, float Spel
 
 	if (Mesh)
 		mMesh->SetStaticMesh(Mesh);
+
+	mUseChainReaction->SetCharacter(mCharacter);
+	mUseChainReaction->SetWeaponStat(mDamage, mSpellPower);
 }
 
 void AMGWeaponBase::SetTargetEnemy(const TArray<TObjectPtr<AActor>>& TargetEnemy)
@@ -52,6 +56,8 @@ void AMGWeaponBase::SetMGWeaponStat(float SpellPower, float AttackSpeed, float D
 	{
 		Magic->SetMGWeaponStat(mSpellPower, mAttackSpeed, mDamage);
 	}
+
+	mUseChainReaction->SetWeaponStat(mDamage, mSpellPower);
 }
 
 void AMGWeaponBase::AddMagic(const TSubclassOf<AMagicBase>& Magic)
@@ -64,7 +70,7 @@ void AMGWeaponBase::AddMagic(const TSubclassOf<AMagicBase>& Magic)
 		GetWorld()->SpawnActor<AMagicBase>(Magic, ActorParam);
 
 	MAGIC->SetMGWeaponStat(mSpellPower, mAttackSpeed, mDamage);
-	MAGIC->SetCharacter(mCharacter);
+	MAGIC->SetCharacter(mCharacter, mUseChainReaction);
 
 	mMagic.Add(MAGIC);
 }

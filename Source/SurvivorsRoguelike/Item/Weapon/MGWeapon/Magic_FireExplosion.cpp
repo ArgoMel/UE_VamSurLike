@@ -7,8 +7,9 @@ AMagic_FireExplosion::AMagic_FireExplosion()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	SetTargetMethod = ESetTargetMethod::Near;
-	mImpactRange = 700.f;
+	SetTargetMethod = ESetTargetMethod::Random;
+	mImpactRange = 200.f;
+	RandomTargetNum = 6.f;
 	Init("FireExplosion");
 }
 
@@ -24,7 +25,7 @@ void AMagic_FireExplosion::Tick(float DeltaTime)
 	mTime += DeltaTime;
 	if (mTime >= (mAttackDelay / mAttackSpeed))
 	{
-		if (IsValid(TargetActor)) {
+		if (!TargetMultiActor.IsEmpty()) {
 			Attack();
 			mTime = 0.f;
 		}
@@ -33,35 +34,37 @@ void AMagic_FireExplosion::Tick(float DeltaTime)
 
 void AMagic_FireExplosion::Attack()
 {
-	if (IsValid(TargetActor))
+	UGameplayStatics::PlaySound2D(
+		GetWorld(),
+		mSound->GetSound(),
+		0.5f
+	);
+	
+	for (int i = 0; i < TargetMultiActor.Num(); i++)
 	{
-		UGameplayStatics::SpawnEmitterAtLocation(
-			GetWorld(),
-			mParticle->Template,
-			UKismetMathLibrary::MakeTransform(
-				TargetActor->GetActorLocation(),
-				FRotator3d(0.0, 0.0, 0.0),
-				FVector3d(5.f, 5.f, 5.f)
-			)
-		);
+		if (IsValid(TargetMultiActor[i]))
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(
+				GetWorld(),
+				mParticle->Template,
+				UKismetMathLibrary::MakeTransform(
+					TargetMultiActor[i]->GetActorLocation(),
+					FRotator::ZeroRotator
+				)
+			);
 
-		UGameplayStatics::PlaySound2D(
-			GetWorld(),
-			mSound->GetSound(),
-			0.5f
-		);
-
-		UGameplayStatics::ApplyRadialDamage(
-			GetWorld(),
-			mSpellPower * mDamageRate * mDamage,
-			TargetActor->GetActorLocation(),
-			mImpactRange,
-			nullptr,
-			IgnoreDamageActorList,
-			this,
-			mCharacter->GetController(),
-			true,
-			ECC_Camera
-		);
+			UGameplayStatics::ApplyRadialDamage(
+				GetWorld(),
+				mSpellPower * mDamageRate * mDamage,
+				TargetMultiActor[i]->GetActorLocation(),
+				mImpactRange,
+				nullptr,
+				IgnoreDamageActorList,
+				this,
+				mCharacter->GetController(),
+				true,
+				ECC_Camera
+			);
+		}
 	}
 }

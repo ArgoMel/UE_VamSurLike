@@ -129,7 +129,8 @@ void ABaseCharacter::ResetCharacterStat()
 	mUseMGWeapon->GetWeapon()->SetMGWeaponStat(mCharacterStat.SpellPower, mCharacterStat.MGAttackSpeed, mCharacterStat.Damage);
 	mUseLRWeapon->GetWeapon()->SetLRWeaponStat(mCharacterStat.PenetratingPower, mCharacterStat.LRAttackSpeed, mCharacterStat.Range, mCharacterStat.Damage);
 
-	
+	if (mPlayerHubWidget)
+		mPlayerHubWidget->UpdateCharacterStat(mCharacterStat);
 }
  
 void ABaseCharacter::SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate)
@@ -138,8 +139,7 @@ void ABaseCharacter::SetEnhanceRate(FCharacterEnhanceRate& EnhanceRate)
 
 	ResetCharacterStat();
 
-	if (mPlayerHubWidget)
-		mPlayerHubWidget->UpdateCharacterStat(mCharacterStat);
+
 }
 
 void ABaseCharacter::InitStatWidget()

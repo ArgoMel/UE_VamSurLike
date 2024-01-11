@@ -134,6 +134,7 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	{
 		OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
 		Cast<AMonsterDamage>(OtherActor)->SetStencil(StencilVal);
+		Cast<AMonsterDamage>(OtherActor)->SetElement(mBulletStat.Element);
 	}
 }
 

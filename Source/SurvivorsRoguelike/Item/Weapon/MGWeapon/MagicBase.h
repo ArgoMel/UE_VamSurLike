@@ -4,6 +4,8 @@
 
 #include "../../../GameInfo.h"
 #include "GameFramework/Actor.h"
+#include "UseChainReaction.h"
+#include "../../../Public/AI/MonsterDamage.h"
 #include "MagicBase.generated.h"
 
 UCLASS()
@@ -18,6 +20,7 @@ protected :
 	TObjectPtr<ACharacter> mCharacter;
 	TObjectPtr<AActor> TargetActor;
 	TArray<TObjectPtr<AActor>> TargetMultiActor;
+	TObjectPtr<UUseChainReaction> mUseChainReaction;
 
 	//kbj
 	UPROPERTY(BlueprintReadOnly)
@@ -70,10 +73,12 @@ public :
 		mAttackSpeed = AttackSpeed;
 		mDamage = Damage;
 	}
-	void SetCharacter(TObjectPtr<ACharacter> Character)
+
+	void SetCharacter(TObjectPtr<ACharacter> Character, TObjectPtr<UUseChainReaction> UseChainReaction)
 	{
 		mCharacter = Character;
 		IgnoreDamageActorList.AddUnique(mCharacter);
+		mUseChainReaction = UseChainReaction;
 	}
 
 	static void LoadMagicData();

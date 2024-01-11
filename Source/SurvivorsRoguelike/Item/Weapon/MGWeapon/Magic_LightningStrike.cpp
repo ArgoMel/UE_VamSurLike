@@ -70,6 +70,11 @@ void AMagic_LightningStrike::Attack()
 				true,
 				ECC_Camera
 			);
+			
+			if (Cast<AMonsterDamage>(TargetMultiActor[i])->GetElement() == EElement::Water)
+			{
+				mUseChainReaction->ElectricShock(TargetMultiActor[i]->GetActorLocation());
+			}
 		}
 	}
 }

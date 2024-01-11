@@ -5,6 +5,7 @@
 #include "../../../GameInfo.h"
 #include "../WeaponBase.h"
 #include "MagicBase.h"
+#include "UseChainReaction.h"
 #include "MGWeaponBase.generated.h"
 
 /**
@@ -21,6 +22,7 @@ public :
 
 protected:
 	float mTime = 0.f;
+	TObjectPtr<UUseChainReaction> mUseChainReaction;
 	TArray<TObjectPtr<AMagicBase>> mMagic;
 	TArray<TObjectPtr<AActor>>	mTargetEnemy;
 	FVector	TargetLoc;
@@ -52,7 +54,7 @@ public:
 
 	void AddMagic(const TSubclassOf<AMagicBase>& Magic);
 
-
+	TObjectPtr<UUseChainReaction> GetUseChainReaction() { return mUseChainReaction; }
 
 
 protected:

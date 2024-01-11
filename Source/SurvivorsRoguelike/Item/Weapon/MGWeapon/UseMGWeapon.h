@@ -79,17 +79,6 @@ public:
 	float GetSpellPower() { return mSpellPower; }
 	float GetAttackSpeed() { return mAttackSpeed; }
 
-	UFUNCTION(BlueprintCallable)
-	void SetWaterMagic();
-	UFUNCTION(BlueprintCallable)
-	void SetEarthMagic();
-	UFUNCTION(BlueprintCallable)
-	void SetFireMagic();
-	UFUNCTION(BlueprintCallable)
-	void SetLightningMagic();
-	UFUNCTION(BlueprintCallable)
-	void SetWindMagic();
-
 protected:
 	static const FMGWeaponData* FindWeaponData(const FName& Name);
 

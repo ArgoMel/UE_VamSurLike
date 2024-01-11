@@ -21,6 +21,7 @@ public:
 
 protected:
 	
+	UPROPERTY(BlueprintReadWrite)
 	EElement mElemenet;
 
 	FBulletStat mBulletStat;
@@ -81,6 +82,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void WindKnockback();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void LightningStun();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetStencil(int32 Stencil);
