@@ -2,7 +2,7 @@
 
 
 #include "LRWeaponBase.h"
-
+#include "../../../Public/Character/BaseCharacter.h"
 
 ALRWeaponBase::ALRWeaponBase()
 {
@@ -46,14 +46,19 @@ void ALRWeaponBase::Fire()
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	mBullet = GetWorld()->SpawnActor<ABulletBase>(mBulletClass,
+	FVector MouseCursorPos = Cast<ABaseCharacter>(mCharacter)->GetMouseCursorPos();
+	MouseCursorPos.Z = mMesh->GetSocketLocation(TEXT("MuzzleFlash")).Z;
+	FVector BulletDir = MouseCursorPos - mMesh->GetSocketLocation(TEXT("MuzzleFlash"));
+
+	mBullet = GetWorld()->SpawnActor<ABulletBase>(
+		mBulletClass,
 		mMesh->GetSocketLocation(TEXT("MuzzleFlash")),
-		FRotator::ZeroRotator,
+		BulletDir.Rotation(),
 		ActorParam);
 
 	SetBulletStat();
 
-	mBullet->SetProjectileRot(GetActorRightVector());
+	mBullet->SetProjectileRot(BulletDir.GetSafeNormal());
 	mBullet->SetBulletStat(mBulletStat);
 }
 
