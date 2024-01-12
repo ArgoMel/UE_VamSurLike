@@ -28,7 +28,7 @@ private :
 	TObjectPtr<UStaticMeshComponent>	mMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<USphereComponent>	mCollision;
+	TObjectPtr<UCapsuleComponent>	mCollision;
 
 
 
