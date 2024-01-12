@@ -43,8 +43,12 @@ void AMagic_WindExplosion::Attack()
 	
 	for (int i = 0; i < TargetMultiActor.Num(); i++)
 	{
+
 		if (IsValid(TargetMultiActor[i]))
 		{
+			EElement TargetElement = EElement::None;
+			FVector TargetLoc = FVector::ZeroVector;
+
 			UGameplayStatics::SpawnEmitterAtLocation(
 				GetWorld(),
 				mParticle->Template,
@@ -59,25 +63,34 @@ void AMagic_WindExplosion::Attack()
 				)
 			);
 
-			Cast<AMonsterDamage>(TargetMultiActor[i])->WindKnockback();
+			try {
+				TargetElement = Cast<AMonsterDamage>(TargetMultiActor[i])->GetElement();
+				TargetLoc = TargetMultiActor[i]->GetActorLocation();
 
-			FVector3d ImpulseTarget =
-				(TargetMultiActor[i]->GetActorLocation() - mCharacter->GetActorLocation()).GetSafeNormal2D() * mImpactRange;
-			ImpulseTarget.Z = 300.f;
+				FVector3d ImpulseTarget =
+					(TargetLoc - mCharacter->GetActorLocation()).GetSafeNormal2D() * mImpactRange;
+				ImpulseTarget.Z = 300.f;
 
-			Cast<ACharacter>(TargetMultiActor[i])->LaunchCharacter(
-				ImpulseTarget,
-				false,
-				false
-			);
+				Cast<AMonsterDamage>(TargetMultiActor[i])->LaunchCharacter(
+					ImpulseTarget,
+					false,
+					false
+				);
 
-			UGameplayStatics::ApplyDamage(
-				TargetMultiActor[i],
-				mSpellPower * mDamageRate * mDamage,
-				mCharacter->GetController(),
-				this,
-				nullptr
-			);
+				UGameplayStatics::ApplyDamage(
+					TargetMultiActor[i],
+					mSpellPower * mDamageRate * mDamage,
+					mCharacter->GetController(),
+					this,
+					nullptr
+				);
+
+				Cast<AMonsterDamage>(TargetMultiActor[i])->WindKnockback();
+			}
+			catch (int a) {
+				a = 1;
+				break;
+			}
 		}
 	}
 }
