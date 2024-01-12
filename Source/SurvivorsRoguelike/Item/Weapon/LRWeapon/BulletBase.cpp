@@ -3,7 +3,7 @@
 
 #include "BulletBase.h"
 
-inline int BulletSpeed = 2000;
+inline int BulletSpeed = 4000;
 
 // Sets default values
 ABulletBase::ABulletBase()

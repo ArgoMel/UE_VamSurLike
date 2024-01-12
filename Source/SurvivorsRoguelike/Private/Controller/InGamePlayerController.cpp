@@ -51,13 +51,14 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	FHitResult Hit;
+	FHitResult GroundHit;
+	if (!GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel14, false, GroundHit)) { return; }
 
-	if (!GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel14, false, Hit)) { return; }
+	HitLoc = GroundHit.Location;
 
 	GetPawn()->SetActorRotation(FRotator3d(
 		GetPawn()->GetActorRotation().Pitch,
-		UKismetMathLibrary::FindLookAtRotation(GetPawn()->GetActorLocation(), Hit.Location).Yaw,
+		UKismetMathLibrary::FindLookAtRotation(GetPawn()->GetActorLocation(), HitLoc).Yaw,
 		GetPawn()->GetActorRotation().Roll
 	));
 }

@@ -20,7 +20,8 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Cast<AInGamePlayerController>(GetController())->SetBaseCharacter(this);
+	mController = Cast<AInGamePlayerController>(GetController());
+	mController->SetBaseCharacter(this);
 }
 
 void ABaseCharacter::Tick(float DeltaTime)
@@ -148,3 +149,7 @@ void ABaseCharacter::InitStatWidget()
 		mPlayerHubWidget->UpdateCharacterStat(mCharacterStat);
 }
 
+FVector ABaseCharacter::GetMouseCursorPos()
+{
+	return mController->GetHitLoc();
+}
