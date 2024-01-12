@@ -38,9 +38,13 @@ protected:
 	UPROPERTY(Category = Input, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<ABaseCharacter> mBaseCharacter;
 
-public :
+	FVector HitLoc;
+
+public:
 	void SetBaseCharacter(TObjectPtr<ABaseCharacter> BaseCharacter)
 	{
 		mBaseCharacter = BaseCharacter;
 	}
+
+	FVector GetHitLoc() { return HitLoc; }
 };

@@ -1,9 +1,13 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
+
 #include "../GameInfo.h"
 #include "GameFramework/Character.h"
 #include "../../Widget/PlayerHudWidget.h"
 #include "BaseCharacter.generated.h"
 
+class AInGamePlayerController;
 class UUseMLWeapon;
 class UUseLRWeapon;
 class UUseMGWeapon;
@@ -57,6 +61,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FString mLRWeaponName;
 
+	TObjectPtr<AInGamePlayerController> mController;
+
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -103,4 +109,5 @@ public:
 		return mEnhanceRate;
 	}
 
+	FVector GetMouseCursorPos();
 };
