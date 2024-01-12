@@ -16,18 +16,20 @@ ABulletBase::ABulletBase()
 	mProjectile = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile"));
 	mProjectile->ProjectileGravityScale = 0.f;
 
-	mCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
+	mCollision = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Collision"));
 	mCollision->SetCollisionProfileName("PlayerAttack");
 	mCollision->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 	mCollision->OnComponentBeginOverlap.AddDynamic(this,
 		&ABulletBase::OverlapBegin);
-	mCollision->SetWorldScale3D(FVector(0.3f, 0.3f, 0.3f));
+	mCollision->SetCapsuleHalfHeight(100.f);
+	mCollision->SetCapsuleRadius(16.f);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MESH(
 		TEXT("/Script/Engine.StaticMesh'/Game/00_Weapon/WeaponAsset/LRWeapon/Rifle/Sphere.Sphere'"));
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mMesh->bRenderCustomDepth = true;
+	mMesh->SetRelativeScale3D(FVector(0.3, 0.3, 0.3));
 	
 	if (MESH.Succeeded())
 		mMesh->SetStaticMesh(MESH.Object);
