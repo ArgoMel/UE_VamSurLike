@@ -11,15 +11,15 @@ AInGamePlayerController::AInGamePlayerController()
 	PrimaryActorTick.bCanEverTick = true;
 	bShowMouseCursor = true;
 
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> IMC_ProtoDefault(
-		TEXT("/Script/EnhancedInput.InputMappingContext'/Game/2_HHS/Input/IMC_ProtoDefault.IMC_ProtoDefault'"));
-	if (IMC_ProtoDefault.Succeeded())
-		ProtoMappingContext = IMC_ProtoDefault.Object;
+	static ConstructorHelpers::FObjectFinder<UInputMappingContext> IMC_InGameDefault(
+		TEXT("/Script/EnhancedInput.InputMappingContext'/Game/2_HHS/Input/IMC_InGameDefault.IMC_InGameDefault'"));
+	if (IMC_InGameDefault.Succeeded())
+		InGameMappingContext = IMC_InGameDefault.Object;
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> IA_ProtoMove(
-		TEXT("/Script/EnhancedInput.InputAction'/Game/2_HHS/Input/IA_ProtoMove.IA_ProtoMove'"));
-	if (IA_ProtoMove.Succeeded())
-		ProtoMoveAction = IA_ProtoMove.Object;
+	static ConstructorHelpers::FObjectFinder<UInputAction> IA_InGameMove(
+		TEXT("/Script/EnhancedInput.InputAction'/Game/2_HHS/Input/IA_InGameMove.IA_InGameMove'"));
+	if (IA_InGameMove.Succeeded())
+		InGameMoveAction = IA_InGameMove.Object;
 }
 
 void AInGamePlayerController::BeginPlay()
@@ -29,7 +29,7 @@ void AInGamePlayerController::BeginPlay()
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(this->GetLocalPlayer()))
 	{
-		Subsystem->AddMappingContext(ProtoMappingContext, 0);
+		Subsystem->AddMappingContext(InGameMappingContext, 0);
 	}
 }
 
@@ -39,7 +39,7 @@ void AInGamePlayerController::SetupInputComponent()
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
-		EnhancedInputComponent->BindAction(ProtoMoveAction, ETriggerEvent::Triggered, this, &AInGamePlayerController::Move);
+		EnhancedInputComponent->BindAction(InGameMoveAction, ETriggerEvent::Triggered, this, &AInGamePlayerController::Move);
 	}
 	else
 	{
@@ -51,23 +51,13 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (!DeprojectMousePositionToWorld(CursorLoc, CursorDir)) { return; }
-
 	FHitResult Hit;
-	if (!GetWorld()->LineTraceSingleByChannel(Hit, CursorLoc, CursorLoc + CursorDir * 5000.f,
-		ECollisionChannel::ECC_GameTraceChannel14)) {
-		return;
-	}
 
-	CursorHit = FVector3d(
-		Hit.Location.X,
-		Hit.Location.Y,
-		Hit.Location.Z + GetPawn()->GetDefaultHalfHeight()
-	);
+	if (!GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel14, false, Hit)) { return; }
 
 	GetPawn()->SetActorRotation(FRotator3d(
 		GetPawn()->GetActorRotation().Pitch,
-		(CursorHit - GetPawn()->GetActorLocation()).Rotation().Yaw,
+		UKismetMathLibrary::FindLookAtRotation(GetPawn()->GetActorLocation(), Hit.Location).Yaw,
 		GetPawn()->GetActorRotation().Roll
 	));
 }
