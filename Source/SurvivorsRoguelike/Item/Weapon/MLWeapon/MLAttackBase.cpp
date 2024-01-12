@@ -3,7 +3,7 @@
 
 #include "MLAttackBase.h"
 
-inline float ROTATIONTIME = 0.5f;
+inline float ROTATIONTIME = 0.3f;
 
 // Sets default values
 AMLAttackBase::AMLAttackBase()
