@@ -40,14 +40,25 @@ void AMagic_EarthImpact::Attack()
 	
 	if (IsValid(TargetActor))
 	{
+		EElement TargetElement = EElement::None;
+		FVector TargetLoc = FVector::ZeroVector;
+		try {
+			TargetElement = Cast<AMonsterDamage>(TargetActor)->GetElement();
+			TargetLoc = TargetActor->GetActorLocation();
+		}
+		catch (int a) {
+			a = 1;
+		}
+
+
 		UGameplayStatics::SpawnEmitterAtLocation(
 			GetWorld(),
 			mParticle->Template,
 			UKismetMathLibrary::MakeTransform(
 				FVector3d(
-					TargetActor->GetActorLocation().X,
-					TargetActor->GetActorLocation().Y,
-					TargetActor->GetActorLocation().Z - TargetActor->GetSimpleCollisionHalfHeight()
+					TargetLoc.X,
+					TargetLoc.Y,
+					TargetLoc.Z - TargetActor->GetSimpleCollisionHalfHeight()
 				),
 				FRotator3d(
 					0.0,

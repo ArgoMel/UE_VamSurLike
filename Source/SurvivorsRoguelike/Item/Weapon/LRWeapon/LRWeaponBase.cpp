@@ -60,7 +60,6 @@ void ALRWeaponBase::Fire()
 
 	mBullet->SetProjectileRot(BulletDir.GetSafeNormal());
 	mBullet->SetBulletStat(mBulletStat);
-	//mAttackSound->Play();
 }
 
 void ALRWeaponBase::SetElement(EElement Element)
