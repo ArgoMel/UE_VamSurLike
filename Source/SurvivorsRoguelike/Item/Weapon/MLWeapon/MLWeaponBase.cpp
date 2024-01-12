@@ -59,7 +59,7 @@ void AMLWeaponBase::Attack()
 	FActorSpawnParameters	ActorParam;
 	ActorParam.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
+	
 	if (mMesh)
 	{
 		mWeapon = GetWorld()->SpawnActor<AMLAttackBase>(mWeaponClass,

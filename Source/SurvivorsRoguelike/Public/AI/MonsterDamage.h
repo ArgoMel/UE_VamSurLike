@@ -20,10 +20,6 @@ public:
 	AMonsterDamage();
 
 protected:
-	
-	UPROPERTY(BlueprintReadWrite)
-	EElement mElemenet;
-
 	FBulletStat mBulletStat;
 
 	float mStunDuration;
@@ -38,6 +34,8 @@ protected:
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TArray<bool> AbnormalState;
 
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EElement mElemenet;
 
 
 public:
@@ -81,7 +79,7 @@ public:
 	void Burning_Implementation();
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void WindKnockback();
+	void WindKnockback(FVector PlayerLoc);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void LightningStun();

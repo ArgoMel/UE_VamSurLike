@@ -34,6 +34,7 @@ void AMagic_LightningStrike::Tick(float DeltaTime)
 
 void AMagic_LightningStrike::Attack()
 {
+
 	UGameplayStatics::PlaySound2D(
 		GetWorld(),
 		mSound->GetSound(),
@@ -44,24 +45,20 @@ void AMagic_LightningStrike::Attack()
 	{
 		if (IsValid(TargetMultiActor[i]))
 		{
-			EElement TargetElement = EElement::None;
-			FVector TargetLoc = FVector::ZeroVector;
-			try {
-				TargetElement = Cast<AMonsterDamage>(TargetMultiActor[i])->GetElement();
-				TargetLoc = TargetMultiActor[i]->GetActorLocation();
-			} catch (int a) {
-				a = 1;
-				break;
-			}
+			mTargetLoc = TargetMultiActor[i]->GetActorLocation();
+			mTargetMonster = Cast<AMonsterDamage>(TargetMultiActor[i]);
+			if (mTargetMonster)
+				mTargetElement = mTargetMonster->GetElement();
+
 
 			UGameplayStatics::SpawnEmitterAtLocation(
 				GetWorld(),
 				mParticle->Template,
 				UKismetMathLibrary::MakeTransform(
 					FVector3d(
-						TargetLoc.X,
-						TargetLoc.Y,
-						TargetLoc.Z - TargetMultiActor[i]->GetSimpleCollisionHalfHeight()
+						mTargetLoc.X,
+						mTargetLoc.Y,
+						mTargetLoc.Z - TargetMultiActor[i]->GetSimpleCollisionHalfHeight()
 					),
 					FRotator3d(0.0, 0.0, 0.0),
 					FVector3d(1.0, 1.0, 1.0)
@@ -71,7 +68,7 @@ void AMagic_LightningStrike::Attack()
 			UGameplayStatics::ApplyRadialDamage(
 				GetWorld(),
 				mSpellPower * mDamageRate * mDamage,
-				TargetLoc,
+				mTargetLoc,
 				mImpactRange,
 				nullptr,
 				IgnoreDamageActorList,
@@ -81,9 +78,9 @@ void AMagic_LightningStrike::Attack()
 				ECC_Camera
 			);
 
-			if (TargetElement == EElement::Water)
+			if (mTargetElement == EElement::Water)
 			{
-				mUseChainReaction->ElectricShock(TargetLoc);
+				mUseChainReaction->ElectricShock(mTargetLoc);
 			}
 		}
 	}

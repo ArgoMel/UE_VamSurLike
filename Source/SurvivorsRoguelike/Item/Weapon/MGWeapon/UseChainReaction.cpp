@@ -62,34 +62,49 @@ void UUseChainReaction::ElectricShock(const FVector& TargetLoc)
 		FCollisionShape::MakeSphere(600.f),
 		param);
 
+	
+
 
 	if (Collision)
 	{
 		for (auto& Target : result)
 		{
-			if (!Target.GetActor())
-				return;
+			try {
+				if (!Target.GetActor())
+					return;
 
-			if (Cast<AMonsterDamage>(Target.GetActor())->GetElement() == EElement::Water)
-			{
+				if (Cast<AMonsterDamage>(Target.GetActor())->GetElement() == EElement::Water)
+				{
+					UGameplayStatics::ApplyDamage(
+						Target.GetActor(),
+						mSpellPower*mDamage,
+						nullptr,
+						nullptr,
+						nullptr
+					);
 
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
-					mData[EChainReactionTable::ElectricShock]->MagicParticle,
-					UKismetMathLibrary::MakeTransform(
-						FVector3d(
-							Target.GetActor()->GetActorLocation().X,
-							Target.GetActor()->GetActorLocation().Y,
-							Target.GetActor()->GetActorLocation().Z - Target.GetActor()->GetSimpleCollisionHalfHeight()
-						),
-						FRotator3d(
-							0.0,
-							(Target.GetActor()->GetActorLocation() - mCharacter->GetActorLocation()).Rotation().Yaw,
-							0.0
+					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
+						mData[EChainReactionTable::ElectricShock]->MagicParticle,
+						UKismetMathLibrary::MakeTransform(
+							FVector3d(
+								Target.GetActor()->GetActorLocation().X,
+								Target.GetActor()->GetActorLocation().Y,
+								Target.GetActor()->GetActorLocation().Z - Target.GetActor()->GetSimpleCollisionHalfHeight()
+							),
+							FRotator3d(
+								0.0,
+								(Target.GetActor()->GetActorLocation() - mCharacter->GetActorLocation()).Rotation().Yaw,
+								0.0
+							)
 						)
-					)
-				);
+					);
 
-				Cast<AMonsterDamage>(Target.GetActor())->LightningStun();
+					Cast<AMonsterDamage>(Target.GetActor())->LightningStun();
+				}
+
+			} catch (int a) {
+				a = 1;
+				break;
 			}
 		}
 	}
