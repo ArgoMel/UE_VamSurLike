@@ -22,6 +22,9 @@ protected :
 	TArray<TObjectPtr<AActor>> TargetMultiActor;
 	TObjectPtr<UUseChainReaction> mUseChainReaction;
 
+	EElement mTargetElement = EElement::None;
+	TObjectPtr<AMonsterDamage> mTargetMonster = nullptr;
+
 	//kbj
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<USceneComponent> mRoot;

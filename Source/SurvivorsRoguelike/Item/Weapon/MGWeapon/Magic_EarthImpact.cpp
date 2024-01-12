@@ -32,6 +32,7 @@ void AMagic_EarthImpact::Tick(float DeltaTime)
 
 void AMagic_EarthImpact::Attack()
 {
+
 	UGameplayStatics::PlaySound2D(
 		GetWorld(),
 		mSound->GetSound(),
@@ -40,15 +41,10 @@ void AMagic_EarthImpact::Attack()
 	
 	if (IsValid(TargetActor))
 	{
-		EElement TargetElement = EElement::None;
-		FVector TargetLoc = FVector::ZeroVector;
-		try {
-			TargetElement = Cast<AMonsterDamage>(TargetActor)->GetElement();
-			TargetLoc = TargetActor->GetActorLocation();
-		}
-		catch (int a) {
-			a = 1;
-		}
+		mTargetLoc = TargetActor->GetActorLocation();
+		mTargetMonster = Cast<AMonsterDamage>(TargetActor);
+		if (mTargetMonster)
+			mTargetElement = mTargetMonster->GetElement();
 
 
 		UGameplayStatics::SpawnEmitterAtLocation(
@@ -56,9 +52,9 @@ void AMagic_EarthImpact::Attack()
 			mParticle->Template,
 			UKismetMathLibrary::MakeTransform(
 				FVector3d(
-					TargetLoc.X,
-					TargetLoc.Y,
-					TargetLoc.Z - TargetActor->GetSimpleCollisionHalfHeight()
+					mTargetLoc.X,
+					mTargetLoc.Y,
+					mTargetLoc.Z - TargetActor->GetSimpleCollisionHalfHeight()
 				),
 				FRotator3d(
 					0.0,
