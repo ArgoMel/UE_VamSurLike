@@ -29,6 +29,7 @@ ABulletBase::ABulletBase()
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mMesh->bRenderCustomDepth = true;
+	mMesh->CastShadow = false;
 	mMesh->SetRelativeScale3D(FVector(0.3, 0.3, 0.3));
 	
 	if (MESH.Succeeded())
