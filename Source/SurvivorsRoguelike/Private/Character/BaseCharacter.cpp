@@ -116,6 +116,8 @@ void ABaseCharacter::ResetCharacterStat()
 	mCharacterStat.OffensePower = mUseMLWeapon->GetOffensePower() * (1 + 0.1f * mEnhanceRate.OffensePowerEnhanceRate);
 	mCharacterStat.MLAttackSpeed = mUseMLWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.MLAttackSpeedEnhanceRate);
 	mCharacterStat.PenetratingPower = mUseLRWeapon->GetPenetrating() * (1 + 0.1f * mEnhanceRate.PenetratingPowerEnhanceRate);
+	if (mCharacterStat.PenetratingPower >= 100)
+		mCharacterStat.PenetratingPower = 99;
 	mCharacterStat.LRAttackSpeed = mUseLRWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.LRAttackSpeedEnhanceRate);
 	mCharacterStat.SpellPower = mUseMGWeapon->GetSpellPower() * (1 + 0.1f * mEnhanceRate.SpellPowerEnhanceRate);
 	mCharacterStat.MGAttackSpeed = mUseMGWeapon->GetAttackSpeed() * (1 + 0.1f * mEnhanceRate.MGAttackSpeedEnhanceRate);
