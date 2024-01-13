@@ -53,6 +53,8 @@ void UUseChainReaction::ElectricShock(const FVector& TargetLoc)
 	TArray<FHitResult>	result;
 
 	FCollisionQueryParams	param(NAME_None, false);
+	TObjectPtr<AMonsterDamage> TargetMonster = nullptr;
+	EElement TargetElement = EElement::None;
 
 	bool Collision = GetWorld()->SweepMultiByChannel(result,
 		TargetLoc,
@@ -62,49 +64,47 @@ void UUseChainReaction::ElectricShock(const FVector& TargetLoc)
 		FCollisionShape::MakeSphere(600.f),
 		param);
 
-	
-
-
 	if (Collision)
 	{
 		for (auto& Target : result)
 		{
-			try {
+			if (!Target.GetActor())
+				return;
+
+			 TargetMonster = Cast<AMonsterDamage>(Target.GetActor());
+			 if (TargetMonster)
+				 TargetElement = TargetMonster->GetElement();
+
+			if (TargetElement == EElement::Water)
+			{
+				UGameplayStatics::ApplyDamage(
+					Target.GetActor(),
+					mSpellPower*mDamage,
+					nullptr,
+					nullptr,
+					nullptr
+				);
+
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
+					mData[EChainReactionTable::ElectricShock]->MagicParticle,
+					UKismetMathLibrary::MakeTransform(
+						FVector3d(
+							Target.GetActor()->GetActorLocation().X,
+							Target.GetActor()->GetActorLocation().Y,
+							Target.GetActor()->GetActorLocation().Z - Target.GetActor()->GetSimpleCollisionHalfHeight()
+						),
+						FRotator3d(
+							0.0,
+							(Target.GetActor()->GetActorLocation() - mCharacter->GetActorLocation()).Rotation().Yaw,
+							0.0
+						)
+					)
+				);
+
 				if (!Target.GetActor())
 					return;
 
-				if (Cast<AMonsterDamage>(Target.GetActor())->GetElement() == EElement::Water)
-				{
-					UGameplayStatics::ApplyDamage(
-						Target.GetActor(),
-						mSpellPower*mDamage,
-						nullptr,
-						nullptr,
-						nullptr
-					);
-
-					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
-						mData[EChainReactionTable::ElectricShock]->MagicParticle,
-						UKismetMathLibrary::MakeTransform(
-							FVector3d(
-								Target.GetActor()->GetActorLocation().X,
-								Target.GetActor()->GetActorLocation().Y,
-								Target.GetActor()->GetActorLocation().Z - Target.GetActor()->GetSimpleCollisionHalfHeight()
-							),
-							FRotator3d(
-								0.0,
-								(Target.GetActor()->GetActorLocation() - mCharacter->GetActorLocation()).Rotation().Yaw,
-								0.0
-							)
-						)
-					);
-
-					Cast<AMonsterDamage>(Target.GetActor())->LightningStun();
-				}
-
-			} catch (int a) {
-				a = 1;
-				break;
+				TargetMonster->LightningStun();
 			}
 		}
 	}
