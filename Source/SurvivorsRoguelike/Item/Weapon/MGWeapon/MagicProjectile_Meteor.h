@@ -18,6 +18,7 @@ public :
 	AMagicProjectile_Meteor();
 
 private :
+	float mTime;
 	float mSpellPower;
 	float mDamage;
 	float mDamageRate;

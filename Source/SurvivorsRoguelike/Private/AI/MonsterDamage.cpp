@@ -93,11 +93,24 @@ void AMonsterDamage::OnConstruction(const FTransform& Transform)
 
 }
 
-// Called when the game starts or when spawned
 void AMonsterDamage::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	FHitResult hitResult;
+	FCollisionQueryParams collisionParams;
+	FVector startLoc = GetActorLocation();
+	startLoc.Z -= GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	FVector endLoc = startLoc - GetActorUpVector()*1000.;
+	bool isCol = GetWorld()->LineTraceSingleByChannel(hitResult,
+		startLoc, endLoc, ECC_Visibility, collisionParams);
+#if ENABLE_DRAW_DEBUG
+	FColor drawColor = isCol ? FColor::Red : FColor::Green;
+	DrawDebugLine(GetWorld(), startLoc, endLoc, drawColor, false, 0.5f);
+#endif
+	if(isCol)
+	{
+		SetActorLocation(FVector(startLoc.X,startLoc.Y,2000.));
+	}
 }
 
 // Called every frame

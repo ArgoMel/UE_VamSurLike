@@ -53,6 +53,8 @@ void UUseChainReaction::ElectricShock(const FVector& TargetLoc)
 	TArray<FHitResult>	result;
 
 	FCollisionQueryParams	param(NAME_None, false);
+	TObjectPtr<AMonsterDamage> TargetMonster = nullptr;
+	EElement TargetElement = EElement::None;
 
 	bool Collision = GetWorld()->SweepMultiByChannel(result,
 		TargetLoc,
@@ -62,7 +64,6 @@ void UUseChainReaction::ElectricShock(const FVector& TargetLoc)
 		FCollisionShape::MakeSphere(600.f),
 		param);
 
-
 	if (Collision)
 	{
 		for (auto& Target : result)
@@ -70,8 +71,19 @@ void UUseChainReaction::ElectricShock(const FVector& TargetLoc)
 			if (!Target.GetActor())
 				return;
 
-			if (Cast<AMonsterDamage>(Target.GetActor())->GetElement() == EElement::Water)
+			 TargetMonster = Cast<AMonsterDamage>(Target.GetActor());
+			 if (TargetMonster)
+				 TargetElement = TargetMonster->GetElement();
+
+			if (TargetElement == EElement::Water)
 			{
+				UGameplayStatics::ApplyDamage(
+					Target.GetActor(),
+					mSpellPower*mDamage,
+					nullptr,
+					nullptr,
+					nullptr
+				);
 
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
 					mData[EChainReactionTable::ElectricShock]->MagicParticle,
@@ -89,7 +101,10 @@ void UUseChainReaction::ElectricShock(const FVector& TargetLoc)
 					)
 				);
 
-				Cast<AMonsterDamage>(Target.GetActor())->LightningStun();
+				if (!Target.GetActor())
+					return;
+
+				TargetMonster->LightningStun();
 			}
 		}
 	}

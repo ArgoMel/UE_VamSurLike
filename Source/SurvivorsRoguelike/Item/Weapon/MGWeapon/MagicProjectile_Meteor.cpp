@@ -33,6 +33,10 @@ void AMagicProjectile_Meteor::BeginPlay()
 void AMagicProjectile_Meteor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	mTime += DeltaTime;
+	if (mTime >= 3.f)
+		Destroy();
 }
 
 void AMagicProjectile_Meteor::OverlapBegin(UPrimitiveComponent* OverlappedComponent,

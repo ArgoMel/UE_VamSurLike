@@ -319,7 +319,8 @@ enum class EMLWeaponType : uint8
 {
 	Sword,
 	Ax,
-	Spear
+	Spear,
+	Dagger
 };
 
 UENUM(BlueprintType)
