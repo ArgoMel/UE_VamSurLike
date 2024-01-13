@@ -23,6 +23,7 @@ AMLAttackBase::AMLAttackBase()
 	mMesh->SetAbsolute(false, true, false); //부모회전 영향x
 	mMesh->CastShadow = false;
 	mMesh->bRenderCustomDepth = true;
+	mMesh->SetCustomDepthStencilValue(10);
 
 	SetRootComponent(mMesh);
 	mCollision->SetupAttachment(mMesh);

@@ -31,6 +31,7 @@ ABulletBase::ABulletBase()
 	mMesh->bRenderCustomDepth = true;
 	mMesh->CastShadow = false;
 	mMesh->SetRelativeScale3D(FVector(0.3, 0.3, 0.3));
+	mMesh->SetCustomDepthStencilValue(10);
 	
 	if (MESH.Succeeded())
 		mMesh->SetStaticMesh(MESH.Object);
