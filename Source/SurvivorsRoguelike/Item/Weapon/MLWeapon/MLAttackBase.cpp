@@ -119,11 +119,14 @@ void AMLAttackBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	FDamageEvent DmgEvent;
 	float Dmg = mAttackStat.OffensePower * mAttackStat.Damage;
 
-	if (OtherActor)
+	OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
+	
+	TObjectPtr<AMonsterDamage> TargetMonster = Cast<AMonsterDamage>(OtherActor);
+	if (TargetMonster)
 	{
-		OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
-		Cast<AMonsterDamage>(OtherActor)->SetStencil(StencilVal);
-		Cast<AMonsterDamage>(OtherActor)->SetElement(mAttackStat.Element);
+		TargetMonster->SetStencil(StencilVal);
+		TargetMonster->SetElement(mAttackStat.Element);
+		return;
 	}
 }
 

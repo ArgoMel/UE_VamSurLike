@@ -4,15 +4,17 @@
 
 #include "../../../GameInfo.h"
 #include "Components/ActorComponent.h"
+#include "MagicRemnants.h"
+#include "MagicProjectile_SandStorm.h"
 #include "UseChainReaction.generated.h"
 
 enum EChainReactionTable : uint8
 {
 	FlamePillar = 0,
 	ElectricShock = 1,
-	Fragmentation = 2,
-	Discharge = 3,
-	Melting = 4
+	Explosion = 2,
+	Crystallization = 3,
+	SandStorm = 4
 };
 
 
@@ -28,9 +30,21 @@ public:
 private :
 	float mSpellPower;
 	float mDamage;
+
 	static TObjectPtr<UDataTable>	mChainReactionData;
 	TArray<FChainReactionData*> mData;
 	TObjectPtr<ACharacter> mCharacter;
+	TArray<AActor*> mIgnoreDamageActorList;
+
+	TArray<FVector> mFlamePillarLoc;
+	FTimerHandle mFlamePillarTimerHandle;
+	float mFlamePillarCount;
+
+	TSubclassOf<AMagicRemnants> mMagicRemnantsClass;
+	TObjectPtr<AMagicRemnants> mMagicRemnants;
+
+	TSubclassOf<AMagicProjectile_SandStorm> mSandStormClass;
+	TObjectPtr<AMagicProjectile_SandStorm> mSandStorm;
 
 public :
 	void Init();
@@ -38,10 +52,11 @@ public :
 	void SetWeaponStat(float Damage, float SpellPower);
 
 	void FlamePillar(const FVector& TargetLoc);
+	void FlamePillarApplyDamage();
 	void ElectricShock(const FVector& TargetLoc);
-	void Fragmentation(const FVector& TargetLoc);
-	void Discharge(const FVector& TargetLoc);
-	void Melting(const FVector& TargetLoc);
+	void Explosion(const FVector& TargetLoc);
+	void Crystallization(const FVector& TargetLoc);
+	void SandStorm(const FVector& TargetLoc);
 	
 
 

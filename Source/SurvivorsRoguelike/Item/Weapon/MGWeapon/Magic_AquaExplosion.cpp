@@ -71,8 +71,9 @@ void AMagic_AquaExplosion::Attack()
 				nullptr
 			);
 			
-			if (mTargetElement == EElement::Ground)
+			if (mTargetElement == EElement::Fire)
 			{
+				mUseChainReaction->Explosion(mTargetLoc);
 			}
 		}
 	}

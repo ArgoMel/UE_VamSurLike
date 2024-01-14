@@ -81,9 +81,14 @@ void AMagic_WindExplosion::Attack()
 			);
 
 			mTargetMonster = Cast<AMonsterDamage>(TargetMultiActor[i]);
-				if(mTargetMonster)
-					mTargetMonster->WindKnockback(ImpulseTarget);
+			if(mTargetMonster)
+				mTargetMonster->WindKnockback(ImpulseTarget);
 
+
+			if (mTargetElement == EElement::Ground)
+			{
+				mUseChainReaction->SandStorm(mTargetLoc);
+			}
 		}
 	}
 }
