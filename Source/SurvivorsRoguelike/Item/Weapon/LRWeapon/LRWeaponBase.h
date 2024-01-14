@@ -34,6 +34,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> mMesh;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UNiagaraComponent> mLaser;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	EElement mElement = EElement::None;
 
@@ -74,6 +77,9 @@ public:
 	}
 
 	void SetElement(EElement Element);
+
+private:
+	void SetLaserDir();
 
 protected:
 	// Called when the game starts or when spawned
