@@ -63,16 +63,22 @@ void AMagic_FireExplosion::Attack()
 	
 	for (int i = 0; i < TargetMultiActor.Num(); i++)
 	{
-		
 		if (IsValid(TargetMultiActor[i])) {
+			mTargetMonster = Cast<AMonsterDamage>(TargetMultiActor[i]);
+			if (mTargetMonster)
+				mTargetElement = mTargetMonster->GetElement();
+
+			if (mTargetElement == EElement::Wind)
+				IsChain = true;
+
 			mMeteor = GetWorld()->SpawnActor<AMagicProjectile_Meteor>(mMeteorClass,
 				TargetMultiActor[i]->GetActorLocation() + FVector(750.f, 750.f, 1000.f),
 				FRotator(-45.f, -135.f, 0.f),
 				ActorParam);
 
 			mMeteor->SetFx(mMeteorFx, mMeteorExplosionFx);
-			mMeteor->Init(mSpellPower, mDamage, mDamageRate, 
-				mImpactRange, IsChain, mParticle, IgnoreDamageActorList);
+			mMeteor->Init(mSpellPower, mDamage, mDamageRate, mImpactRange, 
+				IsChain, mParticle, IgnoreDamageActorList, mUseChainReaction);
 		}
 	}
 }

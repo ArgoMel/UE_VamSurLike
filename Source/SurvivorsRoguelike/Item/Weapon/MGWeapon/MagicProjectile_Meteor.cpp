@@ -3,18 +3,20 @@
 
 #include "MagicProjectile_Meteor.h"
 
-inline float PROJECTILESPEED = 2000.f;
+inline int PROJECTILESPEED = 2000;
 
 AMagicProjectile_Meteor::AMagicProjectile_Meteor()
 {
 	mProjectile->Velocity = GetActorForwardVector() * PROJECTILESPEED;
 
+	mCollision->SetCollisionProfileName("MagicProjectile");
 	mCollision->OnComponentBeginOverlap.AddDynamic(this,
 		&AMagicProjectile_Meteor::OverlapBegin);
 }
 
-void AMagicProjectile_Meteor::Init(float SpellPower, float Damage, float DamageRate,float Range,
-	bool IsChain, UParticleSystemComponent* Particle, const TArray<AActor*>& IgnoreDamageActorList)
+void AMagicProjectile_Meteor::Init(float SpellPower, float Damage, float DamageRate,
+	float Range,bool IsChain, UParticleSystemComponent* Particle, 
+	const TArray<AActor*>& IgnoreDamageActorList, UUseChainReaction* UseChainReaction)
 {
 	mSpellPower = SpellPower;
 	mDamage = Damage;
@@ -23,6 +25,7 @@ void AMagicProjectile_Meteor::Init(float SpellPower, float Damage, float DamageR
 	mIsChain = IsChain;
 	mParticle = Particle;
 	mIgnoreDamageActorList = IgnoreDamageActorList;
+	mUseChainReaction = UseChainReaction;
 }
 
 void AMagicProjectile_Meteor::BeginPlay()
@@ -67,6 +70,11 @@ void AMagicProjectile_Meteor::OverlapBegin(UPrimitiveComponent* OverlappedCompon
 		true,
 		ECC_Camera
 	);
+
+	if (mIsChain)
+	{
+		mUseChainReaction->FlamePillar(GetActorLocation());
+	}
 
 	Destroy();
 }

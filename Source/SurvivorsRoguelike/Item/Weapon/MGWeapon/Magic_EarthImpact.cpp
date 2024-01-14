@@ -46,7 +46,6 @@ void AMagic_EarthImpact::Attack()
 		if (mTargetMonster)
 			mTargetElement = mTargetMonster->GetElement();
 
-
 		UGameplayStatics::SpawnEmitterAtLocation(
 			GetWorld(),
 			mParticle->Template,
@@ -71,5 +70,10 @@ void AMagic_EarthImpact::Attack()
 			this,
 			nullptr
 		);
+
+		if (mTargetElement == EElement::Electric)
+		{
+			mUseChainReaction->Crystallization(mTargetLoc);
+		}
 	}
 }
