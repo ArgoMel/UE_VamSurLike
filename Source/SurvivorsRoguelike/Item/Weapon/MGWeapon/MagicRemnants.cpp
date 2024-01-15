@@ -7,13 +7,14 @@
 // Sets default values
 AMagicRemnants::AMagicRemnants()
 {
+	PrimaryActorTick.bCanEverTick = true;
+
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	mRange = 300.f;
 
 	mScene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
 
 	mCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
-	mCollision->SetCollisionProfileName("MagicRemnants");
 
 	mRemnantsParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("RemnantsParticle"));
 
@@ -93,20 +94,32 @@ void AMagicRemnants::Act()
 	Destroy();
 }
 
+void AMagicRemnants::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	mTime += DeltaTime;
+
+	if (mTime >= 5.f)
+		Destroy();
+}
+
 void AMagicRemnants::Init(float SpellPower, float Damage, FChainReactionData* Data,
 	const TArray<AActor*>& IgnoreDamageActorList)
 {
-	if (Data)
-	{
-		mDamageRate = Data->DamageRate;
-		mMagicParticle->SetTemplate(Data->MagicParticle);
-		mRemnantsParticle->SetTemplate(Data->SubParticle);
-		mMagicSound->SetSound(Data->MagicSound);
-	}
+	if (!Data)
+		return;
+
+	mDamageRate = Data->DamageRate;
+	mMagicParticle->SetTemplate(Data->MagicParticle);
+	mRemnantsParticle->SetTemplate(Data->SubParticle);
+	mMagicSound->SetSound(Data->MagicSound);
+
 
 	mSpellPower = SpellPower;
 	mDamage = Damage;
 	mIgnoreDamageActorList = IgnoreDamageActorList;
+
+	mCollision->SetCollisionProfileName("MagicRemnants");
 }
 
 
