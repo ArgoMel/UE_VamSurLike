@@ -84,32 +84,37 @@ void AMonsterDamage::Burning_Implementation()
 {
 }
 
-
-void AMonsterDamage::OnConstruction(const FTransform& Transform)
+void AMonsterDamage::ReloacateActor()
 {
-	Super::OnConstruction(Transform);
-
-
-}
-
-void AMonsterDamage::BeginPlay()
-{
-	Super::BeginPlay();
 	FHitResult hitResult;
 	FCollisionQueryParams collisionParams;
+	collisionParams.AddIgnoredActor(this);
 	FVector startLoc = GetActorLocation();
-	startLoc.Z -= GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-	FVector endLoc = startLoc - GetActorUpVector()*1000.;
+	FVector endLoc = startLoc - GetActorUpVector() * 1000.;
 	bool isCol = GetWorld()->LineTraceSingleByChannel(hitResult,
 		startLoc, endLoc, ECC_Visibility, collisionParams);
 #if ENABLE_DRAW_DEBUG
 	FColor drawColor = isCol ? FColor::Red : FColor::Green;
 	DrawDebugLine(GetWorld(), startLoc, endLoc, drawColor, false, 0.5f);
 #endif
-	if(isCol)
+	if (!isCol)
 	{
-		SetActorLocation(FVector(startLoc.X,startLoc.Y,2000.));
+		SetActorLocation(FVector(startLoc.X, startLoc.Y, 2000.));
 	}
+}
+
+void AMonsterDamage::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+}
+
+void AMonsterDamage::BeginPlay()
+{
+	Super::BeginPlay();
+	ReloacateActor();
+	FTimerHandle relocateActorTimer;
+	GetWorldTimerManager().SetTimer(relocateActorTimer, this,
+		&AMonsterDamage::ReloacateActor, 10.f, true);
 }
 
 // Called every frame
