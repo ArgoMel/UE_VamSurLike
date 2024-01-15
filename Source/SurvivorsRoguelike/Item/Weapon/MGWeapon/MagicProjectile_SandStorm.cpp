@@ -3,11 +3,11 @@
 
 #include "MagicProjectile_SandStorm.h"
 
-inline int PROJECTILESPEED = 200;
+inline int PROJECTILESPEED_SANDSTORM = 200;
 
 AMagicProjectile_SandStorm::AMagicProjectile_SandStorm()
 {
-	mProjectile->Velocity = GetActorForwardVector() * PROJECTILESPEED;
+	mProjectile->Velocity = GetActorForwardVector() * PROJECTILESPEED_SANDSTORM;
 
 	mCollision->SetRelativeScale3D(FVector(1.5f, 1.5f, 1.5f));
 	mCollision->SetCollisionProfileName("PlayerAttack");
