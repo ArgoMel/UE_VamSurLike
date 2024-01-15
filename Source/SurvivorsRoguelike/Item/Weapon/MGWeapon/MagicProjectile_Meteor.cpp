@@ -3,11 +3,11 @@
 
 #include "MagicProjectile_Meteor.h"
 
-inline int PROJECTILESPEED = 2000;
+inline int PROJECTILESPEED_METEOR = 2000;
 
 AMagicProjectile_Meteor::AMagicProjectile_Meteor()
 {
-	mProjectile->Velocity = GetActorForwardVector() * PROJECTILESPEED;
+	mProjectile->Velocity = GetActorForwardVector() * PROJECTILESPEED_METEOR;
 
 	mCollision->SetCollisionProfileName("MagicProjectile");
 	mCollision->OnComponentBeginOverlap.AddDynamic(this,

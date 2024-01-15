@@ -17,8 +17,15 @@ ALRWeaponBase::ALRWeaponBase()
 		TEXT("/Script/Engine.SoundWave'/Game/LRWeaponSound/RifleB_Fire_End_ST01.RifleB_Fire_End_ST01'"));
 
 	mAttackSound = CreateDefaultSubobject<UAudioComponent>(TEXT("AttackSound"));
-	if(SOUND.Succeeded())
+	//if(SOUND.Succeeded())
 		//mAttackSound->SetSound(SOUND.Object);
+
+	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> LASER(
+		TEXT("/Script/Niagara.NiagaraSystem'/Game/2_HHS/Effect/NS_GunLaser.NS_GunLaser'"));
+	mLaser = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Laser"));
+
+	if (LASER.Succeeded())
+		mLaser->SetAsset(LASER.Object);
 
 	mBulletClass = ABulletBase::StaticClass();
 }
@@ -91,6 +98,16 @@ void ALRWeaponBase::SetElement(EElement Element)
 	}
 }
 
+void ALRWeaponBase::SetLaserDir()
+{
+	FVector MouseCursorPos = Cast<ABaseCharacter>(mCharacter)->GetMouseCursorPos();
+	MouseCursorPos.Z = mMesh->GetSocketLocation(TEXT("MuzzleFlash")).Z;
+	FVector LaserDirNormal = (MouseCursorPos - mMesh->GetSocketLocation(TEXT("MuzzleFlash"))).GetSafeNormal();
+	
+	mLaser->SetVectorParameter(TEXT("BeamStart"), mMesh->GetSocketLocation(TEXT("MuzzleFlash")));
+	mLaser->SetVectorParameter(TEXT("BeamEnd"), LaserDirNormal * mRange);
+}
+
 void ALRWeaponBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -104,4 +121,6 @@ void ALRWeaponBase::Tick(float DeltaTime)
 		Fire();
 		mTime = 0;
 	}
+
+	SetLaserDir();
 }
