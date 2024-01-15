@@ -145,7 +145,7 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	}
 
 	TObjectPtr<AMagicRemnants> TargetRemnants = Cast<AMagicRemnants>(OtherActor);
-	if (TargetRemnants)
+	if (IsValid(TargetRemnants))
 	{
 		TargetRemnants->Act();
 	}

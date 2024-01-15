@@ -20,6 +20,7 @@ protected :
 	float mDamage;
 	float mDamageRate;
 	float mRange;
+	float mTime;
 	TArray<AActor*> mIgnoreDamageActorList;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -46,6 +47,9 @@ public :
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 
 };
