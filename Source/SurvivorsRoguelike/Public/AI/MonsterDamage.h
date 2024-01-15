@@ -87,6 +87,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetStencil(int32 Stencil);
 
+	//
+	void ReloacateActor();
+	//
 
 	EElement GetElement()
 	{
