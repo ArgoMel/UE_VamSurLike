@@ -134,11 +134,20 @@ void ABulletBase::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	}
 	float Dmg = mBulletStat.OffensePower * PenetratingPerArmor * mBulletStat.Damage;
 
-	if (OtherActor)
+	OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
+
+	TObjectPtr<AMonsterDamage> TargetMonster = Cast<AMonsterDamage>(OtherActor);
+	if (TargetMonster)
 	{
-		OtherActor->TakeDamage(Dmg, DmgEvent, nullptr, this);
-		Cast<AMonsterDamage>(OtherActor)->SetStencil(StencilVal);
-		Cast<AMonsterDamage>(OtherActor)->SetElement(mBulletStat.Element);
+		TargetMonster->SetStencil(StencilVal);
+		TargetMonster->SetElement(mBulletStat.Element);
+		return;
+	}
+
+	TObjectPtr<AMagicRemnants> TargetRemnants = Cast<AMagicRemnants>(OtherActor);
+	if (TargetRemnants)
+	{
+		TargetRemnants->Act();
 	}
 }
 
