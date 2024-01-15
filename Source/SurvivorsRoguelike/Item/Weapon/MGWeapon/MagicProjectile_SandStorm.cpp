@@ -3,7 +3,7 @@
 
 #include "MagicProjectile_SandStorm.h"
 
-inline int PROJECTILESPEED_SANDSTORM = 200;
+inline int PROJECTILESPEED_SANDSTORM = 1200;
 
 AMagicProjectile_SandStorm::AMagicProjectile_SandStorm()
 {
