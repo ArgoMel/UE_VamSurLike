@@ -652,5 +652,8 @@ public:
 	TObjectPtr<UParticleSystem> MagicParticle = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UParticleSystem> SubParticle = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USoundBase> MagicSound = nullptr;
 };

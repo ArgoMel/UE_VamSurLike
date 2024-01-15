@@ -17,7 +17,6 @@ AMagicProjectile::AMagicProjectile()
 	mProjectile->ProjectileGravityScale = 0.f;
 
 	mCollision = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
-	mCollision->SetCollisionProfileName("MagicProjectile");
 	mCollision->CanCharacterStepUpOn = ECanBeCharacterBase::ECB_No;
 
 	mFx = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Fx"));

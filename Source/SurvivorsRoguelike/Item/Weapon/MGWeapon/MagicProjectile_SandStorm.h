@@ -4,36 +4,31 @@
 
 #include "../../../GameInfo.h"
 #include "MagicProjectile.h"
-#include "UseChainReaction.h"
-#include "MagicProjectile_Meteor.generated.h"
+#include "MagicProjectile_SandStorm.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class SURVIVORSROGUELIKE_API AMagicProjectile_Meteor : public AMagicProjectile
+class SURVIVORSROGUELIKE_API AMagicProjectile_SandStorm : public AMagicProjectile
 {
 	GENERATED_BODY()
-	
-public :
-	AMagicProjectile_Meteor();
+
+public:
+	AMagicProjectile_SandStorm();
 
 private :
 	float mTime;
 	float mSpellPower;
 	float mDamage;
 	float mDamageRate;
-	float mRange;
-	bool mIsChain;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UParticleSystemComponent> mParticle;
-	TArray<AActor*> mIgnoreDamageActorList;
-	TObjectPtr<UUseChainReaction> mUseChainReaction;
 
-
-public :
-	void Init(float SpellPower, float Damage, float DamageRate, float Range, 
-		bool IsChain, UParticleSystemComponent* Particle, const TArray<AActor*>& IgnoreDamageActorList, 
-		UUseChainReaction* UseChainReaction);
+public:
+	void Init(float SpellPower, float Damage, float DamageRate);
+	void SetParticle(UParticleSystem* Particle);
 
 protected:
 	// Called when the game starts or when spawned
@@ -47,4 +42,5 @@ public:
 	void OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 		const FHitResult& SweepResult);
+	
 };
