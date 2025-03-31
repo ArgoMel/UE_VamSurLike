@@ -6,7 +6,8 @@ public class SurvivorsRoguelikeServerTarget : TargetRules
 	public SurvivorsRoguelikeServerTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Server;
-		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.Add("SurvivorsRoguelike");
+		DefaultBuildSettings = BuildSettingsVersion.Latest;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+        ExtraModuleNames.Add("SurvivorsRoguelike");
 	}
 }
